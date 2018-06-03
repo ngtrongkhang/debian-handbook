@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>13.4. Email</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Workstation, Graphical desktop, Office work, X.org"/><link rel="prev" href="sect.graphical-desktops.html" title="13.3. Graphical Desktops"/><link rel="next" href="sect.web-browsers.html" title="13.5. Web Browsers"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.main-desktop-tools.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.graphical-desktops.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.web-browsers.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.main-desktop-tools"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.main-desktop-tools"/>13.4. Email</h2></div></div></div>
+		
+		 <a id="id-1.16.7.2" class="indexterm"></a>
+		 <section class="section" id="id-1.16.7.3"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.16.7.3"/>13.4.1. Evolution</h3></div></div></div>
+			
+			 <a id="id-1.16.7.3.2" class="indexterm"></a>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>COMMUNITY</em></span> <span class="emphasis"><em>Popular</em></span> packages</strong></p></div></div></div> 
+			 <p>
+				Installing the <span class="pkg pkg">popularity-contest</span> package enables participation in an automated survey that informs the Debian project about the most popular packages. A script is run weekly by <span class="command"><strong>cron</strong></span> which sends (by HTTP or email) an anonymized list of the installed packages and the latest access date for the files they contain. This allows the Debian maintainers to know which packages are most frequently installed, and of these, how frequently they are actually used.
+			</p>
+			 <a id="id-1.16.7.3.3.3" class="indexterm"></a>
+			 <a id="id-1.16.7.3.3.4" class="indexterm"></a>
+			 <a id="id-1.16.7.3.3.5" class="indexterm"></a>
+			 <p>
+				This information is a great help to the Debian project. It is used to determine which packages should go on the first installation disks. The installation data is also an important factor used to decide whether to remove a package with very few users from the distribution. We heartily recommend installing the <span class="pkg pkg">popularity-contest</span> package, and participating in the survey.
+			</p>
+			 <p>
+				The collected data are made public every day. <a class="ulink" href="http://popcon.debian.org/">http://popcon.debian.org/</a>
+			</p>
+			 <p>
+				These statistics can also help users to choose between two packages that seem otherwise equivalent. Choosing the more popular package is probably a safer choice.
+			</p>
+			 </div> <p>
+				Evolution is the GNOME email client and can be installed with <span class="command"><strong>apt-get install evolution</strong></span>. Evolution is more than a simple email client: it also provides a calendar, an address book, a task list, and a memo (free-form note) application. Its email component includes a powerful message indexing system, and allows for the creation of virtual folders based on search queries on all archived messages. In other words, all messages are stored the same way but displayed in a folder-based organization, each folder containing messages that match a set of filtering criteria.
+			</p>
+			 <div class="figure" id="id-1.16.7.3.5"><a id="id-1.16.7.3.5"/><p class="title"><strong>Hình 13.4. The Evolution email software</strong></p><div class="figure-contents">
+				
+				 <div class="mediaobject"><img src="images/evolution.png" alt="The Evolution email software"/></div>
+
+			</div></div>
+			 <p>
+				An extension to Evolution allows integration with a Microsoft Exchange email system; the required package is <span class="pkg pkg">evolution-ews</span>.
+			</p>
+			 <a id="id-1.16.7.3.7" class="indexterm"></a>
+
+		</section>
+		 <section class="section" id="id-1.16.7.4"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.16.7.4"/>13.4.2. KMail</h3></div></div></div>
+			
+			 <a id="id-1.16.7.4.2" class="indexterm"></a>
+			 <p>
+				The KDE email software can be installed with <span class="command"><strong>apt-get install kmail</strong></span>. KMail only handles email, but it belongs to a software suite called KDE-PIM (for <span class="emphasis"><em>Personal Information Manager</em></span>) that includes features such as address books, a calendar component, and so on. KMail has all the features one would expect from an excellent email client.
+			</p>
+			 <div class="figure" id="id-1.16.7.4.4"><a id="id-1.16.7.4.4"/><p class="title"><strong>Hình 13.5. The KMail email software</strong></p><div class="figure-contents">
+				
+				 <div class="mediaobject"><img src="images/kmail.png" alt="The KMail email software"/></div>
+
+			</div></div>
+
+		</section>
+		 <section class="section" id="id-1.16.7.5"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.16.7.5"/>13.4.3. Thunderbird and Icedove</h3></div></div></div>
+			
+			 <p>
+				The <span class="pkg pkg">icedove</span> package provides the Debian version of Thunderbird, the email client from the Mozilla software suite. For legal reasons detailed in the sidebar <a class="xref" href="sect.web-browsers.html#sidebar.firefox-iceweasel" title="CULTURE Iceweasel, Firefox and others"><span class="emphasis"><em>CULTURE</em></span> Iceweasel, Firefox and others</a>, Debian <span class="distribution distribution">Jessie</span> contains Icedove, and not Thunderbird, but the only real differences between them are their names and icons.
+			</p>
+			 <p>
+				Various localization sets are available in <span class="pkg pkg">icedove-l10n-*</span> packages; the <span class="pkg pkg">enigmail</span> extension handles message encrypting and signing, but it is not available in all languages.
+			</p>
+			 <div class="figure" id="id-1.16.7.5.4"><a id="id-1.16.7.5.4"/><p class="title"><strong>Hình 13.6. The Icedove email software</strong></p><div class="figure-contents">
+				
+				 <div class="mediaobject"><img src="images/icedove.png" alt="The Icedove email software"/></div>
+
+			</div></div>
+			 <a id="id-1.16.7.5.5" class="indexterm"></a>
+			 <a id="id-1.16.7.5.6" class="indexterm"></a>
+
+		</section>
+
+	</section><footer/></body></html>

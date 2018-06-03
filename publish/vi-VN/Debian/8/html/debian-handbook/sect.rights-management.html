@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>9.3. Managing Rights</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="System boot, Initscripts, SSH, Telnet, Rights, Permissions, Supervision, Inetd, Cron, Backup, Hotplug, PCMCIA, APM, ACPI"/><link rel="prev" href="sect.remote-login.html" title="9.2. Remote Login"/><link rel="next" href="sect.administration-interfaces.html" title="9.4. Administration Interfaces"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.rights-management.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.remote-login.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.administration-interfaces.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.rights-management"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.rights-management"/>9.3. Managing Rights</h2></div></div></div>
+		
+		 <p>
+			Linux is definitely a multi-user system, so it is necessary to provide a permission system to control the set of authorized operations on files and directories, which includes all the system resources and devices (on a Unix system, any device is represented by a file or directory). This principle is common to all Unix systems, but a reminder is always useful, especially as there are some interesting and relatively unknown advanced uses.
+		</p>
+		 <a id="id-1.12.6.3" class="indexterm"></a>
+		 <a id="id-1.12.6.4" class="indexterm"></a>
+		 <a id="id-1.12.6.5" class="indexterm"></a>
+		 <a id="id-1.12.6.6" class="indexterm"></a>
+		 <a id="id-1.12.6.7" class="indexterm"></a>
+		 <a id="id-1.12.6.8" class="indexterm"></a>
+		 <p>
+			Each file or directory has specific permissions for three categories of users:
+		</p>
+		 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+				<p>
+					its owner (symbolized by <code class="literal">u</code> as in “user”);
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					its owner group (symbolized by <code class="literal">g</code> as in “group”), representing all the members of the group;
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					the others (symbolized by <code class="literal">o</code> as in “other”).
+				</p>
+
+			</li></ul></div>
+		 <p>
+			Three types of rights can be combined:
+		</p>
+		 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+				<p>
+					reading (symbolized by <code class="literal">r</code> as in “read”);
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					writing (or modifying, symbolized by <code class="literal">w</code> as in “write”);
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					executing (symbolized by <code class="literal">x</code> as in “eXecute”).
+				</p>
+
+			</li></ul></div>
+		 <a id="id-1.12.6.13" class="indexterm"></a>
+		 <a id="id-1.12.6.14" class="indexterm"></a>
+		 <a id="id-1.12.6.15" class="indexterm"></a>
+		 <a id="id-1.12.6.16" class="indexterm"></a>
+		 <p>
+			In the case of a file, these rights are easily understood: read access allows reading the content (including copying), write access allows changing it, and execute access allows you to run it (which will only work if it is a program).
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SECURITY</em></span> <code class="literal">setuid</code> and <code class="literal">setgid</code> executables</strong></p></div></div></div> 
+		 <p>
+			Two particular rights are relevant to executable files: <code class="literal">setuid</code> and <code class="literal">setgid</code> (symbolized with the letter “s”). Note that we frequently speak of “bit”, since each of these boolean values can be represented by a 0 or a 1. These two rights allow any user to execute the program with the rights of the owner or the group, respectively. This mechanism grants access to features requiring higher level permissions than those you would usually have.
+		</p>
+		 <a id="id-1.12.6.18.3" class="indexterm"></a>
+		 <a id="id-1.12.6.18.4" class="indexterm"></a>
+		 <p>
+			Since a <code class="literal">setuid</code> root program is systematically run under the super-user identity, it is very important to ensure it is secure and reliable. Indeed, a user who would manage to subvert it to call a command of their choice could then impersonate the root user and have all rights on the system.
+		</p>
+		 </div> <p>
+			A directory is handled differently. Read access gives the right to consult the list of its entries (files and directories), write access allows creating or deleting files, and execute access allows crossing through it (especially to go there with the <span class="command"><strong>cd</strong></span> command). Being able to cross through a directory without being able to read it gives permission to access the entries therein that are known by name, but not to find them if you do not know their existence or their exact name.
+		</p>
+		 <div class="sidebar" id="sidebar.setgid-dir"><a xmlns="" id="sidebar.setgid-dir"/><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SECURITY</em></span> <code class="literal">setgid</code> directory and <span class="emphasis"><em>sticky bit</em></span></strong></p></div></div></div> 
+		 <a id="id-1.12.6.20.2" class="indexterm"></a>
+		 <p>
+			The <code class="literal">setgid</code> bit also applies to directories. Any newly-created item in such directories is automatically assigned the owner group of the parent directory, instead of inheriting the creator's main group as usual. This setup avoids the user having to change its main group (with the <span class="command"><strong>newgrp</strong></span> command) when working in a file tree shared between several users of the same dedicated group.
+		</p>
+		 <a id="id-1.12.6.20.4" class="indexterm"></a>
+		 <p>
+			The “sticky” bit (symbolized by the letter “t”) is a permission that is only useful in directories. It is especially used for temporary directories where everybody has write access (such as <code class="filename">/tmp/</code>): it restricts deletion of files so that only their owner (or the owner of the parent directory) can do it. Lacking this, everyone could delete other users' files in <code class="filename">/tmp/</code>.
+		</p>
+		 </div> <p>
+			Three commands control the permissions associated with a file:
+		</p>
+		 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+				<p>
+					<span class="command"><strong>chown <em class="replaceable">user</em> <em class="replaceable">file</em></strong></span> changes the owner of the file;
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					<span class="command"><strong>chgrp <em class="replaceable">group</em> <em class="replaceable">file</em></strong></span> alters the owner group;
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					<span class="command"><strong>chmod <em class="replaceable">rights</em> <em class="replaceable">file</em></strong></span> changes the permissions for the file.
+				</p>
+
+			</li></ul></div>
+		 <p>
+			There are two ways of presenting rights. Among them, the symbolic representation is probably the easiest to understand and remember. It involves the letter symbols mentioned above. You can define rights for each category of users (<code class="literal">u</code>/<code class="literal">g</code>/<code class="literal">o</code>), by setting them explicitly (with <code class="literal">=</code>), by adding (<code class="literal">+</code>), or subtracting (<code class="literal">-</code>). Thus the <code class="literal">u=rwx,g+rw,o-r</code> formula gives the owner read, write, and execute rights, adds read and write rights for the owner group, and removes read rights for other users. Rights not altered by the addition or subtraction in such a command remain unmodified. The letter <code class="literal">a</code>, for “all”, covers all three categories of users, so that <code class="literal">a=rx</code> grants all three categories the same rights (read and execute, but not write).
+		</p>
+		 <a id="id-1.12.6.24" class="indexterm"></a>
+		 <a id="id-1.12.6.25" class="indexterm"></a>
+		 <a id="id-1.12.6.26" class="indexterm"></a>
+		 <a id="id-1.12.6.27" class="indexterm"></a>
+		 <a id="id-1.12.6.28" class="indexterm"></a>
+		 <p>
+			The (octal) numeric representation associates each right with a value: 4 for read, 2 for write, and 1 for execute. We associate each combination of rights with the sum of the figures. Each value is then assigned to different categories of users by putting them end to end in the usual order (owner, group, others).
+		</p>
+		 <p>
+			For instance, the <span class="command"><strong>chmod 754 <em class="replaceable">file</em></strong></span> command will set the following rights: read, write and execute for the owner (since 7 = 4 + 2 + 1); read and execute for the group (since 5 = 4 + 1); read-only for others. The <code class="literal">0</code> means no rights; thus <span class="command"><strong>chmod 600 <em class="replaceable">file</em></strong></span> allows for read/write rights for the owner, and no rights for anyone else. The most frequent right combinations are <code class="literal">755</code> for executable files and directories, and <code class="literal">644</code> for data files.
+		</p>
+		 <p>
+			To represent special rights, you can prefix a fourth digit to this number according to the same principle, where the <code class="literal">setuid</code>, <code class="literal">setgid</code> and <code class="literal">sticky</code> bits are 4, 2 and 1, respectively. <span class="command"><strong>chmod 4754</strong></span> will associate the <code class="literal">setuid</code> bit with the previously described rights.
+		</p>
+		 <p>
+			Note that the use of octal notation only allows to set all the rights at once on a file; you cannot use it to simply add a new right, such as read access for the group owner, since you must take into account the existing rights and compute the new corresponding numerical value.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TIP</em></span> Recursive operation</strong></p></div></div></div> 
+		 <p>
+			Sometimes we have to change rights for an entire file tree. All the commands above have a <code class="literal">-R</code> option to operate recursively in sub-directories.
+		</p>
+		 <p>
+			The distinction between directories and files sometimes causes problems with recursive operations. That is why the “X” letter has been introduced in the symbolic representation of rights. It represents a right to execute which applies only to directories (and not to files lacking this right). Thus, <span class="command"><strong>chmod -R a+X <em class="replaceable">directory</em></strong></span> will only add execute rights for all categories of users (<code class="literal">a</code>) for all of the sub-directories and files for which at least one category of user (even if their sole owner) already has execute rights.
+		</p>
+		 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TIP</em></span> Changing the user and group</strong></p></div></div></div> 
+		 <p>
+			Frequently you want to change the group of a file at the same time that you change the owner. The <span class="command"><strong>chown</strong></span> command has a special syntax for that: <span class="command"><strong>chown <em class="replaceable">user</em>:<em class="replaceable">group</em> <em class="replaceable">file</em></strong></span>
+		</p>
+		 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>GOING FURTHER</em></span> <span class="command"><strong>umask</strong></span></strong></p></div></div></div> 
+		 <p>
+			When an application creates a file, it assigns indicative permissions, knowing that the system automatically removes certain rights, given by the command <span class="command"><strong>umask</strong></span>. Enter <span class="command"><strong>umask</strong></span> in a shell; you will see a mask such as <code class="computeroutput">0022</code>. This is simply an octal representation of the rights to be systematically removed (in this case, the write right for the group and other users).
+		</p>
+		 <a id="id-1.12.6.35.3" class="indexterm"></a>
+		 <a id="id-1.12.6.35.4" class="indexterm"></a>
+		 <a id="id-1.12.6.35.5" class="indexterm"></a>
+		 <p>
+			If you give it a new octal value, the <span class="command"><strong>umask</strong></span> command modifies the mask. Used in a shell initialization file (for example, <code class="filename">~/.bash_profile</code>), it will effectively change the default mask for your work sessions.
+		</p>
+		 </div>
+	</section><footer/></body></html>

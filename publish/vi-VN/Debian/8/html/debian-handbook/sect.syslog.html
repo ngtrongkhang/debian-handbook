@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>9.5. syslog System Events</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="System boot, Initscripts, SSH, Telnet, Rights, Permissions, Supervision, Inetd, Cron, Backup, Hotplug, PCMCIA, APM, ACPI"/><link rel="prev" href="sect.administration-interfaces.html" title="9.4. Administration Interfaces"/><link rel="next" href="sect.inetd.html" title="9.6. The inetd Super-Server"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.syslog.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.administration-interfaces.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.inetd.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.syslog"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.syslog"/>9.5. <span class="command"><strong>syslog</strong></span> System Events</h2></div></div></div>
+		
+		 <a id="id-1.12.8.2" class="indexterm"></a>
+		 <a id="id-1.12.8.3" class="indexterm"></a>
+		 <a id="id-1.12.8.4" class="indexterm"></a>
+		 <section class="section" id="sect.syslog-principe"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.syslog-principe"/>9.5.1. Principle and Mechanism</h3></div></div></div>
+			
+			 <p>
+				The <span class="command"><strong>rsyslogd</strong></span> daemon is responsible for collecting service messages coming from applications and the kernel, then dispatching them into log files (usually stored in the <code class="filename">/var/log/</code> directory). It obeys the <code class="filename">/etc/rsyslog.conf</code> configuration file.
+			</p>
+			 <p>
+				Each log message is associated with an application subsystem (called “facility” in the documentation):
+			</p>
+			 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					<p>
+						<code class="literal">auth</code> and <code class="literal">authpriv</code>: for authentication;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">cron</code>: comes from task scheduling services, <span class="command"><strong>cron</strong></span> and <span class="command"><strong>atd</strong></span>;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">daemon</code>: affects a daemon without any special classification (DNS, NTP, etc.);
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">ftp</code>: concerns the FTP server;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">kern</code>: message coming from the kernel;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">lpr</code>: comes from the printing subsystem;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">mail</code>: comes from the e-mail subsystem;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">news</code>: Usenet subsystem message (especially from an NNTP — Network News Transfer Protocol — server that manages newsgroups);
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">syslog</code>: messages from the <span class="command"><strong>syslogd</strong></span> server, itself;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">user</code>: user messages (generic);
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">uucp</code>: messages from the UUCP server (Unix to Unix Copy Program, an old protocol notably used to distribute e-mail messages);
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">local0</code> to <code class="literal">local7</code>: reserved for local use.
+					</p>
+
+				</li></ul></div>
+			 <p>
+				Each message is also associated with a priority level. Here is the list in decreasing order:
+			</p>
+			 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					<p>
+						<code class="literal">emerg</code>: “Help!” There is an emergency, the system is probably unusable.
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">alert</code>: hurry up, any delay can be dangerous, action must be taken immediately;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">crit</code>: conditions are critical;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">err</code>: error;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">warn</code>: warning (potential error);
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">notice</code>: conditions are normal, but the message is important;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">info</code>: informative message;
+					</p>
+
+				</li><li class="listitem">
+					<p>
+						<code class="literal">debug</code>: debugging message.
+					</p>
+
+				</li></ul></div>
+
+		</section>
+		 <section class="section" id="sect.syslog-config"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.syslog-config"/>9.5.2. The Configuration File</h3></div></div></div>
+			
+			 <p>
+				The syntax of the <code class="filename">/etc/rsyslog.conf</code> file is detailed in the <span class="citerefentry"><span class="refentrytitle">rsyslog.conf</span>
+				(5)</span> manual page, but there is also HTML documentation available in the <span class="pkg pkg">rsyslog-doc</span> package (<code class="filename">/usr/share/doc/rsyslog-doc/html/index.html</code>). The overall principle is to write “selector” and “action” pairs. The selector defines all relevant messages, and the actions describes how to deal with them.
+			</p>
+			 <section class="section" id="sect.syslog-selector-syntax"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.syslog-selector-syntax"/>9.5.2.1. Syntax of the Selector</h4></div></div></div>
+				
+				 <p>
+					The selector is a semicolon-separated list of <code class="literal"><em class="replaceable">subsystem</em>.<em class="replaceable">priority</em></code> pairs (example: <code class="literal">auth.notice;mail.info</code>). An asterisk may represent all subsystems or all priorities (examples: <code class="literal">*.alert</code> or <code class="literal">mail.*</code>). Several subsystems can be grouped, by separating them with a comma (example: <code class="literal">auth,mail.info</code>). The priority indicated also covers messages of equal or higher priority; thus <code class="literal">auth.alert</code> indicates the <code class="literal">auth</code> subsystem messages of <code class="literal">alert</code> or <code class="literal">emerg</code> priority. Prefixed with an exclamation point (!), it indicates the opposite, in other words the strictly lower priorities; <code class="literal">auth.!notice</code>, thus, indicates messages issued from <code class="literal">auth</code>, with <code class="literal">info</code> or <code class="literal">debug</code> priority. Prefixed with an equal sign (=), it corresponds to precisely and only the priority indicated (<code class="literal">auth.=notice</code> only concerns messages from <code class="literal">auth</code> with <code class="literal">notice</code> priority).
+				</p>
+				 <p>
+					Each element in the list on the selector overrides previous elements. It is thus possible to restrict a set or to exclude certain elements from it. For example, <code class="literal">kern.info;kern.!err</code> means messages from the kernel with priority between <code class="literal">info</code> and <code class="literal">warn</code>. The <code class="literal">none</code> priority indicates the empty set (no priorities), and may serve to exclude a subsystem from a set of messages. Thus, <code class="literal">*.crit;kern.none</code> indicates all the messages of priority equal to or higher than <code class="literal">crit</code> not coming from the kernel.
+				</p>
+
+			</section>
+			 <section class="section" id="sect.syslog-action-syntax"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.syslog-action-syntax"/>9.5.2.2. Syntax of Actions</h4></div></div></div>
+				
+				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> The named pipe, a persistent pipe</strong></p></div></div></div> 
+				 <a id="id-1.12.8.6.4.2.2" class="indexterm"></a>
+				 <a id="id-1.12.8.6.4.2.3" class="indexterm"></a>
+				 <p>
+					A named pipe is a particular type of file that operates like a traditional pipe (the pipe that you make with the “|” symbol on the command line), but via a file. This mechanism has the advantage of being able to relate two unrelated processes. Anything written to a named pipe blocks the process that writes until another process attempts to read the data written. This second process reads the data written by the first, which can then resume execution.
+				</p>
+				 <p>
+					Such a file is created with the <span class="command"><strong>mkfifo</strong></span> command.
+				</p>
+				 </div> <p>
+					The various possible actions are:
+				</p>
+				 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<p>
+							add the message to a file (example: <code class="filename">/var/log/messages</code>);
+						</p>
+
+					</li><li class="listitem">
+						<p>
+							send the message to a remote <span class="command"><strong>syslog</strong></span> server (example: <code class="literal">@log.falcot.com</code>);
+						</p>
+
+					</li><li class="listitem">
+						<p>
+							send the message to an existing named pipe (example: <code class="literal">|/dev/xconsole</code>);
+						</p>
+
+					</li><li class="listitem">
+						<p>
+							send the message to one or more users, if they are logged in (example: <code class="literal">root,rhertzog</code>);
+						</p>
+
+					</li><li class="listitem">
+						<p>
+							send the message to all logged in users (example: <code class="literal">*</code>);
+						</p>
+
+					</li><li class="listitem">
+						<p>
+							write the message in a text console (example: <code class="literal">/dev/tty8</code>).
+						</p>
+
+					</li></ul></div>
+				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SECURITY</em></span> Forwarding logs</strong></p></div></div></div> 
+				 <a id="id-1.12.8.6.4.5.2" class="indexterm"></a>
+				 <p>
+					It is a good idea to record the most important logs on a separate machine (perhaps dedicated for this purpose), since this will prevent any possible intruder from removing traces of their intrusion (unless, of course, they also compromise this other server). Furthermore, in the event of a major problem (such as a kernel crash), you have the logs available on another machine, which increases your chances of determining the sequence of events that caused the crash.
+				</p>
+				 <p>
+					To accept log messages sent by other machines, you must reconfigure <span class="emphasis"><em>rsyslog</em></span>: in practice, it is sufficient to activate the ready-for-use entries in <code class="filename">/etc/rsyslog.conf</code> (<code class="literal">$ModLoad imudp</code> and <code class="literal">$UDPServerRun 514</code>).
+				</p>
+				 </div>
+			</section>
+
+		</section>
+
+	</section><footer/></body></html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>8.11. Installing a Kernel</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Cấu hình, Nội địa hoá, Bản địa, Mạng, Độ phân giải tên, Người sử dụng, Các nhóm, Tài khoản, Thông dịch bằng dòng lệnh, Shell, In, Bộ tải khởi động, Biên dịch hạt nhân"/><link rel="prev" href="sect.kernel-compilation.html" title="8.10. Compiling a Kernel"/><link rel="next" href="unix-services.html" title="Chương 9. Unix Services"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.kernel-installation.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.kernel-compilation.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="unix-services.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.kernel-installation"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.kernel-installation"/>8.11. Installing a Kernel</h2></div></div></div>
+		
+		 <a id="id-1.11.15.2" class="indexterm"></a>
+		 <a id="id-1.11.15.3" class="indexterm"></a>
+		 <section class="section" id="sect.kernel-package"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.kernel-package"/>8.11.1. Features of a Debian Kernel Package</h3></div></div></div>
+			
+			 <a id="id-1.11.15.4.2" class="indexterm"></a>
+			 <p>
+				A Debian kernel package installs the kernel image (<code class="filename">vmlinuz-<em class="replaceable">version</em></code>), its configuration (<code class="filename">config-<em class="replaceable">version</em></code>) and its symbols table (<code class="filename">System.map-<em class="replaceable">version</em></code>) in <code class="filename">/boot/</code>. The symbols table helps developers understand the meaning of a kernel error message; without it, kernel “oopses” (an “oops” is the kernel equivalent of a segmentation fault for user-space programs, in other words messages generated following an invalid pointer dereference) only contain numeric memory addresses, which is useless information without the table mapping these addresses to symbols and function names. The modules are installed in the <code class="filename">/lib/modules/<em class="replaceable">version</em>/</code> directory.
+			</p>
+			 <p>
+				The package's configuration scripts automatically generate an initrd image, which is a mini-system designed to be loaded in memory (hence the name, which stands for “init ramdisk”) by the bootloader, and used by the Linux kernel solely for loading the modules needed to access the devices containing the complete Debian system (for example, the driver for SATA disks). Finally, the post-installation scripts update the symbolic links <code class="filename">/vmlinuz</code>, <code class="filename">/vmlinuz.old</code>, <code class="filename">/initrd.img</code> and <code class="filename">/initrd.img.old</code> so that they point to the latest two kernels installed, respectively, as well as the corresponding initrd images.
+			</p>
+			 <p>
+				Most of those tasks are offloaded to hook scripts in the <code class="filename">/etc/kernel/*.d/</code> directories. For instance, the integration with <span class="command"><strong>grub</strong></span> relies on <code class="filename">/etc/kernel/postinst.d/zz-update-grub</code> and <code class="filename">/etc/kernel/postrm.d/zz-update-grub</code> to call <span class="command"><strong>update-grub</strong></span> when kernels are installed or removed.
+			</p>
+
+		</section>
+		 <section class="section" id="sect.kernel-installation-with-dpkg"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.kernel-installation-with-dpkg"/>8.11.2. Installing with <span class="command"><strong>dpkg</strong></span></h3></div></div></div>
+			
+			 <p>
+				Using <span class="command"><strong>apt</strong></span> is so convenient that it makes it easy to forget about the lower-level tools, but the easiest way of installing a compiled kernel is to use a command such as <span class="command"><strong>dpkg -i <em class="replaceable">package</em>.deb</strong></span>, where <code class="literal"><em class="replaceable">package</em>.deb</code> is the name of a <span class="pkg pkg">linux-image</span> package such as <code class="filename">linux-image-3.16.7-ckt4-falcot_1_amd64.deb</code>.
+			</p>
+			 <p>
+				The configuration steps described in this chapter are basic and can lead both to a server system or a workstation, and it can be massively duplicated in semi-automated ways. However, it is not enough by itself to provide a fully configured system. A few pieces are still in need of configuration, starting with low-level programs known as the “Unix services”.
+			</p>
+
+		</section>
+
+	</section><footer/></body></html>

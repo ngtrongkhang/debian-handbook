@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>10.4. Dynamic Routing</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Network, Gateway, TCP/IP, IPv6, DNS, Bind, DHCP, QoS"/><link rel="prev" href="sect.quality-of-service.html" title="10.3. Quality of Service"/><link rel="next" href="sect.ipv6.html" title="10.5. IPv6"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.dynamic-routing.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.quality-of-service.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.ipv6.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.dynamic-routing"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.dynamic-routing"/>10.4. Dynamic Routing</h2></div></div></div>
+		
+		 <a id="id-1.13.7.2" class="indexterm"></a>
+		 <a id="id-1.13.7.3" class="indexterm"></a>
+		 <a id="id-1.13.7.4" class="indexterm"></a>
+		 <p>
+			The reference tool for dynamic routing is currently <span class="command"><strong>quagga</strong></span>, from the similarly-named package; it used to be <span class="command"><strong>zebra</strong></span> until development of the latter stopped. However, <span class="command"><strong>quagga</strong></span> kept the names of the programs for compatibility reasons which explains the <span class="command"><strong>zebra</strong></span> commands below.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> Dynamic routing</strong></p></div></div></div> 
+		 <p>
+			Dynamic routing allows routers to adjust, in real time, the paths used for transmitting IP packets. Each protocol involves its own method of defining routes (shortest path, use routes advertised by peers, and so on).
+		</p>
+		 <p>
+			In the Linux kernel, a route links a network device to a set of machines that can be reached through this device. The <span class="command"><strong>route</strong></span> command defines new routes and displays existing ones.
+		</p>
+		 <a id="id-1.13.7.6.4" class="indexterm"></a>
+		 </div> <p>
+			Quagga is a set of daemons cooperating to define the routing tables to be used by the Linux kernel; each routing protocol (most notably BGP, OSPF and RIP) provides its own daemon. The <span class="command"><strong>zebra</strong></span> daemon collects information from other daemons and handles static routing tables accordingly. The other daemons are known as <span class="command"><strong>bgpd</strong></span>, <span class="command"><strong>ospfd</strong></span>, <span class="command"><strong>ospf6d</strong></span>, <span class="command"><strong>ripd</strong></span>, <span class="command"><strong>ripngd</strong></span>, <span class="command"><strong>isisd</strong></span>, and <span class="command"><strong>babeld</strong></span>.
+		</p>
+		 <a id="id-1.13.7.8" class="indexterm"></a>
+		 <a id="id-1.13.7.9" class="indexterm"></a>
+		 <a id="id-1.13.7.10" class="indexterm"></a>
+		 <a id="id-1.13.7.11" class="indexterm"></a>
+		 <a id="id-1.13.7.12" class="indexterm"></a>
+		 <a id="id-1.13.7.13" class="indexterm"></a>
+		 <a id="id-1.13.7.14" class="indexterm"></a>
+		 <a id="id-1.13.7.15" class="indexterm"></a>
+		 <a id="id-1.13.7.16" class="indexterm"></a>
+		 <a id="id-1.13.7.17" class="indexterm"></a>
+		 <a id="id-1.13.7.18" class="indexterm"></a>
+		 <a id="id-1.13.7.19" class="indexterm"></a>
+		 <p>
+			Daemons are enabled by editing the <code class="filename">/etc/quagga/daemons</code> file and creating the appropriate configuration file in <code class="filename">/etc/quagga/</code>; this configuration file must be named after the daemon, with a <code class="filename">.conf</code> extension, and belong to the <code class="literal">quagga</code> user and the <code class="literal">quaggavty</code> group, in order for the <code class="filename">/etc/init.d/quagga</code> script to invoke the daemon.
+		</p>
+		 <p>
+			The configuration of each of these daemons requires knowledge of the routing protocol in question. These protocols cannot be described in detail here, but the <span class="pkg pkg">quagga-doc</span> provides ample explanation in the form of an <span class="command"><strong>info</strong></span> file. The same contents may be more easily browsed as HTML on the Quagga website: <a class="ulink" href="http://www.nongnu.org/quagga/docs/docs-info.html">http://www.nongnu.org/quagga/docs/docs-info.html</a>
+		</p>
+		 <p>
+			In addition, the syntax is very close to a standard router's configuration interface, and network administrators will adapt quickly to <span class="command"><strong>quagga</strong></span>.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>IN PRACTICE</em></span> OSPF, BGP or RIP?</strong></p></div></div></div> 
+		 <p>
+			OSPF is generally the best protocol to use for dynamic routing on private networks, but BGP is more common for Internet-wide routing. RIP is rather ancient, and hardly used anymore.
+		</p>
+		 </div>
+	</section><footer/></body></html>

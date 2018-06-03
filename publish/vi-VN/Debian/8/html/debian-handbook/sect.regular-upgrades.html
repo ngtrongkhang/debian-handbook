@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>6.7. Đảm bảo một hệ thống luôn cập nhật</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="apt, apt-get, apt-cache, aptitude, synaptic, sources.list, apt-cdrom"/><link rel="prev" href="sect.dist-upgrade.html" title="6.6. Nâng cấp từ bản phân phối ổn định đến kế tiếp"/><link rel="next" href="sect.automatic-upgrades.html" title="6.8. Tự động nâng cấp"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.regular-upgrades.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.dist-upgrade.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.automatic-upgrades.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.regular-upgrades"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.regular-upgrades"/>6.7. Đảm bảo một hệ thống luôn cập nhật</h2></div></div></div>
+		
+		 <p>
+			Bản phân phối Debian rất năng động và thay đổi liên tục. Hầu hết các thay đổi đều có trong các phiên bản <span class="distribution distribution">Testing</span> và <span class="distribution distribution">Unstable</span>, nhưng ngay cả <span class="distribution distribution">Stable</span> cũng được cập nhật theo thời gian, chủ yếu dành cho các bản sửa lỗi liên quan đến bảo mật. Cho dù phiên bản nào của Debian đang chạy, luôn cố gắng đảm bảo cho nó được cập nhật, để bạn có thể có được lợi ích của những tiến triển mới nhất và các bản sửa lỗi.
+		</p>
+		 <p>
+			Mặc dù có thể chạy thường xuyên một công cụ để kiểm tra các bản cập nhật có sẵn và chạy các nâng cấp, nhưng đó là một công việc lặp đi lặp lại rất tẻ nhạt, đặc biệt khi nó cần phải được thực hiện trên một số máy. May mắn thay, giống như nhiều nhiệm vụ lặp đi lặp lại, nó có thể được tự động hóa một phần, và một bộ công cụ đã được phát triển để làm điều đó.
+		</p>
+		 <p>
+			Công cụ đầu tiên trong số này là <span class="command"><strong>apticron</strong></span>, trong gói có cùng tên. Công dụng chính của nó là chạy một kịch bản hàng ngày (thông qua <span class="command"><strong>cron</strong></span>). Kịch bản cập nhật danh sách các gói có sẵn, và nếu một số gói cài đặt không có trong phiên bản mới nhất, nó sẽ gửi một email với một danh sách các gói này cùng với những thay đổi đã được thực hiện trong các phiên bản mới. Rõ ràng, gói này chủ yếu nhắm tới người dùng của Debian <span class="distribution distribution">Stable</span>, vì email hàng ngày sẽ rất dài cho các phiên bản nhịp độ nhanh hơn của Debian. Khi cập nhật có sẵn, <span class="command"><strong>apticron</strong></span> tự động tải chúng xuống. Nó không cài đặt chúng - quản trị viên vẫn sẽ làm điều đó - nhưng các gói đã được tải về và có sẵn cục bộ (trong bộ nhớ cache của APT) làm cho công việc nhanh hơn.
+		</p>
+		 <p>
+			Các quản trị viên phụ trách một số máy tính sẽ đánh gía cao khi được thông báo về các nâng cấp chưa được nâng cấp, nhưng việc nâng cấp vẫn còn tẻ nhạt như trước, đó là nơi tập lệnh <code class="filename">/etc/cron.daily/apt</code> (trong gói <span class="pkg pkg">apt</span>) Có ích. Tập lệnh này cũng được chạy hàng ngày (và không tương tác) bởi <span class="command"><strong>cron</strong></span>. Để kiểm soát hành vi của nó, sử dụng các biến cấu hình APT (do đó lưu trữ trong một tệp tin dưới <code class="filename">/etc/apt/apt.conf.d /</code>). Các biến số chính là:
+		</p>
+		 <div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">APT::Periodic::Update-Package-Lists</code></span></dt><dd>
+					<p>
+						Tùy chọn này cho phép bạn xác định tần số (tính theo ngày) mà danh sách gói được làm mới. Người dùng có thể thực hiện lệnh mà không cần có biến này, vì <span class="command"><strong>apticron</strong></span> đã làm nhiệm vụ này.
+					</p>
+
+				</dd><dt><span class="term"><code class="literal">APT::Periodic::Download-Upgradeable-Packages</code></span></dt><dd>
+					<p>
+						Tương tự, tùy chọn này cho thấy một tần số (tính theo ngày), lần này để tải các gói thực tế. Và có thể, người dùng <span class="command"><strong>apticron</strong></span> sẽ không cần nó.
+					</p>
+
+				</dd><dt><span class="term"><code class="literal">APT::Periodic::AutocleanInterval</code></span></dt><dd>
+					<p>
+						Tuỳ chọn này bao gồm một tính năng mà <span class="command"><strong>apticron</strong></span> không có. Nó kiểm soát các gói đã lỗi thời (những gì không được tham chiếu bởi bất kỳ phân phối nào nữa) được xóa khỏi bộ nhớ cache APT. Điều này giữ cho bộ nhớ cache APT ở một kích thước hợp lý và có nghĩa là bạn không cần phải lo lắng về nhiệm vụ đó.
+					</p>
+
+				</dd><dt><span class="term"><code class="literal">APT::Periodic::Unattended-Upgrade</code></span></dt><dd>
+					<a id="id-1.9.16.6.4.2.1" class="indexterm"/> <p>
+						Khi tùy chọn này được kích hoạt, tập lệnh hàng ngày sẽ thực thi <span class="command"><strong>unattended-upgrade</strong></span> (từ gói <span class="pkg pkg">unattended-upgrades</span>) - theo đề nghị của nó - có thể tự động hóa quá trình nâng cấp cho một số gói (theo mặc định nó chỉ cần đảm bảo cập nhật bảo mật, Có thể được tùy chỉnh trong <code class="filename">/etc/apt/apt.conf.d/50unattended-upgrades</code>). Lưu ý rằng tùy chọn này có thể được thiết lập với sự trợ giúp của debconf bằng cách chạy <span class="command"><strong>dpkg-reconfigure -plow unattended-upgrades</strong></span>.
+					</p>
+
+				</dd></dl></div>
+		 <p>
+			Các tùy chọn khác có thể cho phép bạn kiểm soát hành vi làm sạch bộ nhớ cache với độ chính xác hơn. Chúng không được liệt kê ở đây, nhưng chúng được mô tả trong tập lệnh <code class="filename">/etc/cron.daily/apt</code>.
+		</p>
+		 <a id="id-1.9.16.8" class="indexterm"></a>
+		 <p>
+			Những công cụ này làm việc rất tốt cho các máy chủ, nhưng người dùng máy tính để bàn thường thích một hệ thống tương tác hơn. Đó là lý do tại sao nhiệm vụ “Môi trường máy tính để bàn Debian“ cài đặt <span class="pkg pkg">gnome-packagekit</span> (ít nhất khi bạn chọn GNOME làm môi trường máy tính để bàn). Nó cung cấp một biểu tượng trong khu vực thông báo của môi trường máy tính để bàn khi cập nhật có sẵn; Nhấp vào biểu tượng này sau đó chạy <span class="command"><strong>gpk-update-viewer</strong></span>, một giao diện đơn giản để thực hiện cập nhật. Bạn có thể duyệt qua các bản cập nhật khả dụng, đọc mô tả ngắn gọn về các gói có liên quan và các mục tương ứng <code class="filename">changelog</code> và chọn áp dụng bản cập nhật hay không theo từng trường hợp.
+		</p>
+		 <div class="figure" id="id-1.9.16.10"><a id="id-1.9.16.10"/><p class="title"><strong>Hình 6.3. Nâng cấp với <span class="command">gpk-update-viewer</span></strong></p><div class="figure-contents">
+			
+			 <div class="mediaobject"><img src="images/gnome-packagekit.png" alt="Nâng cấp với gpk-update-viewer"/></div>
+
+		</div></div>
+
+	</section><footer/></body></html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>9.6. The inetd Super-Server</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="System boot, Initscripts, SSH, Telnet, Rights, Permissions, Supervision, Inetd, Cron, Backup, Hotplug, PCMCIA, APM, ACPI"/><link rel="prev" href="sect.syslog.html" title="9.5. syslog System Events"/><link rel="next" href="sect.task-scheduling-cron-atd.html" title="9.7. Scheduling Tasks with cron and atd"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.inetd.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.syslog.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.task-scheduling-cron-atd.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.inetd"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.inetd"/>9.6. The <span class="command"><strong>inetd</strong></span> Super-Server</h2></div></div></div>
+		
+		 <p>
+			Inetd (often called “Internet super-server”) is a server of servers. It executes rarely used servers on demand, so that they do not have to run continuously.
+		</p>
+		 <a id="id-1.12.9.3" class="indexterm"></a>
+		 <a id="id-1.12.9.4" class="indexterm"></a>
+		 <p>
+			The <code class="filename">/etc/inetd.conf</code> file lists these servers and their usual ports. The <span class="command"><strong>inetd</strong></span> command listens to all of them; when it detects a connection to any such port, it executes the corresponding server program.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>DEBIAN POLICY</em></span> Register a server in <code class="filename">inetd.conf</code></strong></p></div></div></div> 
+		 <p>
+			Packages frequently want to register a new server in the <code class="filename">/etc/inetd.conf</code> file, but Debian Policy prohibits any package from modifying a configuration file that it doesn't own. This is why the <span class="command"><strong>update-inetd</strong></span> script (in the package with the same name) was created: It manages the configuration file, and other packages can thus use it to register a new server to the super-server's configuration.
+		</p>
+		 </div> <p>
+			Each significant line of the <code class="filename">/etc/inetd.conf</code> file describes a server through seven fields (separated by spaces):
+		</p>
+		 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+				<p>
+					The TCP or UDP port number, or the service name (which is mapped to a standard port number with the information contained in the <code class="filename">/etc/services</code> file).
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					The socket type: <code class="literal">stream</code> for a TCP connection, <code class="literal">dgram</code> for UDP datagrams.
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					The protocol: <code class="literal">tcp</code> or <code class="literal">udp</code>.
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					The options: two possible values: <code class="literal">wait</code> or <code class="literal">nowait</code>, to tell <span class="command"><strong>inetd</strong></span> whether it should wait or not for the end of the launched process before accepting another connection. For TCP connections, easily multiplexable, you can usually use <code class="literal">nowait</code>. For programs responding over UDP, you should use <code class="literal">nowait</code> only if the server is capable of managing several connections in parallel. You can suffix this field with a period, followed by the maximum number of connections authorized per minute (the default limit is 256).
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					The user name of the user under whose identity the server will run.
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					The full path to the server program to execute.
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					The arguments: this is a complete list of the program's arguments, including its own name (<code class="literal">argv[0]</code> in C).
+				</p>
+
+			</li></ul></div>
+		 <p>
+			The following example illustrates the most common cases:
+		</p>
+		 <div class="example" id="example.inetd-conf"><a xmlns="" id="example.inetd-conf"/><p class="title"><strong>Ví dụ 9.1. Excerpt from <code class="filename">/etc/inetd.conf</code></strong></p><div class="example-contents">
+			
+			 
+<pre class="programlisting">talk   dgram  udp wait    nobody.tty /usr/sbin/in.talkd in.talkd
+finger stream tcp nowait  nobody     /usr/sbin/tcpd     in.fingerd
+ident  stream tcp nowait  nobody     /usr/sbin/identd   identd -i
+</pre>
+
+		</div></div>
+		 <a id="id-1.12.9.11" class="indexterm"></a>
+		 <p>
+			The <span class="command"><strong>tcpd</strong></span> program is frequently used in the <code class="filename">/etc/inetd.conf</code> file. It allows limiting incoming connections by applying access control rules, documented in the <span class="citerefentry"><span class="refentrytitle">hosts_access</span>
+			(5)</span> manual page, and which are configured in the <code class="filename">/etc/hosts.allow</code> and <code class="filename">/etc/hosts.deny</code> files. Once it has been determined that the connection is authorized, <span class="command"><strong>tcpd</strong></span> executes the real server (like <span class="command"><strong>in.fingerd</strong></span> in our example). It is worth noting that <span class="command"><strong>tcpd</strong></span> relies on the name under which it was invoked (that is the first argument, <code class="literal">argv[0]</code>) to identify the real program to run. So you should not start the arguments list with <code class="literal">tcpd</code> but with the program that must be wrapped.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>COMMUNITY</em></span> Wietse Venema</strong></p></div></div></div> 
+		 <a id="id-1.12.9.13.2" class="indexterm"></a>
+		 <a id="id-1.12.9.13.3" class="indexterm"></a>
+		 <p>
+			Wietse Venema, whose expertise in security has made him a renowned programmer, is the author of the <span class="command"><strong>tcpd</strong></span> program. He is also the main creator of Postfix, the modular e-mail server (SMTP, Simple Mail Transfer Protocol), designed to be safer and more reliable than <span class="command"><strong>sendmail</strong></span>, which features a long history of security vulnerabilities.
+		</p>
+		 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>ALTERNATIVE</em></span> Other <span class="command"><strong>inetd</strong></span> commands</strong></p></div></div></div> 
+		 <p>
+			While Debian installs <span class="pkg pkg">openbsd-inetd</span> by default, there is no lack of alternatives: we can mention <span class="pkg pkg">inetutils-inetd</span>, <span class="pkg pkg">micro-inetd</span>, <span class="pkg pkg">rlinetd</span> and <span class="pkg pkg">xinetd</span>.
+		</p>
+		 <p>
+			This last incarnation of a super-server offers very interesting possibilities. Most notably, its configuration can be split into several files (stored, of course, in the <code class="filename">/etc/xinetd.d/</code> directory), which can make an administrator's life easier.
+		</p>
+		 <p>
+			Last but not least, it is even possible to emulate <span class="command"><strong>inetd</strong></span>'s behaviour with <span class="command"><strong>systemd</strong></span>'s socket-activation mechanism (see <a class="xref" href="unix-services.html#sect.systemd" title="9.1.1. The systemd init system">Phần 9.1.1, “The systemd init system”</a>).
+		</p>
+		 </div>
+	</section><footer/></body></html>

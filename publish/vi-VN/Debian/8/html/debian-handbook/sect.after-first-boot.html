@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>4.3. After the First Boot</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Installation, Partitioning, Formatting, File System, Boot Sector, Hardware Detection"/><link rel="prev" href="sect.installation-steps.html" title="4.2. Installing, Step by Step"/><link rel="next" href="packaging-system.html" title="Chương 5. Hệ thống gói: Công cụ và Nguyên tắc cơ bản"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.after-first-boot.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.installation-steps.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="packaging-system.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.after-first-boot"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.after-first-boot"/>4.3. After the First Boot</h2></div></div></div>
+		
+		 <p>
+			If you activated the task “Debian desktop environment” without any explicit desktop choice (or with the “GNOME” choice), the computer will display the <span class="command"><strong>gdm3</strong></span> login manager.
+		</p>
+		 <div class="figure" id="id-1.7.13.3"><a id="id-1.7.13.3"/><p class="title"><strong>Hình 4.14. First boot</strong></p><div class="figure-contents">
+			
+			 <div class="mediaobject"><img src="images/inst-gdm.png" alt="First boot"/></div>
+
+		</div></div>
+		 <p>
+			The user that has already been created can then log in and begin working immediately.
+		</p>
+		 <section class="section" id="id-1.7.13.5"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.7.13.5"/>4.3.1. Installing Additional Software</h3></div></div></div>
+			
+			 <p>
+				The installed packages correspond to the profiles selected during installation, but not necessarily to the use that will actually be made of the machine. As such, you might want to use a package management tool to refine the selection of installed packages. The two most frequently used tools (which are installed if the “Debian desktop environment” profile was chosen) are <span class="command"><strong>apt</strong></span> (accessible from the command line) and <span class="command"><strong>synaptic</strong></span> (“Synaptic Package Manager” in the menus).
+			</p>
+			 <p>
+				To facilitate the installation of coherent groups of programs, Debian creates “tasks” that are dedicated to specific uses (mail server, file server, etc.). You already had the opportunity to select them during installation, and you can access them again thanks to package management tools such as <span class="command"><strong>aptitude</strong></span> (the tasks are listed in a distinct section) and <span class="command"><strong>synaptic</strong></span> (through the menu <span class="guimenu">Edit</span> → <span class="guimenuitem">Mark Packages by Task…</span>).
+			</p>
+			 <p>
+				Aptitude is an interface to APT in full-screen text mode. It allows the user to browse the list of available packages according to various categories (installed or not-installed packages, by task, by section, etc.), and to view all of the information available on each of them (dependencies, conflicts, description, etc.). Each package can be marked “install” (to be installed, <span class="keycap"><strong>+</strong></span> key) or “remove” (to be removed, <span class="keycap"><strong>-</strong></span> key). All of these operations will be conducted simultaneously once you've confirmed them by pressing the <span class="keycap"><strong>g</strong></span> key (“g” for “go!”). If you have forgotten some programs, no worries; you will be able to run <span class="command"><strong>aptitude</strong></span> again once the initial installation has been completed.
+			</p>
+			 <a id="id-1.7.13.5.5" class="indexterm"></a>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TIP</em></span> Debian thinks of speakers of non-English languages</strong></p></div></div></div> 
+			 <p>
+				Several tasks are dedicated to the localization of the system in other languages beyond English. They include translated documentation, dictionaries, and various other packages useful for speakers of different languages. The appropriate task is automatically selected if a non-English language was chosen during installation.
+			</p>
+			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CULTURE</em></span> <span class="command"><strong>dselect</strong></span>, the old interface to install packages</strong></p></div></div></div> 
+			 <p>
+				Before <span class="command"><strong>aptitude</strong></span>, the standard program to select packages to be installed was <span class="command"><strong>dselect</strong></span>, the old graphical interface associated with <span class="command"><strong>dpkg</strong></span>. Being a difficult program for beginners to use, it is not recommended.
+			</p>
+			 <a id="id-1.7.13.5.7.3" class="indexterm"></a>
+			 </div> <p>
+				Of course, it is possible not to select any task to be installed. In this case, you can manually install the desired software with the <span class="command"><strong>apt-get</strong></span> or <span class="command"><strong>aptitude</strong></span> command (which are both accessible from the command line).
+			</p>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>VOCABULARY</em></span> Package dependencies, conflicts</strong></p></div></div></div> 
+			 <p>
+				In the Debian packaging lingo, a “dependency” is another package necessary for the proper functioning of the package in question. Conversely, a “conflict” is a package that can not be installed side-by-side with another.
+			</p>
+			 <p>
+				These concepts are discussed in greater detail in <a class="xref" href="packaging-system.html" title="Chương 5. Hệ thống gói: Công cụ và Nguyên tắc cơ bản">Chương 5, <em>Hệ thống gói: Công cụ và Nguyên tắc cơ bản</em></a>.
+			</p>
+			 </div>
+		</section>
+		 <section class="section" id="id-1.7.13.6"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.7.13.6"/>4.3.2. Upgrading the System</h3></div></div></div>
+			
+			 <a id="id-1.7.13.6.2" class="indexterm"></a>
+			 <p>
+				A first <span class="command"><strong>aptitude safe-upgrade</strong></span> (a command used to automatically update installed programs) is generally required, especially for possible security updates issued since the release of the latest Debian stable version. These updates may involve some additional questions through <span class="command"><strong>debconf</strong></span>, the standard Debian configuration tool. For further information on these updates conducted by <span class="command"><strong>aptitude</strong></span>, please refer to <a class="xref" href="sect.apt-get.html#sect.apt-upgrade" title="6.2.3. Nâng cấp hệ thống">Phần 6.2.3, “Nâng cấp hệ thống”</a>.
+			</p>
+
+		</section>
+
+	</section><footer/></body></html>

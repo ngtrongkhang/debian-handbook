@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>6.5. Kiểm tra Tính xác thực Gói</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="apt, apt-get, apt-cache, aptitude, synaptic, sources.list, apt-cdrom"/><link rel="prev" href="sect.apt-frontends.html" title="6.4. Frontends: aptitude, synaptic"/><link rel="next" href="sect.dist-upgrade.html" title="6.6. Nâng cấp từ bản phân phối ổn định đến kế tiếp"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.package-authentication.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.apt-frontends.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.dist-upgrade.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.package-authentication"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.package-authentication"/>6.5. Kiểm tra Tính xác thực Gói</h2></div></div></div>
+		
+		 <a id="id-1.9.14.2" class="indexterm"></a>
+		 <a id="id-1.9.14.3" class="indexterm"></a>
+		 <a id="id-1.9.14.4" class="indexterm"></a>
+		 <a id="id-1.9.14.5" class="indexterm"></a>
+		 <a id="id-1.9.14.6" class="indexterm"></a>
+		 <p>
+			Vấn đề an ninh rất quan trọng đối với các quản trị viên của Falcot Corp. Theo đó, họ cần đảm bảo rằng họ chỉ cài đặt các gói được bảo đảm đến từ Debian mà không bị giả mạo trên đường đi. Một máy tính cracker có thể cố gắng thêm mã nguy hiểm vào một gói hợp pháp khác. Một gói như vậy, nếu được cài đặt, có thể làm bất cứ điều gì mà nó được thiết kế để làm, bao gồm cả việc tiết lộ mật khẩu hoặc thông tin bí mật. Để phá vỡ nguy cơ này, Debian cung cấp một con dấu chứng minh giả mạo để đảm bảo - khi cài đặt - một gói thực sự đến từ người quản lý chính thức và không bị một bên thứ ba sửa đổi.
+		</p>
+		 <p>
+			Con dấu này hoạt động với một chuỗi các bảng mã mật mã và một chữ ký. Tệp đã ký là tệp <code class="filename">Release</code> do các Mirror của Debian cung cấp. Nó chứa một danh sách các tập tin <code class="filename">Packages</code> (bao gồm cả các dạng nén của chúng, <code class="filename">Packages.gz</code> và <code class="filename">Packages.xz</code>, và các phiên bản gia tăng), cùng với MD5, SHA1 và SHA256 băm của chúng, đảm bảo rằng các tập tin này không bị giả mạo. Các tệp tin <code class="filename">Packages</code> này chứa một danh sách các gói Debian có sẵn trên gương, cùng với các tệp băm của chúng, đảm bảo rằng lần lượt các nội dung của các gói cũng không bị thay đổi.
+		</p>
+		 <a id="id-1.9.14.9" class="indexterm"></a>
+		 <a id="id-1.9.14.10" class="indexterm"></a>
+		 <a id="id-1.9.14.11" class="indexterm"></a>
+		 <a id="id-1.9.14.12" class="indexterm"></a>
+		 <p>
+			Các khóa tin cậy được quản lý bằng lệnh <span class="command"><strong>apt-key</strong></span> tìm thấy trong gói <span class="pkg pkg">apt</span>. Chương trình này duy trì khoá chính của khóa công khai GnuPG được sử dụng để xác minh chữ ký trong tệp <code class="filename">Release.gpg</code> có sẵn trên Mirror. Nó có thể được sử dụng để thêm các khóa mới bằng tay (khi cần Mirror không chính thức). Nói chung, chỉ cần các khóa Debian chính thức. Các khóa này được tự động cập nhật bởi gói <span class="pkg pkg">debian-archive-keyring</span> (đặt cặp khóa tương ứng trong <code class="filename">/etc/apt/trusted.gpg.d</code>). Tuy nhiên, cài đặt đầu tiên của gói cụ thể này đòi hỏi sự thận trọng: ngay cả khi gói được ký kết giống như bất kỳ tệp khác, chữ ký không thể được xác minh bên ngoài. Do đó, các quản trị viên cẩn trọng nên kiểm tra dấu vân tay của chìa khoá nhập trước khi tin tưởng họ để cài đặt các gói mới:
+		</p>
+		 
+<pre class="screen scale scale"/>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TRONG THỰC HÀNH</em></span> Thêm khoá tin cậy</strong></p></div></div></div> 
+		 <a id="id-1.9.14.15.2" class="indexterm"></a>
+		 <a id="id-1.9.14.15.3" class="indexterm"></a>
+		 <p>
+			Khi mã nguồn gói của bên thứ ba được thêm vào tệp tin <code class="filename">sources.list</code>, APT cần được tin cậy để tin tưởng vào khoá xác thực GPG tương ứng (nếu không sẽ tiếp tục nhắc nhở rằng nó không thể đảm bảo tính xác thực của các gói đến từ kho đó) . Bước đầu tiên là cần có để có được khoá công khai. Thông thường thì khoá sẽ được cung cấp dưới dạng một tệp văn bản nhỏ, chúng ta sẽ gọi là <code class="filename">key.asc</code> trong các ví dụ sau.
+		</p>
+		 <p>
+			Để thêm khóa vào chuôi khoá tin cậy, quản trị viên có thể chạy <span class="command"><strong>apt-key add &lt; key.asc</strong></span>. Một cách khác là sử dụng giao diện đồ hoạ <span class="command"><strong>synaptic</strong></span>: thẻ “Xác thực“ trong thẻ <span class="guimenu">Settings</span> → <span class="guisubmenu">Repositories</span> cung cấp khả năng nhập một khóa từ tệp <code class="filename">key.asc</code>.
+		</p>
+		 <a id="id-1.9.14.15.6" class="indexterm"></a>
+		 <p>
+			Đối với những người muốn một ứng dụng chuyên dụng và chi tiết hơn về các khóa tin cậy, bạn có thể sử dụng <span class="command"><strong>gui-apt-key</strong></span> (trong cùng một gói), một giao diện đồ họa nhỏ quản lý khóa tin cậy.
+		</p>
+		 </div> <p>
+			Một khi các khóa thích hợp nằm trong chùm khóa, APT sẽ kiểm tra các chữ ký trước bất kỳ hoạt động nguy hiểm nào để các kết thúc phía trước hiển thị một cảnh báo nếu được yêu cầu cài đặt một gói mà tính xác thực không thể xác định được.
+		</p>
+
+	</section><footer/></body></html>

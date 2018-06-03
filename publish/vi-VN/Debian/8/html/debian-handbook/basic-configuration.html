@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chương 8. Cấu hình cơ bản: Mạng, Tài khoản, In ấn...</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Cấu hình, Nội địa hoá, Bản địa, Mạng, Độ phân giải tên, Người sử dụng, Các nhóm, Tài khoản, Thông dịch bằng dòng lệnh, Shell, In, Bộ tải khởi động, Biên dịch hạt nhân"/><link rel="prev" href="sect.common-procedures.html" title="7.2. Common Procedures"/><link rel="next" href="sect.network-config.html" title="8.2. Cấu hình Mạng"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/basic-configuration.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.common-procedures.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.network-config.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section xml:lang="vi-VN" class="chapter" id="basic-configuration"><div class="titlepage"><div><div><h1 class="title"><a xmlns="" id="basic-configuration"/>Chương 8. Cấu hình cơ bản: Mạng, Tài khoản, In ấn...</h1></div></div></div>
+	
+	 
+	 <div class="highlights"> <p>
+		Một máy tính đã được cài đặt mới bằng <span class="command"><strong>debian-installer</strong></span> sẽ được dự định làm tốt chức năng, nhưng nhiều dịch vụ vẫn cần phải được cấu hình. Hơn nữa, bạn luôn phải biết cách thay đổi các cấu hình nhất định được cấu hình sẵn trong quá trình cài đặt ban đầu.
+	</p>
+	 </div> <p>
+		Chương này xem xét tất cả mọi thứ bao gồm những gì chúng ta có thể gọi là “basic configuration”: networking, language và locales, users và groups, printing, mount points, vv
+	</p>
+	 <section class="section" id="sect.config-language-support"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.config-language-support"/>8.1. Cấu hình Hệ thống cho một Ngôn ngữ Khác</h2></div></div></div>
+		
+		 <a id="id-1.11.5.2" class="indexterm"></a>
+		 <p>
+			Nếu hệ thống đã được cài đặt bằng tiếng Pháp, máy có lẽ sẽ có bộ tiếng Pháp làm ngôn ngữ mặc định. Nhưng rất tốt để biết những gì trình cài đặt làm gì để thiết lập các ngôn ngữ, để sau này nếu có phát sinh bạn vẫn có thể thay đổi được nó.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TOOL</em></span> Lệnh <span class="command"><strong>locale</strong></span> để hiển thị cấu hình hiện tại</strong></p></div></div></div> 
+		 <p>
+			Lệnh <span class="command"><strong>locale</strong></span> liệt kê một bản tóm tắt cấu hình hiện tại của các tham số về bản địa hoá khác nhau (định dạng ngày, định dạng số, vv), được trình bày dưới dạng một nhóm các biến môi trường tiêu chuẩn, tính linh động giúp để sửa đổi các thiết lập.
+		</p>
+		 </div> <section class="section" id="sect.default-language"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.default-language"/>8.1.1. Thiết lập ngôn ngữ mặc định</h3></div></div></div>
+			
+			 <a id="id-1.11.5.5.2" class="indexterm"></a>
+			 <a id="id-1.11.5.5.3" class="indexterm"></a>
+			 <a id="id-1.11.5.5.4" class="indexterm"></a>
+			 <p>
+				Một miền bản địa (locale) là một nhóm các thiết lập về khu vực. Điều này bao gồm không chỉ là ngôn ngữ cho văn bản, mà còn là định dạng để hiển thị số, ngày tháng, thời gian và tiền tệ, cũng như các quy tắc so sánh theo bảng chữ cái (để tính đúng các ký tự có dấu). Mặc dù mỗi tham số này có thể được xác định độc lập với các tham số khác, nhưng chúng ta thường sử dụng một miền bản địa, đó là một tập các giá trị mạch lạc cho các tham số này tương ứng với “region” theo nghĩa rộng nhất. Các ngôn ngữ này thường được chỉ định dưới dạng, <code class="literal"><em class="replaceable">language-code</em>_<em class="replaceable">COUNTRY-CODE</em></code>, đôi khi với một hậu tố để xác định tập hợp ký tự và kiểu mã hoá được sử dụng. Điều này cho phép xem xét sự khác biệt về thuật ngữ hoặc thành ngữ giữa các vùng khác nhau với một ngôn ngữ chung.
+			</p>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CULTURE</em></span> Bộ ký tự</strong></p></div></div></div> 
+			 <a id="id-1.11.5.5.6.2" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.3" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.4" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.5" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.6" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.7" class="indexterm"></a>
+			 <p>
+				Về mặt lịch sử, mỗi miền bản địa có liên kết giữa mỗi một “character set” (nhóm của các ký tự đã biết) và một “encoding” (biểu diễn nội bộ cho các ký tự bên trong máy tính).
+			</p>
+			 <p>
+				Mã hóa phổ biến nhất cho các ngôn ngữ dựa trên nền latin được giới hạn ở 256 ký tự vì chọn sử dụng một byte cho mỗi ký tự. Vì 256 ký tự không đủ để bao gồm tất cả các ngôn ngữ Châu Âu, cần phải có nhiều mã hóa hơn, và do đó có thêm <span class="emphasis"><em>ISO-8859-1</em></span> (còn được gọi là “Latin 1”) đến <span class="emphasis"><em>ISO-8859-15</em></span> (còn được gọi là “Latin 9”), trong số những thứ khác.
+			</p>
+			 <p>
+				Làm việc với ngoại ngữ thường thường xuyên chuyển đổi giữa các bảng mã hoá và bộ ký tự khác nhau. Hơn nữa, viết văn bản đa ngôn ngữ đã dẫn đến những vấn đề xa hơn, gần như khó khăn hơn. Unicode (một super-catalog gần như bao gồm tất cả các hệ thống văn bản từ tất cả các ngôn ngữ trên thế giới) được tạo ra để giải quyết vấn đề này. Một trong các mã hoá của Unicode, UTF-8, giữ lại tất cả 128 ký hiệu ASCII (mã 7-bit), nhưng khác biệt với các ký tự khác. Những điểm này được đặt trước bởi một chuỗi trình tự đặc biệt của một vài bit, ngầm định độ dài của ký tự. Điều này cho phép mã hóa tất cả các ký tự Unicode trên một chuỗi của một hoặc nhiều byte. Nó đã được sử dụng phổ biến, và được sử dụng mặc định mã hóa trong các tài liệu XML.
+			</p>
+			 <a id="id-1.11.5.5.6.11" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.12" class="indexterm"></a>
+			 <a id="id-1.11.5.5.6.13" class="indexterm"></a>
+			 <p>
+				Đây là bảng mã thường được sử dụng, do đó được cài đặt mặc định trên hệ thống Debian
+			</p>
+			 </div> <p>
+				Gói <span class="pkg pkg">locales</span> bao gồm tất cả các yếu tố cần thiết cho hoạt động chính xác của “localization” (bản địa hoá) của các ứng dụng khác nhau. Trong quá trình cài đặt, gói này sẽ yêu cầu chọn một tập hợp các ngôn ngữ được hỗ trợ. Tập này có thể thay đổi bất cứ lúc nào bằng cách chạy lệnh <span class="command"><strong>dpkg-reconfigure locales</strong></span> với quyền root.
+			</p>
+			 <p>
+				Câu hỏi đầu tiên mời bạn chọn các “locales” hỗ trợ. Chọn tất cả các ngôn ngữ tiếng Anh (bắt đầu với (“<code class="literal">en_</code>”) là một sự lựa chọn hợp lý. Đừng ngần ngại chọn các bản địa khác nếu có người nước ngoài cùng sử dụng. Danh sách các ngôn ngữ được kích hoạt trên hệ thống được lưu trong tệp <code class="filename">/etc/locale.gen</code>. Bạn có thể chỉnh sửa tệp trực tiếp bằng tay nhưng phải chạy <span class="command"><strong>locale-gen</strong></span> sau bất kỳ sửa đổi nào. Nó sẽ tạo ra các tập tin cần thiết cho các ngôn ngữ bổ sung, và loại bỏ bất kỳ tập tin lỗi thời.
+			</p>
+			 <p>
+				Câu hỏi thứ hai, có tiêu đề “Default locale for the system environment”, yêu cầu một miền bản địa mặc định. Lựa chọn được đề xuất ở Hoa Kỳ là “<code class="literal">en_US.UTF-8</code>”. Người nói tiếng Anh Anh sẽ thích “<code class="literal">en_GB.UTF-8</code>”, và người Canada sẽ thích “<code class="literal">en_CA.UTF-8</code>” hoặc, đối với tiếng Việt, “<code class="literal">vi_VN.UTF-8</code>”. Tập tin <code class="filename">/etc/default/locale</code> sẽ được sửa đổi để lưu trữ lựa chọn này. Từ đây, nó được chọn bởi tất cả các phiên người dùng kể từ khi PAM sẽ chèn nội dung của nó trong biến môi trường <code class="varname">LANG</code>.
+			</p>
+			 <a id="id-1.11.5.5.10" class="indexterm"></a>
+			 <a id="id-1.11.5.5.11" class="indexterm"></a>
+			 <a id="id-1.11.5.5.12" class="indexterm"></a>
+			 <div class="sidebar" id="sidebar.intro-pam"><a xmlns="" id="sidebar.intro-pam"/><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BEHIND THE SCENES</em></span> <code class="filename">/etc/environment</code> and <code class="filename">/etc/default/locale</code></strong></p></div></div></div> 
+			 <p>
+				Tập tin <code class="filename">/etc/environment</code> cung cấp cho <span class="command"><strong>login</strong></span>, <span class="command"><strong>gdm</strong></span>, hoặc thậm chí <span class="command"><strong>ssh</strong></span> với các biến môi trường chính xác được tạo ra.
+			</p>
+			 <p>
+				Các ứng dụng này không tạo ra các biến này trực tiếp, mà là qua module PAM (<code class="filename">pam_env.so</code>). PAM (Pluggable Authentication Module) là một thư viện module tập trung các cơ chế xác thực, khởi tạo phiên và quản lý mật khẩu. Xem <a class="xref" href="sect.ldap-directory.html#sect.config-pam" title="11.7.3.2. Configuring PAM">Phần 11.7.3.2, “Configuring PAM”</a> về ví dụ cấu hình PAM.
+			</p>
+			 <p>
+				Tệp <code class="filename">/etc/default/locale</code> hoạt động theo cách tương tự, nhưng chỉ chứa biến môi trường <code class="varname">LANG</code>. Nhờ sự phân chia này, một số người dùng PAM có thể kế thừa một môi trường hoàn chỉnh mà không có bản địa hoá. Thật vậy, thường không khuyến khích chạy các chương trình máy chủ với bật bản địa hoá; mặt khác, bản địa hóa và cài đặt khu vực được khuyến khích cho các chương trình mở phiên người dùng.
+			</p>
+			 <a id="id-1.11.5.5.13.5" class="indexterm"></a>
+			 <a id="id-1.11.5.5.13.6" class="indexterm"></a>
+			 </div>
+		</section>
+		 <section class="section" id="sect.keyboard-config"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.keyboard-config"/>8.1.2. Cấu hình Bàn phím</h3></div></div></div>
+			
+			 <a id="id-1.11.5.6.2" class="indexterm"></a>
+			 <a id="id-1.11.5.6.3" class="indexterm"></a>
+			 <p>
+				Ngay cả khi bố cục bàn phím được quản lý khác nhau trong chế độ console và đồ hoạ, Debian cung cấp một giao diện cấu hình duy nhất hoạt động cho cả hai: nó dựa trên debconf và được thực hiện trong gói <span class="pkg pkg">keyboard-configuration</span>. Vì vậy, lệnh <span class="command"><strong>dpkg-reconfigigure keyboard-configuration</strong></span> có thể được sử dụng bất cứ lúc nào để cài đặt lại bố cục cho bàn phím.
+			</p>
+			 <a id="id-1.11.5.6.5" class="indexterm"></a>
+			 <a id="id-1.11.5.6.6" class="indexterm"></a>
+			 <a id="id-1.11.5.6.7" class="indexterm"></a>
+			 <p>
+				<a id="id-1.11.5.6.8.1" class="indexterm"></a>Các câu hỏi liên quan đến bố cục bàn phím vật lý (bàn phím máy tính tiêu chuẩn ở Mỹ sẽ là phím “Generic 104 key”), sau đó bố trí để chọn (thường là “US”), và sau đó là vị trí của phím AltGr (bên phải Alt). Cuối cùng là câu hỏi về khoá để sử dụng cho phím “Compose key”, cho phép nhập ký tự đặc biệt bằng cách kết hợp các phím bấm. Bấm phím <span class="keycap"><strong>Compose</strong></span> <span class="keycap"><strong>'</strong></span> <span class="keycap"><strong>e</strong></span> tạo ra e-acute (“é”). Tất cả các kết hợp này được mô tả trong tệp <code class="filename">/usr/share/X11/locale/en_US.UTF-8/Compose</code> (hoặc tệp khác, trong thư mục <code class="filename">/usr/share/X11/locale/compose.dir</code>).
+			</p>
+			 <a id="id-1.11.5.6.9" class="indexterm"></a>
+			 <a id="id-1.11.5.6.10" class="indexterm"></a>
+			 <a id="id-1.11.5.6.11" class="indexterm"></a>
+			 <a id="id-1.11.5.6.12" class="indexterm"></a>
+			 <p>
+				Lưu ý rằng cấu hình bàn phím cho chế độ đồ họa được mô tả ở đây chỉ ảnh hưởng đến bố cục mặc định; môi trường GNOME và KDE là trong số các công cụ khác cung cấp bảng điều khiển bằng bàn phím theo sở thích cho phép mỗi người dùng có cấu hình riêng. Một số tùy chọn bổ sung liên quan đến hành vi của một số phím cụ thể cũng có sẵn trong các trình điều khiển này.
+			</p>
+
+		</section>
+		 <section class="section" id="sect.utf8-migration"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.utf8-migration"/>8.1.3. Chuyển đổi sang UTF-8</h3></div></div></div>
+			
+			 <p>
+				Việc tổng quát hoá việc bảng mã UTF-8 là một giải pháp lâu dài để giải quyết nhiều khó khăn trong khả năng tương tác, vì nó tạo thuận lợi cho trao đổi quốc tế và loại bỏ các giới hạn tùy ý về các ký tự có thể được sử dụng trong một tài liệu. Hạn chế nhất là phải trải qua giai đoạn chuyển đổi khá khó khăn. Vì nó không thể hoàn toàn minh bạch (tức là, nó không thể xảy ra cùng một lúc trên toàn thế giới), cần phải thực hiện hai thao tác chuyển đổi: một trong các tệp tin, và một trong các tên tập tin. May thay, phần lớn di chuyển này đã được hoàn thành và chúng tôi thảo luận nó phần lớn là để tham khảo.
+			</p>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em> VĂN BẢN </em></span> <span class="foreignphrase"><em class="foreignphrase"> Mojibake </em></span> và các lỗi giải thích</strong></p></div></div></div> 
+			 <p>
+				Khi một văn bản được gửi đi (hoặc được lưu trữ) mà không cần mã hóa thông tin, người nhận không thể chắc chắn được quy ước nào đang được sử dụng để xác định ý nghĩa của một bộ byte. Bạn thường có thể có được một ý tưởng bằng cách lấy số liệu thống kê về sự phân bố các giá trị có trong văn bản, nhưng điều đó không phải lúc nào cũng đưa ra một câu trả lời xác định. Khi hệ thống mã hoá được chọn để đọc khác với văn bản được sử dụng trong văn bản, các byte sẽ bị giải thích sai. Và bạn có thể nhận được vài lỗi về một số ký tự, hoặc tồi tệ nhất là một cái gì đó hoàn toàn không đọc được.
+			</p>
+			 <p>
+				Do đó, nếu một văn bản tiếng Pháp xuất hiện bình thường với ngoại lệ các chữ cái có dấu và các ký hiệu nhất định được thay thế bằng các chuỗi ký tự như “Ã©” or Ã¨” hoặc “Ã§”, có thể nó là một tập tin được mã hoá là UTF-8 nhưng lại được hiểu là ISO-8859-1 hoặc ISO-8859-15. Đây là dấu hiệu của một cài đặt cục bộ chưa được di chuyển sang UTF-8. Nếu thay vào đó, bạn sẽ thấy các dấu chấm hỏi thay vì các chữ cái có dấu - thậm chí nếu các dấu chấm hỏi này cũng có thể thay thế một ký tự cần theo sau chữ có dấu - có khả năng cài đặt của bạn đã được định cấu hình cho UTF-8 và bạn đã gửi một tài liệu được mã hoá theo tiêu chuẩn Western ISO.
+			</p>
+			 <p>
+				Rất nhiều các trường hợp “đơn giản”. Các trường hợp này chỉ xuất hiện trong văn hoá phương Tây, vì Unicode (và UTF-8) được thiết kế để tối đa hóa các điểm chung với mã hoá lịch sử cho các ngôn ngữ phương Tây dựa trên bảng chữ cái Latinh, nên nó cho phép nhận diện các phần của văn bản ngay cả khi một số ký tự bị thiếu.
+			</p>
+			 <p>
+				Trong các cấu hình phức tạp hơn, ví dụ liên quan đến hai môi trường tương ứng với hai ngôn ngữ khác nhau không sử dụng cùng một bảng chữ cái, bạn thường nhận được kết quả hoàn toàn không đọc được - một loạt các biểu tượng trừu tượng không liên quan gì đến nhau. Điều này đặc biệt phổ biến với các ngôn ngữ Á Châu do nhiều ngôn ngữ và hệ thống văn bản của họ. Từ tiếng Nhật <span class="foreignphrase"><em class="foreignphrase">mojibake</em></span> đã được thông qua để mô tả hiện tượng này. Khi xuất hiện, chẩn đoán phức tạp hơn và giải pháp đơn giản nhất chỉ đơn giản là di chuyển sang bảng mã UTF-8 ở cả hai hệ thống.
+			</p>
+			 </div> <p>
+				Về tên tập tin cũng được quan tâm, việc chuyển đổi có thể tương đối đơn giản. Công cụ <span class="command"><strong>convmv</strong></span> (trong gói có cùng tên) được tạo ra cho mục đích này; nó cho phép đổi tên các tập tin từ một mã hóa khác. Việc sử dụng công cụ này tương đối đơn giản, nhưng chúng tôi khuyên bạn nên thực hiện theo hai bước để tránh gây bất ngờ. Ví dụ sau minh hoạ môi trường UTF-8 chứa các tên thư mục được mã hoá trong ISO-8859-15 và sử dụng <span class="command"><strong>convmv</strong></span> để đổi tên của chúng.
+			</p>
+			 
+<pre class="screen"><code class="computeroutput">$ </code><strong class="userinput"><code>ls travail/</code></strong>
+<code class="computeroutput">Ic?nes ?l?ments graphiques Textes $ </code><strong class="userinput"><code>convmv -r -f iso-8859-15 -t utf-8 travail/</code></strong>
+<code class="computeroutput">Starting a dry run without changes... mv "travail/�l�ments graphiques" "travail/Éléments graphiques" mv "travail/Ic�nes" "travail/Icônes" No changes to your files done. Use --notest to finally rename the files. $ </code><strong class="userinput"><code>convmv -r --notest -f iso-8859-15 -t utf-8 travail/</code></strong>
+<code class="computeroutput">mv "travail/�l�ments graphiques" "travail/Éléments graphiques" mv "travail/Ic�nes" "travail/Icônes" Ready! $ </code><strong class="userinput"><code>ls travail/</code></strong>
+<code class="computeroutput">Éléments graphiques Icônes Textes</code></pre>
+			 <p>
+				Đối với nội dung tệp, các thủ tục chuyển đổi phức tạp hơn do nhiều định dạng tệp tin hiện có. Một số định dạng tệp tin bao gồm mã hóa thông tin tạo điều kiện cho các tác vụ của phần mềm được sử dụng để xử lý chúng; đủ để mở những tập tin này và lưu lại chúng chỉ định mã hóa UTF-8. Trong các trường hợp khác, bạn phải xác định mã hoá gốc (ISO-8859-1 hay “Western”, hay ISO-8859-15 hay “Western (Euro)”, theo các công thức) khi mở tệp.
+			</p>
+			 <p>
+				Đối với các tệp văn bản đơn giản, bạn có thể sử dụng <span class="command"><strong>recode</strong></span> (trong gói có cùng tên) cho phép ghi lại tự động. Công cụ này có nhiều lựa chọn để bạn có thể chơi với hành vi của nó. Chúng tôi khuyên bạn nên tham khảo tài liệu, trang <span class="citerefentry"> <span class="refentrytitle">recode</span>
+				(1) </span>, hoặc trang thông tin <span class="citerefentry"> <span class="refentrytitle">recode</span>
+				 </span> (đầy đủ hơn).
+			</p>
+
+		</section>
+
+	</section>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+</section><footer/></body></html>

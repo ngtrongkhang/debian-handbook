@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>5.5. Cùng tồn tại với các Hệ thống Gói Khác</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Gói nhị phân, Gói mã nguồn, dpkg, dependencies, conflict"/><link rel="prev" href="sect.manipulating-packages-with-dpkg.html" title="5.4. Thao tác các gói với dpkg"/><link rel="next" href="apt.html" title="Chương 6. Bảo trì và Cập nhật: Công cụ APT"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.coexistence-with-other-packaging-systems.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.manipulating-packages-with-dpkg.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="apt.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.coexistence-with-other-packaging-systems"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.coexistence-with-other-packaging-systems"/>5.5. Cùng tồn tại với các Hệ thống Gói Khác</h2></div></div></div>
+		
+		 <a id="id-1.8.9.2" class="indexterm"></a>
+		 <a id="id-1.8.9.3" class="indexterm"></a>
+		 <a id="id-1.8.9.4" class="indexterm"></a>
+		 <p>
+			Các gói Debian không phải là gói phần mềm duy nhất được sử dụng trong thế giới phần mềm tự do. Đối thủ cạnh tranh chính là định dạng RPM của bản phân phối Red Hat Linux và các dẫn xuất của nó. Red Hat là một phân phối thương mại rất phổ biến. Do đó các phần mềm được cung cấp bởi bên thứ ba được cung cấp ở gói RPM hơn là Debian.
+		</p>
+		 <p>
+			Trong trường hợp này, bạn nên biết rằng chương trình <span class="command"><strong>rpm</strong></span>, xử lý các gói RPM, có sẵn như là một gói Debian, vì vậy bạn có thể sử dụng định dạng gói này trên Debian. Tuy nhiên, cần cẩn thận để hạn chế các thao tác này để trích xuất thông tin từ một gói hàng hoặc để xác minh tính toàn vẹn của nó. Đúng vậy, thật không hợp lý để sử dụng <span class="command"><strong>rpm</strong></span> để cài đặt RPM trên một hệ thống Debian; RPM sử dụng cơ sở dữ liệu riêng của nó, tách biệt với các phần mềm gốc (như <span class="command"><strong>dpkg</strong></span>). Đây là lý do tại sao không thể đảm bảo sự tồn tại ổn định của hai hệ thống gói.
+		</p>
+		 <p>
+			Mặt khác, tiện ích <span class="pkg pkg">alien</span> có thể chuyển đổi gói RPM thành các gói Debian và ngược lại.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>COMMUNITY</em></span> Khuyến khích việc áp dụng <code class="filename">.deb</code></strong></p></div></div></div> 
+		 <p>
+			Nếu bạn thường xuyên sử dụng chương trình <span class="command"><strong>alien</strong></span> để cài đặt các gói RPM đến từ một trong các nhà cung cấp của bạn, đừng ngần ngại viết thư cho họ và thể hiện sự ưu tiên mạnh mẽ của bạn cho địng dạng <code class="filename">.deb</code>. Lưu ý rằng định dạng của gói không phải là tất cả mọi thứ: một gói <code class="filename">.deb</code> được xây dựng với <span class="command"><strong>alien</strong></span> hoặc chuẩn bị cho một phiên bản của Debian khác với những gì bạn đạng sử dụng, hoặc thậm chí cho một phân phối phái sinh như Ubuntu, có lẽ sẽ không thể cung cấp với một mức chất lượng và sự tích hợp như một gói được phát triển đặc biệt cho <span class="distribution distribution">Jessie</span>.
+		</p>
+		 </div> 
+<pre class="screen">
+<code class="computeroutput">$ </code><strong class="userinput"><code>fakeroot alien --to-deb phpMyAdmin-2.0.5-2.noarch.rpm</code></strong> 
+<code class="computeroutput">phpmyadmin_2.0.5-2_all.deb generated $ </code><strong class="userinput"><code>ls -s phpmyadmin_2.0.5-2_all.deb</code></strong>
+<code class="computeroutput"> 64 phpmyadmin_2.0.5-2_all.deb</code></pre>
+		 <p>
+			Bạn sẽ thấy rằng quá trình này rất đơn giản. Tuy nhiên, bạn phải biết rằng gói được tạo ra không có bất kỳ thông tin phụ thuộc nào, vì các phụ thuộc trong hai định dạng đóng gói không có sự tương thích trong hệ thống kia. Quản trị viên phải tự đảm bảo rằng gói được chuyển đổi sẽ hoạt động chính xác, và đó là lý do tại sao các gói Debian được tự tạo ra nên tránh càng nhiều càng tốt. May mắn thay, Debian có bộ sưu tập lớn nhất các gói phần mềm của tất cả các bản phân phối, và có thể là bất cứ điều gì bạn tìm kiếm đã có trong đó.
+		</p>
+		 <p>
+			Nhìn vào man page của lệnh <span class="command"><strong>alien</strong></span>, bạn cũng sẽ lưu ý rằng chương trình này xử lý các định dạng đóng gói khác, đặc biệt là sử dụng bởi phân phối Slackware (nó được làm bằng một tệp nén đơn giản <code class="filename">tar.gz</code>).
+		</p>
+		 <p>
+			Sự ổn định của phần mềm được triển khai sử dụng công cụ <span class="command"><strong>dpkg</strong></span> góp phần vào sự nổi tiếng của Debian. Bộ công cụ APT, được mô tả trong chương tiếp theo, bảo tồn lợi thế này, đồng thời giảm bớt quản trị viên khỏi việc quản lý tình trạng của bao bì, một nhiệm vụ cần thiết nhưng rất khó khăn.
+		</p>
+
+	</section><footer/></body></html>

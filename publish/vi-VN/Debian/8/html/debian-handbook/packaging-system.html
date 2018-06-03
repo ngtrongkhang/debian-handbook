@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chương 5. Hệ thống gói: Công cụ và Nguyên tắc cơ bản</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Gói nhị phân, Gói mã nguồn, dpkg, dependencies, conflict"/><link rel="prev" href="sect.after-first-boot.html" title="4.3. After the First Boot"/><link rel="next" href="sect.package-meta-information.html" title="5.2. Package Meta-Information"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/packaging-system.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.after-first-boot.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.package-meta-information.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section xml:lang="vi-VN" class="chapter" id="packaging-system"><div class="titlepage"><div><div><h1 class="title"><a xmlns="" id="packaging-system"/>Chương 5. Hệ thống gói: Công cụ và Nguyên tắc cơ bản</h1></div></div></div>
+	
+	 
+	 <div class="highlights"> <p>
+		Như một người quản trị hệ thống Debian, bạn sẽ thường xuyên làm việc với các gói <code class="filename">.deb</code>, vì chúng chứa các đơn vị chức năng (ứng dụng, tài liệu, etc.) trong việc cài đặt và bảo trì. Vì vậy, là một ý tưởng tốt để biết nó là gì và làm sao đế sử dụng nó.
+	</p>
+	 </div> <p>
+		Chương này mô tả kiến trúc và nội dung của các gói “binary” và “source”. Định dạng các tệp tin <code class="filename">.deb</code>, sử dụng trực tiếp bởi <span class="command"><strong>dpkg</strong></span>, sau nữa là mã nguồn, cũng như hướng dẫn xây dựng các gói nhị phân.
+	</p>
+	 <section class="section" id="sect.binary-package-structure"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.binary-package-structure"/>5.1. Cấu trúc của một Gói nhị phân</h2></div></div></div>
+		
+		 <a id="id-1.8.5.2" class="indexterm"></a>
+		 <a id="id-1.8.5.3" class="indexterm"></a>
+		 <p>
+			Định dạng gói Debian được thiết kế sao cho nội dung của nó có thể giải nén trên bất kì hệ thống Unix nào bằng câu lệnh cơ bản <span class="command"><strong>ar</strong></span>, <span class="command"><strong>tar</strong></span>, and <span class="command"><strong>gzip</strong></span> (sometimes <span class="command"><strong>xz</strong></span> or <span class="command"><strong>bzip2</strong></span>). Tính năng dường như bình thường này lại quan trọng cho tính linh động và khôi phục thảm hoạ.
+		</p>
+		 <p>
+			Thử tưởng tượng một ví dụ, rằng bạn đã lỡ xoá mất chương trình <span class="command"><strong>dpkg</strong></span>, và bạn không thể cài đặt các gói Debian. <span class="command"><strong>dpkg</strong></span> trở thành gói của chính nó, nó sẽ có vẻ như hệ thống của bạn được thực hiện cho... May mắn thay, bạn hiểu về định dạng của một gói và bạn có thể tải tệp <code class="filename">*.deb</code> của gói <span class="pkg pkg">dpkg</span> và cài đặt nó bình thường (xem sidebar <a class="xref" href="packaging-system.html#sidebar.dpkg-apt-ar" title="Các công cụ dpkg, APT and ar"><span class="emphasis"><em>Các công cụ</em></span> <span class="command"><strong>dpkg</strong></span>, <span class="command"><strong>APT</strong></span> and <span class="command"><strong>ar</strong></span></a>). Nếu thiếu một hoặc nhiều các chương trình <span class="command"><strong>ar</strong></span>, <span class="command"><strong>tar</strong></span> hoặc <span class="command"><strong>gzip</strong></span>/<span class="command"><strong>xz</strong></span>/<span class="command"><strong>bzip2</strong></span>, bạn sẽ chỉ cần sao chép chương trình thiếu từ một hệ thống khác (vì mỗi gói là một chương trình hoàn chỉnh, không phụ thuộc, một bản sao là đủ). Nếu hệ thống của bạn đã bị thiếu tài nguyên cần thiết, và thậm chí hệ thống không làm việc (có thể các thư viện sâu của hệ thống bị thiếu?), bạn có thể thử các phiên bản tĩnh của <span class="command"><strong>busybox</strong></span> (đã cung cấp trong gói <span class="pkg pkg">busybox-static</span> package), mà thậm chí còn nhiều hơn, cung cấp các câu lệnh con trên chính nó như <span class="command"><strong>busybox ar</strong></span>, <span class="command"><strong>busybox tar</strong></span> và <span class="command"><strong>busybox gunzip</strong></span>.
+		</p>
+		 <div class="sidebar" id="sidebar.dpkg-apt-ar"><a xmlns="" id="sidebar.dpkg-apt-ar"/><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>Các công cụ</em></span> <span class="command"><strong>dpkg</strong></span>, <span class="command"><strong>APT</strong></span> and <span class="command"><strong>ar</strong></span></strong></p></div></div></div> 
+		 <a id="id-1.8.5.6.2" class="indexterm"></a>
+		 <a id="id-1.8.5.6.3" class="indexterm"></a>
+		 <a id="id-1.8.5.6.4" class="indexterm"></a>
+		 <p>
+			<span class="command"><strong>dpkg</strong></span> là chương trình xử lý tệp tin <code class="filename">.deb</code>, chủ yếu cài đặt, phân tích và giải nén các tập tin.
+		</p>
+		 <p>
+			<span class="command"><strong>APT</strong></span> là một nhóm các chương trình cho phép thực hiện các thay đổi cấp cao hơn tới hệ thống: cài đặt và xoá một gói (trong khi giữ phụ thuộc một cách tốt), cập nhật hệ thống, liệt kê các gói đã có, vân vân
+		</p>
+		 <a id="id-1.8.5.6.7" class="indexterm"></a>
+		 <p>
+			Đối với chương trình <span class="command"><strong>ar</strong></span>, cho phép xử lý tệp tin như: <span class="command"><strong>ar t <em class="replaceable">archive</em></strong></span> hiển thị danh sách các tệp tin ở trong một archive, <span class="command"><strong>ar x <em class="replaceable">archive</em></strong></span> giải nén các file từ archive vào thư mục đang làm việc, <span class="command"><strong>ar d <em class="replaceable">archive</em> <em class="replaceable">file</em></strong></span> xoá một tệp tin từ archive, vân vân. Trang hướng dấn tất cả tính năng khác của lệnh này (<span class="citerefentry"><span class="refentrytitle">ar</span>
+			(1)</span>). <span class="command"><strong>ar</strong></span> là một công cụ rất thô sơ mà một quản trị Unix sử dụng hiếm hoi. Nhưng các quản trị thường xuyên sử dụng <span class="command"><strong>tar</strong></span>, một chương trình quản lý và lưu trữ files phát triển hơn. Đây là lý do tịa sao nó rất dễ để khôi phục <span class="command"><strong>dpkg</strong></span> khi có sai sot nào đó. Bạn có thể chỉ cần tài gói Debian và giải nén nội dung từ tệp lưu trữ <code class="filename">data.tar.gz</code> vào thư mục gốc (<code class="filename">/</code>) của hệ thống.
+		</p>
+		 
+<pre class="screen">
+<code class="computeroutput"># </code><strong class="userinput"><code>ar x dpkg_1.17.23_amd64.deb</code></strong>
+<code class="computeroutput"># </code><strong class="userinput"><code>tar -C / -p -xzf data.tar.gz</code></strong></pre>
+		 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>Trở về cơ bản</em></span> Man page notation</strong></p></div></div></div> 
+		 <p>
+			Có thể nhầm lần cho người mới bắt đầu để tham chiếu tới “<span class="citerefentry"><span class="refentrytitle">ar</span>
+			(1)</span>” trong các tài liệu. Đây là thường là một phương tiện tiện lợi để tham chiếu tới trang tài liệu <code class="literal">ar</code> trong nội dung 1
+		</p>
+		 <p>
+			Đôi khi những ký hiệu này cũng được sử dụng để loại bỏ những mơ hồ, ví dụ phân biệt giữa lệnh <span class="command"><strong>printf</strong></span> lệnh này có thể cũng được chỉ ra bởi <span class="citerefentry"><span class="refentrytitle">printf</span>
+			(1)</span> và hàm <code class="function">printf</code> trong ngôn ngữ lập trình C, có thể được tham chiếu bằng <span class="citerefentry"><span class="refentrytitle">printf</span>
+			(3)</span>.
+		</p>
+		 <p>
+			<a class="xref" href="solving-problems.html" title="Chương 7. Solving Problems and Finding Relevant Information">Chương 7, <em>Solving Problems and Finding Relevant Information</em></a> thảo luận về trang hương dẫn chi tiết hơn (see <a class="xref" href="solving-problems.html#sect.manual-pages" title="7.1.1. Manual Pages">Phần 7.1.1, “Manual Pages”</a>).
+		</p>
+		 </div> <p>
+			Cái nhìn về nội dung trong tệp tin <code class="filename">.deb</code>
+		</p>
+		 
+<pre class="screen"><code class="computeroutput">$ </code><strong class="userinput"><code>ar t dpkg_1.17.23_amd64.deb</code></strong>
+<code class="computeroutput">debian-binary control.tar.gz data.tar.gz $ </code><strong class="userinput"><code>ar x dpkg_1.17.23_amd64.deb</code></strong>
+<code class="computeroutput">$ </code><strong class="userinput"><code>ls</code></strong>
+<code class="computeroutput">control.tar.gz data.tar.gz debian-binary dpkg_1.17.23_amd64.deb $ </code><strong class="userinput"><code>tar tzf data.tar.gz | head -n 15</code></strong>
+<code class="computeroutput">./ ./var/ ./var/lib/ ./var/lib/dpkg/ ./var/lib/dpkg/parts/ ./var/lib/dpkg/info/ ./var/lib/dpkg/alternatives/ ./var/lib/dpkg/updates/ ./etc/ ./etc/logrotate.d/ ./etc/logrotate.d/dpkg ./etc/dpkg/ ./etc/dpkg/dpkg.cfg.d/ ./etc/dpkg/dpkg.cfg ./etc/alternatives/ $ </code><strong class="userinput"><code>tar tzf control.tar.gz</code></strong>
+<code class="computeroutput">./ ./conffiles ./postinst ./md5sums ./prerm ./preinst ./control ./postrm $ </code><strong class="userinput"><code>cat debian-binary</code></strong>
+<code class="computeroutput">2.0</code></pre>
+		 <p>
+			Như bạn có thể thấy, với góc nhìn qua tệp nén từ lệnh <span class="command"><strong>ar</strong></span> của một gói Debian gồm có ba tập tin:
+		</p>
+		 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+				<p>
+					<code class="filename">debian-binary</code>. Đây là một tệp văn bản đơn thuần mà chỉ ra phiên bản của tệp <code class="filename">.deb</code> đã sử dụng (từ năm 2015: version 2.0).
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					<code class="filename">control.tar.gz</code>. Đây là tệp nén chứa tất cả thông tin meta, giống như tên và phiên bản của gói. Một vài thông tin cho phép các công cụ quản lý gói xác định nếu nó có thể cài đặt hoặc gỡ bỏ được nó, ví dụ thể hiện danh sách các gói đã có trên máy tính.
+				</p>
+
+			</li><li class="listitem">
+				<p>
+					<code class="filename">data.tar.gz</code>. Đây là tệp nén chứa tất cả các tệp tin đã được xuất từ gói; đây là nơi các tệp thực thi, tài liệu, vân vân., được lưu trữ. Vài các gói có thể sử dụng bởi chuẩn nén khách, trong trường hợp đó tệp sẽ có tên khác (<code class="filename">data.tar.bz2</code> cho bzip2, <code class="filename">data.tar.xz</code> cho XZ).
+				</p>
+
+			</li></ul></div>
+
+	</section>
+	 
+	 
+	 
+	 
+</section><footer/></body></html>

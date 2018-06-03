@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chương 10. Network Infrastructure</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Network, Gateway, TCP/IP, IPv6, DNS, Bind, DHCP, QoS"/><link rel="prev" href="sect.power-management.html" title="9.12. Power Management: Advanced Configuration and Power Interface (ACPI)"/><link rel="next" href="sect.virtual-private-network.html" title="10.2. Virtual Private Network"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/network-infrastructure.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.power-management.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.virtual-private-network.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section xml:lang="vi-VN" class="chapter" id="network-infrastructure"><div class="titlepage"><div><div><h1 class="title"><a xmlns="" id="network-infrastructure"/>Chương 10. Network Infrastructure</h1></div></div></div>
+	
+	 
+	 <div class="highlights"> <p>
+		Linux sports the whole Unix heritage for networking, and Debian provides a full set of tools to create and manage them. This chapter reviews these tools.
+	</p>
+	 </div> <section class="section" id="sect.gateway"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.gateway"/>10.1. Gateway</h2></div></div></div>
+		
+		 <p>
+			A gateway is a system linking several networks. This term often refers to a local network's “exit point” on the mandatory path to all external IP addresses. The gateway is connected to each of the networks it links together, and acts as a router to convey IP packets between its various interfaces.
+		</p>
+		 <a id="id-1.13.4.3" class="indexterm"></a>
+		 <a id="id-1.13.4.4" class="indexterm"></a>
+		 <a id="id-1.13.4.5" class="indexterm"></a>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> IP packet</strong></p></div></div></div> 
+		 <a id="id-1.13.4.6.2" class="indexterm"></a>
+		 <p>
+			Most networks nowadays use the IP protocol (<span class="emphasis"><em>Internet Protocol</em></span>). This protocol segments the transmitted data into limited-size packets. Each packet contains, in addition to its payload data, a number of details required for its proper routing.
+		</p>
+		 </div> <div class="sidebar" id="sidebar.tcp-udp"><a xmlns="" id="sidebar.tcp-udp"/><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> TCP/UDP</strong></p></div></div></div> 
+		 <a id="id-1.13.4.7.2" class="indexterm"></a>
+		 <a id="id-1.13.4.7.3" class="indexterm"></a>
+		 <a id="id-1.13.4.7.4" class="indexterm"></a>
+		 <a id="id-1.13.4.7.5" class="indexterm"></a>
+		 <p>
+			Many programs do not handle the individual packets themselves, even though the data they transmit does travel over IP; they often use TCP (<span class="emphasis"><em>Transmission Control Protocol</em></span>). TCP is a layer over IP allowing the establishment of connections dedicated to data streams between two points. The programs then only see an entry point into which data can be fed with the guarantee that the same data exits without loss (and in the same sequence) at the exit point at the other end of the connection. Although many kinds of errors can happen in the lower layers, they are compensated by TCP: lost packets are retransmitted, and packets arriving out of order (for example, if they used different paths) are re-ordered appropriately.
+		</p>
+		 <p>
+			Another protocol relying on IP is UDP (<span class="emphasis"><em>User Datagram Protocol</em></span>). In contrast to TCP, it is packet-oriented. Its goals are different: the purpose of UDP is only to transmit one packet from an application to another. The protocol does not try to compensate for possible packet loss on the way, nor does it ensure that packets are received in the same order as were sent. The main advantage to this protocol is that the latency is greatly improved, since the loss of a single packet does not delay the receiving of all following packets until the lost one is retransmitted.
+		</p>
+		 <p>
+			TCP and UDP both involve ports, which are “extension numbers” for establishing communication with a given application on a machine. This concept allows keeping several different communications in parallel with the same correspondent, since these communications can be distinguished by the port number.
+		</p>
+		 <p>
+			Some of these port numbers — standardized by the IANA (<span class="emphasis"><em>Internet Assigned Numbers Authority</em></span>) — are “well-known” for being associated with network services. For instance, TCP port 25 is generally used by the email server. <a class="ulink" href="http://www.iana.org/assignments/port-numbers">http://www.iana.org/assignments/port-numbers</a>
+		</p>
+		 </div> <p>
+			When a local network uses a private address range (not routable on the Internet), the gateway needs to implement <span class="emphasis"><em>address masquerading</em></span> so that the machines on the network can communicate with the outside world. The masquerading operation is a kind of proxy operating on the network level: each outgoing connection from an internal machine is replaced with a connection from the gateway itself (since the gateway does have an external, routable address), the data going through the masqueraded connection is sent to the new one, and the data coming back in reply is sent through to the masqueraded connection to the internal machine. The gateway uses a range of dedicated TCP ports for this purpose, usually with very high numbers (over 60000). Each connection coming from an internal machine then appears to the outside world as a connection coming from one of these reserved ports.
+		</p>
+		 <a id="id-1.13.4.9" class="indexterm"></a>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CULTURE</em></span> Private address range</strong></p></div></div></div> 
+		 <a id="id-1.13.4.10.2" class="indexterm"></a>
+		 <a id="id-1.13.4.10.3" class="indexterm"></a>
+		 <p>
+			RFC 1918 defines three ranges of IPv4 addresses not meant to be routed on the Internet but only used in local networks. The first one, <code class="literal">10.0.0.0/8</code> (see sidebar <a class="xref" href="sect.network-config.html#sidebar.networking-basics" title="BACK TO BASICS Các khái niệm khái quát về mạng (Ethernet, địa chỉ IP, subnet, broadcast)"><span class="emphasis"><em>BACK TO BASICS</em></span> Các khái niệm khái quát về mạng (Ethernet, địa chỉ IP, subnet, broadcast)</a>), is a class-A range (with 2<sup>24</sup> IP addresses). The second one, <code class="literal">172.16.0.0/12</code>, gathers 16 class-B ranges (<code class="literal">172.16.0.0/16</code> to <code class="literal">172.31.0.0/16</code>), each containing 2<sup>16</sup> IP addresses. Finally, <code class="literal">192.168.0.0/16</code> is a class-B range (grouping 256 class-C ranges, <code class="literal">192.168.0.0/24</code> to <code class="literal">192.168.255.0/24</code>, with 256 IP addresses each). <a class="ulink" href="http://www.faqs.org/rfcs/rfc1918.html">http://www.faqs.org/rfcs/rfc1918.html</a>
+		</p>
+		 </div> <p>
+			The gateway can also perform two kinds of <span class="emphasis"><em>network address translation</em></span> (or NAT for short). The first kind, <span class="emphasis"><em>Destination NAT</em></span> (DNAT) is a technique to alter the destination IP address (and/or the TCP or UDP port) for a (generally) incoming connection. The connection tracking mechanism also alters the following packets in the same connection to ensure continuity in the communication. The second kind of NAT is <span class="emphasis"><em>Source NAT</em></span> (SNAT), of which <span class="emphasis"><em>masquerading</em></span> is a particular case; SNAT alters the source IP address (and/or the TCP or UDP port) of a (generally) outgoing connection. As for DNAT, all the packets in the connection are appropriately handled by the connection tracking mechanism. Note that NAT is only relevant for IPv4 and its limited address space; in IPv6, the wide availability of addresses greatly reduces the usefulness of NAT by allowing all “internal” addresses to be directly routable on the Internet (this does not imply that internal machines are accessible, since intermediary firewalls can filter traffic).
+		</p>
+		 <a id="id-1.13.4.12" class="indexterm"></a>
+		 <a id="id-1.13.4.13" class="indexterm"></a>
+		 <a id="id-1.13.4.14" class="indexterm"></a>
+		 <a id="id-1.13.4.15" class="indexterm"></a>
+		 <a id="id-1.13.4.16" class="indexterm"></a>
+		 <a id="id-1.13.4.17" class="indexterm"></a>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> Port forwarding</strong></p></div></div></div> 
+		 <a id="id-1.13.4.18.2" class="indexterm"></a>
+		 <p>
+			A concrete application of DNAT is <span class="emphasis"><em>port forwarding</em></span>. Incoming connections to a given port of a machine are forwarded to a port on another machine. Other solutions may exist for achieving a similar effect, though, especially at the application level with <span class="command"><strong>ssh</strong></span> (see <a class="xref" href="sect.remote-login.html#sect.ssh-port-forwarding" title="9.2.1.3. Creating Encrypted Tunnels with Port Forwarding">Phần 9.2.1.3, “Creating Encrypted Tunnels with Port Forwarding”</a>) or <span class="command"><strong>redir</strong></span>.
+		</p>
+		 </div> <p>
+			Enough theory, let's get practical. Turning a Debian system into a gateway is a simple matter of enabling the appropriate option in the Linux kernel, by way of the <code class="filename">/proc/</code> virtual filesystem:
+		</p>
+		 
+<pre class="screen">
+<code class="computeroutput"># </code><strong class="userinput"><code>echo 1 &gt; /proc/sys/net/ipv4/conf/default/forwarding</code></strong></pre>
+		 <p>
+			This option can also be automatically enabled on boot if <code class="filename">/etc/sysctl.conf</code> sets the <code class="literal">net.ipv4.conf.default.forwarding</code> option to <code class="literal">1</code>.
+		</p>
+		 <div class="example" id="example.sysctl.conf"><a xmlns="" id="example.sysctl.conf"/><p class="title"><strong>Ví dụ 10.1. The <code class="filename">/etc/sysctl.conf</code> file</strong></p><div class="example-contents">
+			
+			 
+<pre class="programlisting">
+net.ipv4.conf.default.forwarding = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.tcp_syncookies = 1
+</pre>
+
+		</div></div>
+		 <p>
+			The same effect can be obtained for IPv6 by simply replacing <code class="literal">ipv4</code> with <code class="literal">ipv6</code> in the manual command and using the <code class="literal">net.ipv6.conf.all.forwarding</code> line in <code class="filename">/etc/sysctl.conf</code>.
+		</p>
+		 <p>
+			Enabling IPv4 masquerading is a slightly more complex operation that involves configuring the <span class="emphasis"><em>netfilter</em></span> firewall.
+		</p>
+		 <p>
+			Similarly, using NAT (for IPv4) requires configuring <span class="emphasis"><em>netfilter</em></span>. Since the primary purpose of this component is packet filtering, the details are listed in <a class="xref" href="security.html" title="Chương 14. Security">Chương 14: “<em>Security</em>”</a> (see <a class="xref" href="sect.firewall-packet-filtering.html" title="14.2. Tường lửa hoặc bộ lọc gói dữ liệu.">Phần 14.2, “Tường lửa hoặc bộ lọc gói dữ liệu. ”</a>).
+		</p>
+
+	</section>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+</section><footer/></body></html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>13.10. Real-Time Communications software</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Workstation, Graphical desktop, Office work, X.org"/><link rel="prev" href="sect.windows-emulation.html" title="13.9. Emulating Windows: Wine"/><link rel="next" href="security.html" title="Chương 14. Security"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.rtc-clients.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.windows-emulation.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="security.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.rtc-clients"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.rtc-clients"/>13.10. Real-Time Communications software</h2></div></div></div>
+		
+		 <p>
+			Debian provides a wide range of Real-Time Communications (RTC) client software. The setup of RTC servers is discussed in <a class="xref" href="sect.rtc-services.html" title="11.8. Real-Time Communication Services">Phần 11.8, “Real-Time Communication Services”</a>. In SIP terminology, a client application or device is also referred to as a user agent.
+		</p>
+		 <a id="id-1.16.13.3" class="indexterm"></a>
+		 <a id="id-1.16.13.4" class="indexterm"></a>
+		 <p>
+			Each client application varies in functionality. Some applications are more convenient for intensive chat users while other applications are more stable for webcam users. It may be necessary to test several applications to identify those which are most satisfactory. A user may finally decide that they need more than one application, for example, an XMPP application for messaging with customers and an IRC application for collaboration with some online communities.
+		</p>
+		 <p>
+			To maximize the ability of users to communicate with the wider world, it is recommended to configure both SIP and XMPP clients or a single client that supports both protocols.
+		</p>
+		 <a id="id-1.16.13.7" class="indexterm"></a>
+		 <a id="id-1.16.13.8" class="indexterm"></a>
+		 <p>
+			The default GNOME desktop includes the Empathy communications client. Empathy can support both SIP and XMPP. It supports instant messaging (IM), voice and video. The KDE desktop provides KDE Telepathy, a communications client based on the same underlying Telepathy APIs used by the GNOME Empathy client.
+		</p>
+		 <a id="id-1.16.13.10" class="indexterm"></a>
+		 <a id="id-1.16.13.11" class="indexterm"></a>
+		 <p>
+			Popular alternatives to Empathy/Telepathy include Ekiga, Jitsi, Linphone, Psi and Ring (formerly known as SFLphone).
+		</p>
+		 <a id="id-1.16.13.13" class="indexterm"></a>
+		 <a id="id-1.16.13.14" class="indexterm"></a>
+		 <a id="id-1.16.13.15" class="indexterm"></a>
+		 <a id="id-1.16.13.16" class="indexterm"></a>
+		 <a id="id-1.16.13.17" class="indexterm"></a>
+		 <a id="id-1.16.13.18" class="indexterm"></a>
+		 <p>
+			Some of these applications can also interact with mobile users using apps such as Lumicall on Android. <a class="ulink" href="http://lumicall.org">http://lumicall.org</a>
+		</p>
+		 <a id="id-1.16.13.20" class="indexterm"></a>
+		 <p>
+			The <span class="emphasis"><em>Real-Time Communications Quick Start Guide</em></span> has a chapter dedicated to client software. <a class="ulink" href="http://rtcquickstart.org/guide/multi/useragents.html">http://rtcquickstart.org/guide/multi/useragents.html</a>
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TIP</em></span> Look for clients supporting ICE and TURN</strong></p></div></div></div> 
+		 <p>
+			Some RTC clients have significant problems sending voice and video through firewalls and NAT networks. Users may receive ghost calls (their phone rings but they don't hear the other person) or they may not be able to call at all.
+		</p>
+		 <p>
+			The ICE and TURN protocols were developed to resolve these issues. Operating a TURN server with public IP addresses in each site and using client software that supports both ICE and TURN gives the best user experience.
+		</p>
+		 <p>
+			If the client software is only intended for instant messaging, there is no requirement for ICE or TURN support.
+		</p>
+		 </div> <p>
+			Debian Developers operate a community SIP service at <a class="ulink" href="https://rtc.debian.org">rtc.debian.org</a>. The community maintains a wiki with documentation about setting up many of the client applications packaged in Debian. The wiki articles and screenshots are a useful resource for anybody setting up a similar service on their own domain. <a class="ulink" href="https://wiki.debian.org/UnifiedCommunications/DebianDevelopers/UserGuide">https://wiki.debian.org/UnifiedCommunications/DebianDevelopers/UserGuide</a>
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>ALTERNATIVE</em></span> Internet Relay Chat</strong></p></div></div></div> 
+		 <p>
+			IRC can also be considered, in addition to SIP and XMPP. IRC is more oriented around the concept of channels, the name of which starts with a hash sign <code class="literal">#</code>. Each channel is usually targeted at a specific topic and any number of people can join a channel to discuss it (but users can still have one-to-one private conversations if needed). The IRC protocol is older, and does not allow end-to-end encryption of the messages; it is still possible to encrypt the communications between the users and the server by tunneling the IRC protocol inside SSL.
+		</p>
+		 <a id="id-1.16.13.24.3" class="indexterm"></a>
+		 <a id="id-1.16.13.24.4" class="indexterm"></a>
+		 <p>
+			IRC clients are a bit more complex, and they usually provide many features that are of limited use in a corporate environment. For instance, channel “operators” are users endowed with the ability to kick other users from a channel, or even ban them permanently, when the normal discussion is disrupted.
+		</p>
+		 <p>
+			Since the IRC protocol is very old, many clients are available to cater for many user groups; examples include XChat and Smuxi (graphical clients based on GTK+), Irssi (text mode), Erc (integrated to Emacs), and so on.
+		</p>
+		 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>QUICK LOOK</em></span> Video conferencing with Ekiga</strong></p></div></div></div> 
+		 <p>
+			Ekiga (formerly GnomeMeeting) is a prominent application for Linux video conferencing. It is both stable and functional, and is very easily used on a local network; setting up the service on a global network is much more complex when the firewalls involved lack explicit support for the H323 and/or SIP teleconferencing protocols with all their quirks.
+		</p>
+		 <a id="id-1.16.13.25.3" class="indexterm"></a>
+		 <a id="id-1.16.13.25.4" class="indexterm"></a>
+		 <p>
+			If only one Ekiga client is to run behind the firewall, the configuration is rather straightforward, and only involves forwarding a few ports to the dedicated host: TCP port 1720 (listening for incoming connections), TCP port 5060 (for SIP), TCP ports 30000 to 30010 (for control of open connections) and UDP ports 5000 to 5100 (for audio and video data transmission and registration to an H323 proxy).
+		</p>
+		 <a id="id-1.16.13.25.6" class="indexterm"></a>
+		 <a id="id-1.16.13.25.7" class="indexterm"></a>
+		 <p>
+			When several Ekiga clients are to run behind the firewall, complexity increases notably. An H323 proxy (for instance the <span class="pkg pkg">gnugk</span> package) must be set up, and its configuration is far from simple.
+		</p>
+		 <a id="id-1.16.13.25.9" class="indexterm"></a>
+		 </div>
+	</section><footer/></body></html>

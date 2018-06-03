@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>7.2. Common Procedures</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Documentation, Solving problems, Log files, README.Debian, Manual, info"/><link rel="prev" href="solving-problems.html" title="Chương 7. Solving Problems and Finding Relevant Information"/><link rel="next" href="basic-configuration.html" title="Chương 8. Cấu hình cơ bản: Mạng, Tài khoản, In ấn..."/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.common-procedures.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="solving-problems.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="basic-configuration.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.common-procedures"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.common-procedures"/>7.2. Common Procedures</h2></div></div></div>
+		
+		 <a id="id-1.10.5.2" class="indexterm"></a>
+		 <p>
+			The purpose of this section is to present some general tips on certain operations that an administrator will frequently have to perform. These procedures will of course not cover every possible case in an exhaustive way, but they may serve as starting points for the more difficult cases.
+		</p>
+		 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>DISCOVERY</em></span> Documentation in other languages</strong></p></div></div></div> 
+		 <p>
+			Often, documentation translated into a non-English language is available in a separate package with the name of the corresponding package, followed by <code class="literal">-<em class="replaceable">lang</em></code> (where <em class="replaceable">lang</em> is the two-letter ISO code for the language).
+		</p>
+		 <p>
+			For instance, the <span class="emphasis"><em>apt-howto-fr</em></span> package contains the French translation of the howto for <span class="emphasis"><em>APT</em></span>. Likewise, the <span class="emphasis"><em>quick-reference-fr</em></span> and <span class="emphasis"><em>debian-reference-fr</em></span> packages are the French versions of the reference guides for Debian (initially written in English by Osamu Aoki).
+		</p>
+		 </div> <section class="section" id="id-1.10.5.5"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.10.5.5"/>7.2.1. Configuring a Program</h3></div></div></div>
+			
+			 <a id="id-1.10.5.5.2" class="indexterm"></a>
+			 <a id="id-1.10.5.5.3" class="indexterm"></a>
+			 <p>
+				When you want to configure an unknown package, you must proceed in stages. First, you should read what the package maintainer has documented. Reading <code class="filename">/usr/share/doc/<em class="replaceable">package</em>/README.Debian</code> will indeed allow you to learn of specific provisions made to simplify the use of the software. It is sometimes essential in order to understand the differences from the original behavior of the program, as described in the general documentation, such as howtos. Sometimes this file also details the most common errors in order for you to avoid wasting time on common problems.
+			</p>
+			 <p>
+				Then, you should look at the software's official documentation — refer to <a class="xref" href="solving-problems.html#sect.documentation-sources" title="7.1. Documentation Sources">Phần 7.1, “Documentation Sources”</a> to identify the various existing documentation sources. The <span class="command"><strong>dpkg -L <em class="replaceable">package</em></strong></span> command gives a list of files included in the package; you can therefore quickly identify the available documentation (as well as the configuration files, located in <code class="filename">/etc/</code>). <span class="command"><strong>dpkg -s <em class="replaceable">package</em></strong></span> displays the package meta-data and shows any possible recommended or suggested packages; in there, you can find documentation or a utility that will ease the configuration of the software.
+			</p>
+			 <p>
+				Finally, the configuration files are often self-documented by many explanatory comments detailing the various possible values for each configuration setting. So much so that it is sometimes enough to just choose a line to activate from among those available. In some cases, examples of configuration files are provided in the <code class="filename">/usr/share/doc/<em class="replaceable">package</em>/examples/</code> directory. They may serve as a basis for your own configuration file.
+			</p>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>DEBIAN POLICY</em></span> Location of examples</strong></p></div></div></div> 
+			 <a id="id-1.10.5.5.7.2" class="indexterm"></a>
+			 <p>
+				All examples must be installed in the <code class="filename">/usr/share/doc/<em class="replaceable">package</em>/examples/</code> directory. This may be a configuration file, program source code (an example of the use of a library), or a data conversion script that the administrator can use in certain cases (such as to initialize a database). If the example is specific to a particular architecture, it should be installed in <code class="filename">/usr/lib/<em class="replaceable">package</em>/examples/</code> and there should be a link pointing to that file in the <code class="filename">/usr/share/doc/<em class="replaceable">package</em>/examples/</code> directory.
+			</p>
+			 </div>
+		</section>
+		 <section class="section" id="id-1.10.5.6"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.10.5.6"/>7.2.2. Monitoring What Daemons Are Doing</h3></div></div></div>
+			
+			 <p>
+				Understanding what a daemon does is somewhat more complicated, since it does not interact directly with the administrator. To check that a daemon is actually working, you need to test it. For example, to check the Apache (web server) daemon, test it with an HTTP request.
+			</p>
+			 <p>
+				To allow such tests, each daemon generally records everything that it does, as well as any errors that it encounters, in what are called “log files” or “system logs”. Logs are stored in <code class="filename">/var/log/</code> or one of its subdirectories. To know the precise name of a log file for each daemon, see its documentation. Note: a single test is not always sufficient if it does not cover all the possible usage cases; some problems only occur in particular circumstances.
+			</p>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TOOL</em></span> The <span class="command"><strong>rsyslogd</strong></span> daemon</strong></p></div></div></div> 
+			 <a id="id-1.10.5.6.4.2" class="indexterm"></a>
+			 <a id="id-1.10.5.6.4.3" class="indexterm"></a>
+			 <a id="id-1.10.5.6.4.4" class="indexterm"></a>
+			 <p>
+				<span class="command"><strong>rsyslogd</strong></span> is special: it collects logs (internal system messages) that are sent to it by other programs. Each log entry is associated with a subsystem (e-mail, kernel, authentication, etc.) and a priority; <span class="command"><strong>rsyslogd</strong></span> processes these two pieces of information to decide on what to do. The log message may be recorded in various log files, and/or sent to an administration console. The details are defined in the <code class="filename">/etc/rsyslog.conf</code> configuration file (documented in the manual page of the same name).
+			</p>
+			 <p>
+				Certain C functions, which are specialized in sending logs, simplify the use of the <span class="command"><strong>rsyslogd</strong></span> daemon. However some daemons manage their own log files (this is the case, for example, of <span class="command"><strong>samba</strong></span>, that implements Windows shares on Linux).
+			</p>
+			 <p>
+				Note that when <span class="command"><strong>systemd</strong></span> is in use, the logs are actually collected by <span class="command"><strong>systemd</strong></span> before being forwarded to <span class="command"><strong>rsyslogd</strong></span>. They are thus also available via <span class="command"><strong>systemd</strong></span>'s journal and can be consulted with <span class="command"><strong>journalctl</strong></span> (see <a class="xref" href="unix-services.html#sect.systemd" title="9.1.1. The systemd init system">Phần 9.1.1, “The systemd init system”</a> for details).
+			</p>
+			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> Daemon</strong></p></div></div></div> 
+			 <a id="id-1.10.5.6.5.2" class="indexterm"></a>
+			 <p>
+				A daemon is a program that is not explicitly invoked by the user and that stays in the background, waiting for a certain condition to be met before performing a task. Many server programs are daemons, a term that explains that the letter “d” is frequently present at the end of their name (<span class="command"><strong>sshd</strong></span>, <span class="command"><strong>smtpd</strong></span>, <span class="command"><strong>httpd</strong></span>, etc.).
+			</p>
+			 </div> <p>
+				As a preventive operation, the administrator should regularly read the most relevant server logs. They can thus diagnose problems before they are even reported by disgruntled users. Indeed users may sometimes wait for a problem to occur repeatedly over several days before reporting it. In many cases, there are specific tools to analyze the contents of the larger log files. In particular, such utilities exist for web servers (such as <span class="command"><strong>analog</strong></span>, <span class="command"><strong>awstats</strong></span>, <span class="command"><strong>webalizer</strong></span> for Apache), for FTP servers, for proxy/cache servers, for firewalls, for e-mail servers, for DNS servers, and even for print servers. Some of these utilities operate in a modular manner and allow analysis of several types of log files. This is the case of <span class="command"><strong>lire</strong></span>. Other tools, such as <span class="command"><strong>logcheck</strong></span> (a software discussed in <a class="xref" href="security.html" title="Chương 14. Security">Chương 14, <em>Security</em></a>), scan these files in search of alerts to be dealt with.
+			</p>
+			 <a id="id-1.10.5.6.7" class="indexterm"></a>
+			 <a id="id-1.10.5.6.8" class="indexterm"></a>
+			 <a id="id-1.10.5.6.9" class="indexterm"></a>
+			 <a id="id-1.10.5.6.10" class="indexterm"></a>
+			 <a id="id-1.10.5.6.11" class="indexterm"></a>
+
+		</section>
+		 <section class="section" id="id-1.10.5.7"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.10.5.7"/>7.2.3. Asking for Help on a Mailing List</h3></div></div></div>
+			
+			 <p>
+				If your various searches haven't helped you to get to the root of a problem, it is possible to get help from other, perhaps more experienced people. This is exactly the purpose of the <code class="email"><a class="email" href="mailto:debian-user@lists.debian.org">debian-user@lists.debian.org</a></code> mailing list. As with any community, it has rules that need to be followed. Before asking any question, you should check that your problem isn't already covered by recent discussions on the list or by any official documentation. <a class="ulink" href="https://wiki.debian.org/DebianMailingLists">https://wiki.debian.org/DebianMailingLists</a> <a class="ulink" href="https://lists.debian.org/debian-user/">https://lists.debian.org/debian-user/</a>
+			</p>
+			 <a id="id-1.10.5.7.3" class="indexterm"></a>
+			 <a id="id-1.10.5.7.4" class="indexterm"></a>
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TIP</em></span> Reading a list on the Web</strong></p></div></div></div> 
+			 <p>
+				For high volume mailing lists, such as <code class="email"><a class="email" href="mailto:debian-user@lists.debian.org">debian-user@lists.debian.org</a></code>, it may be worthwhile to go through them as a discussion forum (or newsgroup). Gmane.org allows consultation of the Debian lists in this format. The list mentioned above is available at: <a class="ulink" href="http://dir.gmane.org/gmane.linux.debian.user">http://dir.gmane.org/gmane.linux.debian.user</a>
+			</p>
+			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> Netiquette applies</strong></p></div></div></div> 
+			 <p>
+				In general, for all correspondence on e-mail lists, the rules of Netiquette should be followed. This term refers to a set of common sense rules, from common courtesy to mistakes that should be avoided. <a class="ulink" href="http://tools.ietf.org/html/rfc1855">http://tools.ietf.org/html/rfc1855</a> <a id="id-1.10.5.7.6.2.2" class="indexterm"></a>
+			</p>
+			 <p>
+				Furthermore, for any communication channel managed by the Debian project, you are bound by the Debian Code of Conduct: <a class="ulink" href="https://www.debian.org/code_of_conduct">https://www.debian.org/code_of_conduct</a>
+			</p>
+			 </div> <p>
+				Once those two conditions are met, you can think of describing your problem to the mailing list. Include as much relevant information as possible: various tests conducted, documentation consulted, how you attempted to diagnose the problem, the packages concerned or those that may be involved, etc. Check the Debian Bug Tracking System (BTS, described in sidebar <a class="xref" href="sect.debian-internals.html#sidebar.bts" title="CÔNG CỤ Hệ thống truy vết lỗi"><span class="emphasis"><em>CÔNG CỤ</em></span> Hệ thống truy vết lỗi</a>) for similar problems, and mention the results of that search, providing links to bugs found. BTS starts on: <a class="ulink" href="http://www.debian.org/Bugs/index.html">http://www.debian.org/Bugs/index.html</a>
+			</p>
+			 <p>
+				The more courteous and precise you have been, the greater your chances are of getting an answer, or, at least, some elements of response. If you receive relevant information by private e-mail, think of summarizing this information publicly so that others can benefit. This also allows the list's archives, searched through various search engines, to show the resolution for others who may have the same question.
+			</p>
+
+		</section>
+		 <section class="section" id="id-1.10.5.8"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.10.5.8"/>7.2.4. Reporting a Bug When a Problem Is Too Difficult</h3></div></div></div>
+			
+			 <a id="id-1.10.5.8.2" class="indexterm"></a>
+			 <a id="id-1.10.5.8.3" class="indexterm"></a>
+			 <p>
+				If all of your efforts to resolve a problem fail, it is possible that a resolution is not your responsibility, and that the problem is due to a bug in the program. In this case, the proper procedure is to report the bug to Debian or directly to the upstream developers. To do this, isolate the problem as much as possible and create a minimal test situation in which it can be reproduced. If you know which program is the apparent cause of the problem, you can find its corresponding package using the command, <span class="command"><strong>dpkg -S <em class="replaceable">file_in_question</em></strong></span>. Check the Bug Tracking System (<code class="literal">https://bugs.debian.org/<em class="replaceable">package</em></code>) to ensure that the bug has not already been reported. You can then send your own bug report, using the <span class="command"><strong>reportbug</strong></span> command, including as much information as possible, especially a complete description of those minimal test cases that will allow anyone to recreate the bug.
+			</p>
+			 <p>
+				The elements of this chapter are a means of effectively resolving issues that the following chapters may bring about. Use them as often as necessary!
+			</p>
+
+		</section>
+
+	</section><footer/></body></html>
