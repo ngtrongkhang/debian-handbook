@@ -141,51 +141,49 @@ inet_protocols = all</pre>
 			</p>
 			 </div>
 		</section>
-		 <section class="section" id="sect.configuring-virtual-domains"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.configuring-virtual-domains"/>11.1.2. Configuring Virtual Domains</h3></div></div></div>
+		 <section class="section" id="sect.configuring-virtual-domains"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.configuring-virtual-domains"/>11.1.2. Cấu hình các miền ảo (Virtual Domains)</h3></div></div></div>
 			
 			 <a id="id-1.14.4.8.2" class="indexterm"></a>
 			 <a id="id-1.14.4.8.3" class="indexterm"></a>
 			 <p>
-				The mail server can receive emails addressed to other domains besides the main domain; these are then known as virtual domains. In most cases where this happens, the emails are not ultimately destined to local users. Postfix provides two interesting features for handling virtual domains.
+				Máy phục vụ thư điện tử có thể nhận các thư gửi đến các miền khác ngoài miền chính; những miền này được biết đến như là miền ảo. Trong đa số các trường hợp mà điều này xảy ra, các thư điện tử thường không gửi tới người dùng nội bộ. Postfix cung cấp hai tính năng hiệu quả để xử lý các miền ảo.
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CAUTION</em></span> Virtual domains and canonical domains</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>LƯU Ý</em></span> Các miền ảo và các miền chính thống</strong></p></div></div></div> 
 			 <p>
-				None of the virtual domains must be referenced in the <code class="literal">mydestination</code> variable; this variable only contains the names of the “canonical” domains directly associated to the machine and its local users.
+				Chẳng có miền ảo nào được liệt kê trong tham biến <code class="literal">mydestination</code>; tham biến này chỉ chứa các tên của các miền "chính thống" trực tiếp liên quan tới máy này và các những người dùng nội bộ của máy này.
 			</p>
-			 </div> <section class="section" id="id-1.14.4.8.6"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.8.6"/>11.1.2.1. Virtual Alias Domains</h4></div></div></div>
+			 </div> <section class="section" id="id-1.14.4.8.6"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.8.6"/>11.1.2.1. Những miền hư danh</h4></div></div></div>
 				
 				 <a id="id-1.14.4.8.6.2" class="indexterm"></a>
 				 <a id="id-1.14.4.8.6.3" class="indexterm"></a>
 				 <p>
-					A virtual alias domain only contains aliases, i.e. addresses that only forward emails to other addresses.
+					Một miền hư danh (virtual alias domain) chỉ chứa những danh xưng. Chúng là những địa chỉ dùng để chuyển hướng các thư điện tử tới những địa chỉ khác.
 				</p>
 				 <p>
-					Such a domain is enabled by adding its name to the <code class="literal">virtual_alias_domains</code> variable, and referencing an address mapping file in the <code class="literal">virtual_alias_maps</code> variable.
+					Một miền như vậy được đưa vào sử dụng bằng việc thêm tên của nó vào tham biến <code class="literal">virtual_alias_domains</code>, và liệt kê tên của một tập tin ánh xạ địa chỉ (address mapping file) vào tham biến <code class="literal">virtual_alias_maps</code>.
 				</p>
-				 <div class="example" id="id-1.14.4.8.6.6"><a xmlns="" id="id-1.14.4.8.6.6"/><p class="title"><strong>Ví dụ 11.2. Directives to add in the <code class="filename">/etc/postfix/main.cf</code> file</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.8.6.6"><a xmlns="" id="id-1.14.4.8.6.6"/><p class="title"><strong>Ví dụ 11.2. Những dòng được thêm vào tập tin <code class="filename">/etc/postfix/main.cf</code></strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 virtual_alias_domains = falcotsbrand.com
-virtual_alias_maps = hash:/etc/postfix/virtual
-</pre>
+virtual_alias_maps = hash:/etc/postfix/virtual</pre>
 
 				</div></div>
 				 <p>
-					The <code class="filename">/etc/postfix/virtual</code> file describes a mapping with a rather straightforward syntax: each line contains two fields separated by whitespace; the first field is the alias name, the second field is a list of email addresses where it redirects. The special <code class="literal">@domain.com</code> syntax covers all remaining aliases in a domain.
+					Tập tin <code class="filename">/etc/postfix/virtual</code> mô tả một ánh xạ bằng một cú pháp đơn giản: mỗi dòng chứa hai trường tách ra bởi một khoảng trắng; trường đầu tiên là danh xưng(alias), trường thứ hai là một danh sách liệt những địa chỉ thư điện tử mà nó sẽ chuyển hướng tới. Địa chỉ đặc biệt <code class="literal">@domain.com</code> bao gồm tất cả những danh xưng (aliases) trong một miền (domain).
 				</p>
-				 <div class="example" id="id-1.14.4.8.6.8"><a xmlns="" id="id-1.14.4.8.6.8"/><p class="title"><strong>Ví dụ 11.3. Example <code class="filename">/etc/postfix/virtual</code> file</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.8.6.8"><a xmlns="" id="id-1.14.4.8.6.8"/><p class="title"><strong>Ví dụ 11.3. Ví dụ cho tập tin <code class="filename">/etc/postfix/virtual</code></strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 webmaster@falcotsbrand.com  jean@falcot.com
 contact@falcotsbrand.com    laure@falcot.com, sophie@falcot.com
-# The alias below is generic and covers all addresses within 
-# the falcotsbrand.com domain not otherwise covered by this file.
-# These addresses forward email to the same user name in the
-# falcot.com domain.
-@falcotsbrand.com           @falcot.com
-</pre>
+# Danh xưng dưới đây là rất chung chung và bao gồm tất cả những địa chỉ trong
+# tên miền falcotsbrand.com vốn trên thực tế không được kể đến trong tập tin này.
+# Những địa chỉ này chuyển hướng thư đến những địa chỉ với cùng tên người dùng trong
+# miền falcot.com.
+@falcotsbrand.com           @falcot.com</pre>
 
 				</div></div>
 
@@ -207,7 +205,7 @@ contact@falcotsbrand.com    laure@falcot.com, sophie@falcot.com
 				 <p>
 					The <code class="literal">virtual_uid_maps</code> parameter (respectively <code class="literal">virtual_gid_maps</code>) references the file containing the mapping between the email address and the system user (respectively group) that “owns” the corresponding mailbox. To get all mailboxes owned by the same owner/group, the <code class="literal">static:5000</code> syntax assigns a fixed UID/GID (of value 5000 here).
 				</p>
-				 <div class="example" id="id-1.14.4.8.7.8"><a xmlns="" id="id-1.14.4.8.7.8"/><p class="title"><strong>Ví dụ 11.4. Directives to add in the <code class="filename">/etc/postfix/main.cf</code> file</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.8.7.8"><a xmlns="" id="id-1.14.4.8.7.8"/><p class="title"><strong>Ví dụ 11.4. Những dòng được thêm vào tập tin <code class="filename">/etc/postfix/main.cf</code></strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
