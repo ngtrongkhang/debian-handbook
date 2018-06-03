@@ -1,3 +1,9 @@
+Vietnamese translation for chapter 11 of Debian Administrator's Handbook.
+
+Latest version of chapter 11 in Vietnamese can be read [here](https://rawgit.com/ngtrongkhang/debian-handbook/github-fork/publish/vi-VN/Debian/8/html/debian-handbook/index.html).
+
+Below is the original description.
+
 ### Hướng dẫn dịch xem tại [Debian VN](https://debian-vn.github.io/2016/04/huong-dan-dong-gop-ban-dich-debian-handbook.html)
 [![Translation status](https://hosted.weblate.org/widgets/debian-handbook/vi/svg-badge.svg)](https://hosted.weblate.org/engage/debian-handbook/vi/?utm_source=widget)
 [![Build Status](https://travis-ci.org/Debian-VN/debian-handbook.svg?branch=master)](https://travis-ci.org/Debian-VN/debian-handbook)
