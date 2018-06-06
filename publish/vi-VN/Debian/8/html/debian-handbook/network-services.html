@@ -352,28 +352,27 @@ smtpd_sender_restrictions =
 				</p>
 
 			</section>
-			 <section class="section" id="id-1.14.4.9.7"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.7"/>11.1.3.4. Accepting or Refusing Based on the Recipient</h4></div></div></div>
+			 <section class="section" id="id-1.14.4.9.7"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.7"/>11.1.3.4. Chấp nhận hoặc từ chối dựa trên người nhận</h4></div></div></div>
 				
 				 <p>
-					Each email has at least one recipient, announced with the <code class="literal">RCPT TO</code> command in the SMTP protocol. These addresses also warrant validation, even if that may be less relevant than the checks made on the sender address.
+					Mỗi thư điện tử có ít nhất một người nhận, được công bố bằng lệnh <code class="literal">RCPT TO</code> của giao thức SMTP. Những địa chỉ này cũng đảm bảo tính hợp lệ, ngay cả khi việc kiểm tra nó ít liên quan hơn việc kiểm tra dựa trên địa chỉ người gửi.
 				</p>
 				 <a id="id-1.14.4.9.7.3" class="indexterm"></a>
 				 <a id="id-1.14.4.9.7.4" class="indexterm"></a>
-				 <div class="example" id="id-1.14.4.9.7.5"><a xmlns="" id="id-1.14.4.9.7.5"/><p class="title"><strong>Ví dụ 11.9. Recipient checks</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.9.7.5"><a xmlns="" id="id-1.14.4.9.7.5"/><p class="title"><strong>Ví dụ 11.9. Các kiểm tra trên người nhận</strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 smtpd_recipient_restrictions = permit_mynetworks, 
     reject_unauth_destination, reject_unlisted_recipient, 
-    reject_non_fqdn_recipient
-</pre>
+    reject_non_fqdn_recipient</pre>
 
 				</div></div>
 				 <p>
-					<code class="literal">reject_unauth_destination</code> is the basic rule that requires outside messages to be addressed to us; messages sent to an address not served by this server are rejected. Without this rule, a server becomes an open relay that allows spammers to send unsolicited emails; this rule is therefore mandatory, and it will be best included near the beginning of the list, so that no other rules may authorize the message before its destination has been checked.
+					<code class="literal">reject_unauth_destination</code> là quy tắc cơ bản vốn buộc những thông điệp bên ngoài phải được gửi đến chúng ta; những thông điệp được gửi đến một địa chỉ không được phục vụ bởi máy phục vụ này sẽ bị từ chối. Nếu không có quy tắc này, một máy phục vụ trở thành một điểm trung chuyển mở cho phép những spammer gửi các thư điện tư mà không ai yêu cầu; vì thế quy tắc này là bắt buộc, và nó nên được thêm vào ở gần cuối của danh sách, để không có quy tắc nào khác cho phép những thông điệp như thế này qua trước khi điểm đến đã được kiểm tra.
 				</p>
 				 <p>
-					The <code class="literal">reject_unlisted_recipient</code> rule rejects messages sent to non-existing local users, which makes sense. Finally, the <code class="literal">reject_non_fqdn_recipient</code> rule rejects non-fully-qualified addresses; this makes it impossible to send an email to <code class="literal">jean</code> or <code class="literal">jean@machine</code>, and requires using the full address instead, such as <code class="literal">jean@machine.falcot.com</code> or <code class="literal">jean@falcot.com</code>.
+					Quy tắc <code class="literal">reject_unlisted_recipient</code> từ chối những thông điệp được gửi đến những người dùng nội bộ không có tồn tại, vốn nghe rất có lý. Cuối cùng, quy tắc <code class="literal">reject_non_fqdn_recipient</code> từ chối các địa chỉ không đúng chuẩn; và điều này chặn việc gửi một thư điện tử tới <code class="literal">jean</code> hay <code class="literal">jean@machine</code>, và buộc phải sử dụng địa chỉ đầy đủ, ví dụ như <code class="literal">jean@machine.falcot.com</code> hoặc <code class="literal">jean@falcot.com</code>.
 				</p>
 
 			</section>
