@@ -215,7 +215,7 @@ virtual_mailbox_base = /var/mail/vhosts</pre>
 
 				</div></div>
 				 <p>
-					Again, the syntax of the <code class="filename">/etc/postfix/vmailbox</code> file is quite straightforward: two fields separated with whitespace. The first field is an email address within one of the virtual domains, and the second field is the location of the associated mailbox (relative to the directory specified in <span class="emphasis"><em>virtual_mailbox_base</em></span>). If the mailbox name ends with a slash (<code class="literal">/</code>), the emails will be stored in the <span class="emphasis"><em>maildir</em></span> format; otherwise, the traditional <span class="emphasis"><em>mbox</em></span> format will be used. The <span class="emphasis"><em>maildir</em></span> format uses a whole directory to store a mailbox, each individual message being stored in a separate file. In the <span class="emphasis"><em>mbox</em></span> format, on the other hand, the whole mailbox is stored in one file, and each line starting with “<code class="literal">From </code>” (<code class="literal">From</code> followed by a space) signals the start of a new message.
+					Một lần nữa, cú pháp của tập tin <code class="filename">/etc/postfix/vmailbox</code> khá dễ hiểu: hai trường tách ra bởi một khoảng trắng. Trường đầu tiên là một địa chỉ thư điện thử nằm trong một trong số những miền ảo, và trường thứ hai là địa chỉ của hộp thư tương ứng (địa chỉ tương đối so với thư mục được chỉ ra trong <span class="emphasis"><em>virtual_mailbox_base</em></span>). Nếu tên hộp thư điện tử kết thúc bằng một dấu xuyệt (<code class="literal">/</code>), những thư điện tử sẽ được lưu dưới định dạng <span class="emphasis"><em>maildir</em></span>; nếu không, định dạng <span class="emphasis"><em>mbox</em></span> truyền thống sẽ được sử dụng. Định dạng <span class="emphasis"><em>maildir</em></span> sử dụng toàn bộ một thư mục để lưu trữ một hộp thư, mỗi tin nhắn một được lưu trong một tập tin độc lập." Ngược lại, dưới định dạng <span class="emphasis"><em>mbox</em></span>, toàn bộ hộp thư điện tử được lưu trong một tập tin, và mỗi dòng bắt đầu bằng “<code class="literal">From </code>” (<code class="literal">From</code> theo sau bởi khoảng trắng) báo hiệu tiếp theo là một thông điệp mới.
 				</p>
 				 <div class="example" id="id-1.14.4.8.7.10"><a xmlns="" id="id-1.14.4.8.7.10"/><p class="title"><strong>Ví dụ 11.5. Tập tin <code class="filename">/etc/postfix/vmailbox</code></strong></p><div class="example-contents">
 					
@@ -324,32 +324,31 @@ smtpd_helo_restrictions = permit_mynetworks,
 				</p>
 
 			</section>
-			 <section class="section" id="id-1.14.4.9.6"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.6"/>11.1.3.3. Accepting or Refusing Based on the Announced Sender</h4></div></div></div>
+			 <section class="section" id="id-1.14.4.9.6"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.6"/>11.1.3.3. Chấp nhận hoặc Từ chối dựa trên Người gửi Được công bố</h4></div></div></div>
 				
 				 <p>
-					Every message has a sender, announced by the <code class="literal">MAIL FROM</code> command of the SMTP protocol; again, this information can be validated in several different ways.
+					Mỗi tin nhắn đều có một người gửi, được thông báo bởi lệnh <code class="literal">MAIL FROM</code> của giao thức SMTP; một lần nữa, thông tin này có thể được kiểm tra bằng nhiều cách.
 				</p>
 				 <a id="id-1.14.4.9.6.3" class="indexterm"></a>
 				 <a id="id-1.14.4.9.6.4" class="indexterm"></a>
-				 <div class="example" id="id-1.14.4.9.6.5"><a xmlns="" id="id-1.14.4.9.6.5"/><p class="title"><strong>Ví dụ 11.8. Sender checks</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.9.6.5"><a xmlns="" id="id-1.14.4.9.6.5"/><p class="title"><strong>Ví dụ 11.8. Kiểm tra dựa trên người gửi</strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 smtpd_sender_restrictions = 
     check_sender_access hash:/etc/postfix/access_sender,
     reject_unknown_sender_domain, reject_unlisted_sender,
-    reject_non_fqdn_sender
-</pre>
+    reject_non_fqdn_sender</pre>
 
 				</div></div>
 				 <p>
-					The <code class="filename">/etc/postfix/access_sender</code> table maps some special treatment to some senders. This usually means listing some senders into a white list or a black list.
+					Bảng <code class="filename">/etc/postfix/access_sender</code> ánh xạ một số cách xử lý đặc biệt với một số người gửi.
 				</p>
 				 <p>
-					The <code class="literal">reject_unknown_sender_domain</code> rule requires a valid sender domain, since it is needed for a valid address. The <code class="literal">reject_unlisted_sender</code> rule rejects local senders if the address does not exist; this prevents emails from being sent from an invalid address in the <code class="literal">falcot.com</code> domain, and messages emanating from <code class="literal">joe.bloggs@falcot.com</code> are only accepted if such an address really exists.
+					Quy tắc <code class="literal">reject_unknown_sender_domain</code> buộc phải có một miền người gửi hợp lệ, bởi vì điều đó là cần thiết cho một điạ chỉ hợp lệ. Quy tắc <code class="literal">reject_unlisted_sender</code> từ chối những người gửi nội bộ nếu địa chỉ đó không tồn tại; điều này chống các thư điện tử khỏi việc bị gửi từ một địa chỉ không hợp lệ trong miền <code class="literal">falcot.com</code>, và những thông điệp xuất phát từ <code class="literal">joe.bloggs@falcot.com</code> chỉ được nhận nếu địa chỉ đó thực sự tồn tại.
 				</p>
 				 <p>
-					Finally, the <code class="literal">reject_non_fqdn_sender</code> rule rejects emails purporting to come from addresses without a fully-qualified domain name. In practice, this means rejecting emails coming from <code class="literal">user@machine</code>: the address must be announced as either <code class="literal">user@machine.example.com</code> or <code class="literal">user@example.com</code>.
+					Cuối cùng, quy tắc <code class="literal">reject_non_fqdn_sender</code> từ chối những thư điện tử tự cho là xuất phát từ những địa chỉ không có một tên miền đầy đủ và hợp lệ. Trên thực tế, điều này đồng nghĩa với việc từ chối những thư điện tử đến từ <code class="literal">user@machine</code>: địa chỉ phải được công bố như <code class="literal">user@machine.example.com</code> hay <code class="literal">user@example.com</code>.
 				</p>
 
 			</section>
