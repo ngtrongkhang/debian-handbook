@@ -376,22 +376,21 @@ smtpd_recipient_restrictions = permit_mynetworks,
 				</p>
 
 			</section>
-			 <section class="section" id="id-1.14.4.9.8"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.8"/>11.1.3.5. Restrictions Associated with the <code class="literal">DATA</code> Command</h4></div></div></div>
+			 <section class="section" id="id-1.14.4.9.8"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.8"/>11.1.3.5. Những giới hạn liên quan tới lệnh <code class="literal">DATA</code></h4></div></div></div>
 				
 				 <p>
-					The <code class="literal">DATA</code> command of SMTP is emitted before the contents of the message. It doesn't provide any information per se, apart from announcing what comes next. It can still be subjected to checks.
+					Lệnh <code class="literal">DATA</code> của SMTP được xuất ra trước nội dung của thông điệp. Nó không cung cấp bất kỳ thông tin nào khác, ngoài việc công bố những gì xuất hiện tiếp theo. Nó vẫn có thể bị kiểm tra.
 				</p>
 				 <a id="id-1.14.4.9.8.3" class="indexterm"></a>
-				 <div class="example" id="id-1.14.4.9.8.4"><a xmlns="" id="id-1.14.4.9.8.4"/><p class="title"><strong>Ví dụ 11.10. <code class="literal">DATA</code> checks</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.9.8.4"><a xmlns="" id="id-1.14.4.9.8.4"/><p class="title"><strong>Ví dụ 11.10. Những lần kiểm tra <code class="literal">DATA</code></strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
-smtpd_data_restrictions = reject_unauth_pipelining
-</pre>
+smtpd_data_restrictions = reject_unauth_pipelining</pre>
 
 				</div></div>
 				 <p>
-					The <code class="literal">reject_unauth_pipelining</code> directives causes the message to be rejected if the sending party sends a command before the reply to the previous command has been sent. This guards against a common optimization used by spammer robots, since they usually don't care a fig about replies and only focus on sending as many emails as possible in as short a time as possible.
+					Những chỉ thị <code class="literal">reject_unauth_pipelining</code> làm cho thông điệp bị từ chối nếu bên gửi gửi ra một lệnh trước khi câu trả lời cho một lệnh trước đó được gửi ra. Điều này phòng chống được một loại tối ưu hóa phổ biến được sử dụng bởi các rô-bốt spammer, bởi chúng thường không quan tâm gì về những câu trả lời và chỉ tập trung vào việc gửi càng nhiều thư điện tử càng tốt và trong thời gian ngắn nhất có thể.
 				</p>
 
 			</section>
