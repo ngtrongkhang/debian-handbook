@@ -215,7 +215,7 @@ virtual_mailbox_base = /var/mail/vhosts</pre>
 
 				</div></div>
 				 <p>
-					Một lần nữa, cú pháp của tập tin <code class="filename">/etc/postfix/vmailbox</code> khá dễ hiểu: hai trường tách ra bởi một khoảng trắng. Trường đầu tiên là một địa chỉ thư điện thử nằm trong một trong số những miền ảo, và trường thứ hai là địa chỉ của hộp thư tương ứng (địa chỉ tương đối so với thư mục được chỉ ra trong <span class="emphasis"><em>virtual_mailbox_base</em></span>). Nếu tên hộp thư điện tử kết thúc bằng một dấu xuyệt (<code class="literal">/</code>), những thư điện tử sẽ được lưu dưới định dạng <span class="emphasis"><em>maildir</em></span>; nếu không, định dạng <span class="emphasis"><em>mbox</em></span> truyền thống sẽ được sử dụng. Định dạng <span class="emphasis"><em>maildir</em></span> sử dụng toàn bộ một thư mục để lưu trữ một hộp thư, mỗi tin nhắn một được lưu trong một tập tin độc lập." Ngược lại, dưới định dạng <span class="emphasis"><em>mbox</em></span>, toàn bộ hộp thư điện tử được lưu trong một tập tin, và mỗi dòng bắt đầu bằng “<code class="literal">From </code>” (<code class="literal">From</code> theo sau bởi khoảng trắng) báo hiệu tiếp theo là một thông điệp mới.
+					Again, the syntax of the <code class="filename">/etc/postfix/vmailbox</code> file is quite straightforward: two fields separated with whitespace. The first field is an email address within one of the virtual domains, and the second field is the location of the associated mailbox (relative to the directory specified in <span class="emphasis"><em>virtual_mailbox_base</em></span>). If the mailbox name ends with a slash (<code class="literal">/</code>), the emails will be stored in the <span class="emphasis"><em>maildir</em></span> format; otherwise, the traditional <span class="emphasis"><em>mbox</em></span> format will be used. The <span class="emphasis"><em>maildir</em></span> format uses a whole directory to store a mailbox, each individual message being stored in a separate file. In the <span class="emphasis"><em>mbox</em></span> format, on the other hand, the whole mailbox is stored in one file, and each line starting with “<code class="literal">From </code>” (<code class="literal">From</code> followed by a space) signals the start of a new message.
 				</p>
 				 <div class="example" id="id-1.14.4.8.7.10"><a xmlns="" id="id-1.14.4.8.7.10"/><p class="title"><strong>Ví dụ 11.5. Tập tin <code class="filename">/etc/postfix/vmailbox</code></strong></p><div class="example-contents">
 					
@@ -295,14 +295,14 @@ smtpd_client_restrictions = permit_mynetworks,
 				</p>
 				 </div>
 			</section>
-			 <section class="section" id="id-1.14.4.9.5"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.5"/>11.1.3.2. Checking the Validity of the <code class="literal">EHLO</code> or <code class="literal">HELO</code> Commands</h4></div></div></div>
+			 <section class="section" id="id-1.14.4.9.5"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.5"/>11.1.3.2. Kiểm tra Sự hợp lệ của các lệnh <code class="literal">EHLO</code> hay <code class="literal">HELO</code></h4></div></div></div>
 				
 				 <p>
-					Each SMTP exchange starts with a <code class="literal">HELO</code> (or <code class="literal">EHLO</code>) command, followed by the name of the sending email server; checking the validity of this name can be interesting.
+					Mỗi giao tiếp SMTP bắt đầu bằng một lệnh <code class="literal">HELO</code> (hoặc <code class="literal">EHLO</code>), theo sau bởi tên của một máy phục vụ thư điện tử gửi tới; kiểm tra sự hợp lệ của tên này có thể thú vị.
 				</p>
 				 <a id="id-1.14.4.9.5.3" class="indexterm"></a>
 				 <a id="id-1.14.4.9.5.4" class="indexterm"></a>
-				 <div class="example" id="id-1.14.4.9.5.5"><a xmlns="" id="id-1.14.4.9.5.5"/><p class="title"><strong>Ví dụ 11.7. Restrictions on the name announced in <code class="literal">EHLO</code></strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.9.5.5"><a xmlns="" id="id-1.14.4.9.5.5"/><p class="title"><strong>Ví dụ 11.7. Giới hạn về tên được công bố trong <code class="literal">EHLO</code></strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
@@ -310,18 +310,17 @@ smtpd_helo_restrictions = permit_mynetworks,
     reject_invalid_hostname,
     check_helo_access hash:/etc/postfix/access_helo,
     reject_non_fqdn_hostname,
-    warn_if_reject reject_unknown_hostname
-</pre>
+    warn_if_reject reject_unknown_hostname</pre>
 
 				</div></div>
 				 <p>
-					The first <code class="literal">permit_mynetworks</code> directive allows all machines on the local network to introduce themselves freely. This is important, because some email programs do not respect this part of the SMTP protocol adequately enough, and they can introduce themselves with nonsensical names.
+					Chỉ thị đầu tiên <code class="literal">permit_mynetworks</code> cho phép tất cả các máy tính trên mạng nội bộ được tự giới thiệu một cách thoải mái. Đó là điều quan trọng, bởi vì một vài chương trình thư điện tử không tôn trọng phần này của nghi thức SMTP một cách đủ nghiêm túc, và họ có thể tự trình diện với những tên không hợp lệ.
 				</p>
 				 <p>
-					The <code class="literal">reject_invalid_hostname</code> rule rejects emails when the <code class="literal">EHLO</code> announce lists a syntactically incorrect hostname. The <code class="literal">reject_non_fqdn_hostname</code> rule rejects messages when the announced hostname is not a fully-qualified domain name (including a domain name as well as a host name). The <code class="literal">reject_unknown_hostname</code> rule rejects messages if the announced name does not exist in the DNS. Since this last rule unfortunately leads to too many rejections, the administrators turned its effect to a simple warning with the <code class="literal">warn_if_reject</code> modifier as a first step; they may decide to remove this modifier at a later stage, after auditing the results of this rule.
+					Quy tắc <code class="literal">reject_invalid_hostname</code> từ chối những thư điện tử khi <code class="literal">EHLO</code> công bố cho các danh sách một tên máy tính sai cú pháp. Quy tắc <code class="literal">reject_non_fqdn_hostname</code> từ chối những thông điệp khi tên máy tính được công bố không phải là một tên miền hoàn toàn đầy đủ và hợp lệ (bao gồm một tên miền và và một tên máy). Quy tắc <code class="literal">reject_unknown_hostname</code> từ chối những thông điệp nếu tên được công bố không tồn tại trong dns. Vì quy tắc cuối này không may dẫn đến quá nhiều sự từ chối, các nhà quản trị hệ thống thay hệ quả của nó bằng một cảnh báo đơn giản với tiền tố này <code class="literal">warn_if_reject</code> như là bước đầu tiên; họ có thể quyết định xóa bỏ tiền tố này ở các bước sau đó sau khi theo dõi những những kết quả của quy tắc này.
 				</p>
 				 <p>
-					Using <code class="literal">permit_mynetworks</code> as the first rule has an interesting side effect: the following rules only apply to hosts outside the local network. This allows blacklisting all hosts that announce themselves as part of the <code class="literal">falcot.com</code>, for instance by adding a <code class="literal">falcot.com REJECT You are not in our network!</code> line to the <code class="filename">/etc/postfix/access_helo</code> file.
+					Sử dụng <code class="literal">permit_mynetworks</code> như là quy tắc đầu tiên có một tác dụng phụ thú vị: những quy tắc đứng phía sau chỉ chỉ áp dụng được với những máy tính nằm ngoài mạng nội bộ. Điều này cho phép đưa vào danh sách đen tất cả những máy tính công bố với bên ngoài rằng chúng là một phần của <code class="literal">falcot.com</code>, ví dụ như bằng cách thêm dòng <code class="literal">falcot.com REJECT You are not in our network!</code> vào tập tin <code class="filename">/etc/postfix/access_helo</code>.
 				</p>
 
 			</section>
