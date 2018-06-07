@@ -407,49 +407,47 @@ smtpd_data_restrictions = reject_unauth_pipelining</pre>
 				</p>
 
 			</section>
-			 <section class="section" id="id-1.14.4.9.10"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.10"/>11.1.3.7. Filtering Based on the Message Contents</h4></div></div></div>
+			 <section class="section" id="id-1.14.4.9.10"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.4.9.10"/>11.1.3.7. Lọc dựa trên nội dung thông điệp</h4></div></div></div>
 				
 				 <p>
-					The validation and restriction system would not be complete without a way to apply checks to the message contents. Postfix differentiates the checks applying to the email headers from those applying to the email body.
+					Hệ thống kiểm soát giới hạn và kiểm tra tính hợp lệ sẽ không thể hoàn thiện nếu thiếu một cách để áp dụng những cách kiểm tra vào nội dung của thông điệp. Postfix phân biệt giữa những cách kiểm tra vào những tiêu đề(headers) của thư điện tử và những cách kiểm tra áp dụng vào nội dung(body) thư điện tử.
 				</p>
-				 <div class="example" id="id-1.14.4.9.10.3"><a xmlns="" id="id-1.14.4.9.10.3"/><p class="title"><strong>Ví dụ 11.11. Enabling content-based filters</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.4.9.10.3"><a xmlns="" id="id-1.14.4.9.10.3"/><p class="title"><strong>Ví dụ 11.11. Kích hoạt các bộ lọc dựa trên nội dung</strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 header_checks = regexp:/etc/postfix/header_checks
-body_checks = regexp:/etc/postfix/body_checks
-</pre>
+body_checks = regexp:/etc/postfix/body_checks</pre>
 
 				</div></div>
 				 <a id="id-1.14.4.9.10.4" class="indexterm"></a>
 				 <p>
-					Both files contain a list of regular expressions (commonly known as <span class="emphasis"><em>regexps</em></span> or <span class="emphasis"><em>regexes</em></span>) and associated actions to be triggered when the email headers (or body) match the expression.
+					Cả hai tập tin đều chứa một danh sách các thành ngữ có quy tắc(regular expressions) (thông thường được biết đến như là <span class="emphasis"><em>regexps</em></span> hay <span class="emphasis"><em>regexes</em></span>) và những hành động có liên quan chờ được kích hoạt khi các tiêu đề của thư điện tử (hoặc nội dung thư) ghép đúng với thành ngữ đó.
 				</p>
-				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>QUICK LOOK</em></span> Regexp tables</strong></p></div></div></div> 
+				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SƠ BỘ</em></span> Các bảng Regexp</strong></p></div></div></div> 
 				 <p>
-					The <code class="filename">/usr/share/doc/postfix-doc/examples/header_checks.gz</code> file contains many explanatory comments and can be used as a starting point for creating the <code class="filename">/etc/postfix/header_checks</code> and <code class="filename">/etc/postfix/body_checks</code> files.
+					Tập tin <code class="filename">/usr/share/doc/postfix-doc/examples/header_checks.gz</code> chứa những ghi chú đọc là hiểu và có thể được sử dụng như nơi bắt đầu để tạo ra các tập tin <code class="filename">/etc/postfix/header_checks</code> và <code class="filename">/etc/postfix/body_checks</code>.
 				</p>
-				 </div> <div class="example" id="id-1.14.4.9.10.7"><a xmlns="" id="id-1.14.4.9.10.7"/><p class="title"><strong>Ví dụ 11.12. Example <code class="filename">/etc/postfix/header_checks</code> file</strong></p><div class="example-contents">
+				 </div> <div class="example" id="id-1.14.4.9.10.7"><a xmlns="" id="id-1.14.4.9.10.7"/><p class="title"><strong>Ví dụ 11.12. Ví dụ cho tập tin <code class="filename">/etc/postfix/header_checks</code></strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
-/^X-Mailer: GOTO Sarbacane/ REJECT I fight spam (GOTO Sarbacane)
-/^Subject: *Your email contains VIRUSES/ DISCARD virus notification
-</pre>
+/^X-Mailer: GOTO Sarbacane/ REJECT Tôi chống lại thư rác (GOTO Sarbacane)
+/^Subject: *Thư của bạn chứa VI-RÚT/ DISCARD cảnh báo vi-rút</pre>
 
 				</div></div>
-				 <div class="sidebar" id="sidebar.regexp"><a xmlns="" id="sidebar.regexp"/><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> Regular expression</strong></p></div></div></div> 
+				 <div class="sidebar" id="sidebar.regexp"><a xmlns="" id="sidebar.regexp"/><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TRỞ VỀ CƠ BẢN</em></span> Thành ngữ có quy tắc(Regular expression)</strong></p></div></div></div> 
 				 <p>
-					The <span class="emphasis"><em>regular expression</em></span> term (shortened to <span class="emphasis"><em>regexp</em></span> or <span class="emphasis"><em>regex</em></span>) references a generic notation for expressing a description of the contents and/or structure of a string of characters. Certain special characters allow defining alternatives (for instance, <code class="literal">foo|bar</code> matches either “foo” or “bar”), sets of allowed characters (for instance, <code class="literal">[0-9]</code> means any digit, and <code class="literal">.</code> — a dot — means any character), quantifications (<code class="literal">s?</code> matches either <code class="literal">s</code> or the empty string, in other words 0 or 1 occurrence of <code class="literal">s</code>; <code class="literal">s+</code> matches one or more consecutive <code class="literal">s</code> characters; and so on). Parentheses allow grouping search results.
+					Cụm từ <span class="emphasis"><em>thành ngữ có quy tắc(regular expression)</em></span> (viết tắt là <span class="emphasis"><em>regexp</em></span> hoặc <span class="emphasis"><em>regex</em></span>) sử dụng một cách viết chung để biểu thị một mô tả của những nội dung và/hoặc cấu trúc của một chuỗi của các ký tự. Một vài ký tự đặc biệt cho phép việc định nghĩa các lựa chọn khác (ví dụ, <code class="literal">foo|bar</code> sẽ bắt(matches) “foo“ hoặc “bar“), những tập hợp của các ký tự cho phép (ví dụ như <code class="literal">[0-9]</code> nghĩa là bất kỳ chữ số nào, và <code class="literal">.</code> — một dấu chấm — nghĩa là bất kỳ ký tự nào), số lượng (<code class="literal">s?</code> bắt <code class="literal">s</code> hoặc một chuỗi ký tự trống, nói cách khác 0 hoặc 1 lần <code class="literal">s</code>; <code class="literal">s+</code> bắt một hoặc nhiều hơn một những chữ <code class="literal">s</code> đứng liền nhau; và vâng vâng). Các dấu ngoặc cho phép nhóm các kết quả tìm kiếm.
 				</p>
 				 <p>
-					The precise syntax of these expressions varies across the tools using them, but the basic features are similar. <a class="ulink" href="http://en.wikipedia.org/wiki/Regular_expression">http://en.wikipedia.org/wiki/Regular_expression</a>
+					Cú pháp chính xác của những thành ngữ này thay đổi khi được sử dụng bởi các công cụ sử dụng chúng, nhưng các tính năng cơ bản là tương tự nhau. <a class="ulink" href="http://en.wikipedia.org/wiki/Regular_expression">http://en.wikipedia.org/wiki/Regular_expression</a>
 				</p>
 				 </div> <p>
-					The first one checks the header mentioning the email software; if <code class="literal">GOTO Sarbacane</code> (a bulk email software) is found, the message is rejected. The second expression controls the message subject; if it mentions a virus notification, we can decide not to reject the message but to discard it immediately instead.
+					Thành ngữ đầu tiên kiểm tra tiêu đề(headers) vốn đề cập đến phần mềm thư điện tử; nếu <code class="literal">GOTO Sarbacane</code> (một phần mềm thư điện tử cồng kềnh) được tìm thấy, thông điệp sẽ bị từ chối. Thành ngữ thứ hai kiểm soát tên(subject) của thư; nếu nó đề cập một cảnh báo vi-rút, chúng ta có thể quyết định không từ chối(reject) thông điệp mà hủy(discard) nó ngay lập tức.
 				</p>
 				 <p>
-					Using these filters is a double-edged sword, because it is easy to make the rules too generic and to lose legitimate emails as a consequence. In these cases, not only the messages will be lost, but their senders will get unwanted (and annoying) error messages.
+					Sử dụng những bộ lọc này là con dao hai lưỡi, bởi vì nó rất dễ làm các quy tắc trở nên quá chung chung và dẫn đến việc mất các thư điện tử hợp lệ. Trong những trường hợp này, không chỉ những thông điệp bị mất, mà cả những người gửi của chúng cũng sẽ nhận những thông điệp báo lỗi không muốn có và rất phiền phức.
 				</p>
 
 			</section>
