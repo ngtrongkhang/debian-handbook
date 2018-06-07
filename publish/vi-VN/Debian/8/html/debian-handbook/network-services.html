@@ -453,57 +453,56 @@ body_checks = regexp:/etc/postfix/body_checks</pre>
 			</section>
 
 		</section>
-		 <section class="section" id="sect.setting-up-greylisting"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.setting-up-greylisting"/>11.1.4. Setting Up <span class="foreignphrase"><em class="foreignphrase">greylisting</em></span></h3></div></div></div>
+		 <section class="section" id="sect.setting-up-greylisting"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.setting-up-greylisting"/>11.1.4. Cài đặt <span class="foreignphrase"><em class="foreignphrase">đánh dấu xám</em></span></h3></div></div></div>
 			
 			 <a id="id-1.14.4.10.2" class="indexterm"></a>
 			 <p>
-				“Greylisting” is a filtering technique according to which a message is initially rejected with a temporary error code, and only accepted on a further try after some delay. This filtering is particularly efficient against spam sent by the many machines infected by worms and viruses, since this software rarely acts as a full SMTP agent (by checking the error code and retrying failed messages later), especially since many of the harvested addresses are really invalid and retrying would only mean losing time.
+				“Đánh dấu xám” là một kĩ thuật lọc dựa trên thông điệp nào bị từ chối lần đầu tiên với một mã lỗi tạm thời, và chỉ nhận trong lần sau đó sau một khoảng thời gian chờ. Việc lọc này là hiệu quả cực kỳ với những thư rác gửi ra những máy tính bị nhiễm sâu và vi-rút, bởi các phần mềm độc hại này ít khi hoạt động như là một chương trình SMTP đầy đủ(bằng việc kiểm tra mã lỗi và thử lại sau đó các thông điệp bị lỗi khi gửi), đặc biệt bởi vì nhiều địa chỉ thu lại được rất bất hợp lệ và việc thử lại chỉ mất thời gian.
 			</p>
 			 <p>
-				Postfix doesn't provide greylisting natively, but there is a feature by which the decision to accept or reject a given message can be delegated to an external program. The <span class="pkg pkg">postgrey</span> package contains just such a program, designed to interface with this access policy delegation service.
+				Postfix không cung cấp sẵn việc đánh dấu xám, nhưng có một tính năng mà dựa trên đó một quyết định để nhận hay từ chối một thông điệp có thể được chuyển giao cho một chương trình bên ngoài. Gói phần mềm <span class="pkg pkg">postgrey</span> chứa một chương trình như vậy, được thiết kế để giao tiếp với một dịch vụ chuyển giao quyền kiểm soát truy cập này.
 			</p>
 			 <p>
-				Once <span class="pkg pkg">postgrey</span> is installed, it runs as a daemon and listens on port 10023. Postfix can then be configured to use it, by adding the <code class="literal">check_policy_service</code> parameter as an extra restriction:
+				Một khi <span class="pkg pkg">postgrey</span> đã được cài đặt, nó chạy như là một tiến trình nền và lắng nghe tín hiệu trên cổng 100023. Postfix sau đó có thể được cấu hình để sử dụng nó, bằng việc thêm tham biến <code class="literal">check_policy_service</code> như là một giới hạn thêm:
 			</p>
 			 
 <pre class="programlisting">
 smtpd_recipient_restrictions = permit_mynetworks,
     [...]
-    check_policy_service inet:127.0.0.1:10023
-</pre>
+    check_policy_service inet:127.0.0.1:10023</pre>
 			 <p>
-				Each time Postfix reaches this rule in the ruleset, it will connect to the <span class="command"><strong>postgrey</strong></span> daemon and send it information concerning the relevant message. On its side, Postgrey considers the IP address/sender/recipient triplet and checks in its database whether that same triplet has been seen recently. If so, Postgrey replies that the message should be accepted; if not, the reply indicates that the message should be temporarily rejected, and the triplet gets recorded in the database.
+				Mỗi lần Postfix nhảy đến quy tắc này trong tập hợp các quy tắc, nó sẽ kết nối tới tiến trình nền <span class="command"><strong>postgrey</strong></span> và gửi ra thông tin liên quan đến thông điệp cần sự chú ý. Bên phần của nó, Postgrey xem xét bộ ba địa chỉ IP/người gửi/người nhận và kiểm tra trong cơ sở dữ liệu của nó xem có một bộ ba y hệt như vậy được nhìn thấy trước đây chưa. Nếu đúng là như vậy, Postgrey trả lời lại rằng thông điệp này nên được nhận; nếu không, câu trả lời cho rằng thông điệp nên bị tạm thời từ chối, và bộ ba này sẽ được ghi lại vào trong cơ sở dữ liệu.
 			</p>
 			 <p>
-				The main disadvantage of greylisting is that legitimate messages get delayed, which is not always acceptable. It also increases the burden on servers that send many legitimate emails.
+				Bất lợi chính của đánh dấu xám là những thông điệp hợp lệ sẽ bị trễ, vốn không phải lúc nào cũng chấp nhận được. Nó cũng tăng lượng công việc cho các máy phục vụ vốn gửi ra các thư điện tử hợp lệ.
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>IN PRACTICE</em></span> Shortcomings of greylisting</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TRÊN THỰC TẾ</em></span> Những điểm yếu của đánh dấu xám</strong></p></div></div></div> 
 			 <p>
-				Theoretically, greylisting should only delay the first mail from a given sender to a given recipient, and the typical delay is in the order of minutes. Reality, however, can differ slightly. Some large ISPs use clusters of SMTP servers, and when a message is initially rejected, the server that retries the transmission may not be the same as the initial one. When that happens, the second server gets a temporary error message due to greylisting too, and so on; it may take several hours until transmission is attempted by a server that has already been involved, since SMTP servers usually increase the delay between retries at each failure.
-			</p>
-			 <p>
-				As a consequence, the incoming IP address may vary in time even for a single sender. But it goes further: even the sender address can change. For instance, many mailing-list servers encode extra information in the sender address so as to be able to handle error messages (known as <span class="emphasis"><em>bounces</em></span>). Each new message sent to a mailing-list may then need to go through greylisting, which means it has to be stored (temporarily) on the sender's server. For very large mailing-lists (with tens of thousands of subscribers), this can soon become a problem.
+				Về lý thuyết, việc đánh dấu xảm chỉ nền làm trễ thư điện tử đầu tiên từ một người gửi nào đó đến một người nhận nào đó, và sự trễ đặc trưng này thường trong tầm vài phút. Tuy nhiên, thực tế có thể khác biệt đôi chút. Một vài ISP lớn sử dụng nhiều cụm máy phục vụ SMTP, và khi một thông điện được từ chối lần đầu tiên, máy phục vụ nhận nhiệm vụ thử gửi lại sẽ không phải là máy phục vụ gửi thư đi lần đầu tiên. Khi điều đó xảy ra, máy phục vụ thứ hai sẽ nhận một thông điệp lỗi tạm thời cũng do đánh dấu xám, và vâng vâng; nó có thể mất vài giờ cho đến khi việc gửi được thử lại bởi một máy phục vụ đã tham gia vào trước đó, bởi các máy phục vụ SMTP thường tăng thời gian chờ giữa những lần thử lại khi gặp sự cố.
 			</p>
 			 <p>
-				To mitigate these drawbacks, Postgrey manages a whitelist of such sites, and messages emanating from them are immediately accepted without going through greylisting. This list can easily be adapted to local needs, since it is stored in the <code class="filename">/etc/postgrey/whitelist_clients</code> file.
-			</p>
-			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>GOING FURTHER</em></span> Selective greylisting with <span class="pkg pkg">milter-greylist</span></strong></p></div></div></div> 
-			 <p>
-				The drawbacks of greylisting can be mitigated by only using greylisting on the subset of clients that are already considered as probable sources of spam (because they are listed in a DNS blacklist). This is not possible with <span class="pkg pkg">postgrey</span> but <span class="pkg pkg">milter-greylist</span> can be used in such a way.
+				Chính vì vậy, địa chỉ IP đến có thể thay đổi theo thời gian thậm chí chỉ với một người gửi duy nhất. Nó còn có thể đi xa hơn thế: thậm chí địa chỉ người gửi cũng có thể thay đổi. Ví dụ, nhiều máy phục vụ bó thư điện tử(mailing list) mã hóa thông tin trong địa chỉ người gửi để có thể xử lý thông điệp lỗi (được biết đến như là <span class="emphasis"><em>những lần dội lại(bounces)</em></span>). Mỗi thông điệp mới được gửi tới một bó thư điện tử có thể phải đi qua việc đánh dấu xám, vốn có nghĩa là nó phải được lưu lại (tạm thời) trên máy phục vụ của người gửi. Với những bó thư điện tử cực lớn (với hàng chục ngàn người đăng ký), điều này có thể trở thành một vấn đề.
 			</p>
 			 <p>
-				In that scenario, since DNS blacklists never triggers a definitive rejection, it becomes reasonable to use aggressive blacklists, including those listing all dynamic IP addresses from ISP clients (such as <code class="literal">pbl.spamhaus.org</code> or <code class="literal">dul.dnsbl.sorbs.net</code>).
+				Để chống lại những yếu điểm này, Postgrey quản lý một danh sách trắng với những trang sạch như vậy, và những thông điệp xuất phát từ chúng được nhận ngay lập tức mà không phải đi qua đánh dấu xám. Danh sách này có thể được điều chỉnh dễ dành để đáp ứng những nhu cầu nội bộ, bởi vì nó được lưu trong tập tin <code class="filename">/etc/postgrey/whitelist_clients</code>.
+			</p>
+			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TIẾN XA HƠN</em></span> Đánh dấu xám có chọn lọc với <span class="pkg pkg">milter-greylist</span></strong></p></div></div></div> 
+			 <p>
+				Những yếu điểm của đánh dấu xám có thể được chặn bởi việc sử dụng đánh dấu xám trên một tập hợp con những máy khách được cho là gốc của các thư rác (bởi chúng được liệt kê trong danh sách đen DNS). Điều này là không khả thi với <span class="pkg pkg">postgrey</span> nhưng <span class="pkg pkg">milter-greylist</span> có thể được sử dụng theo cách này.
 			</p>
 			 <p>
-				Since milter-greylist uses Sendmail's milter interface, the postfix side of its configuration is limited to “<code class="literal">smtpd_milters = unix:/var/run/milter-greylist/milter-greylist.sock</code>”. The <span class="citerefentry"><span class="refentrytitle">greylist.conf</span>
-				(5)</span> manual page documents <code class="filename">/etc/milter-greylist/greylist.conf</code> and the numerous ways to configure milter-greylist. You will also have to edit <code class="filename">/etc/default/milter-greylist</code> to actually enable the service.
+				Trong tình huống đó, bởi các danh sách đen DNS không bao giờ kích hoạt một sự từ chối tức thời, sẽ là có lý nếu sử dụng các danh sách đen mạnh hơn, bao gồm đưa vào danh sách những địa chỉ IP động của những khách hàng ISP (như là <code class="literal">pbl.spamhaus.org</code> hay <code class="literal">dul.dnsbl.sorbs.net</code>).
+			</p>
+			 <p>
+				Bởi milter-greylist sử dụng giao diện milter của Sendmail, phần postfix của nó bị giới hạn xuống “<code class="literal">smtpd_milters = unix:/var/run/milter-greylist/milter-greylist.sock</code>”. Trang hướng dẫn sử dụng <span class="citerefentry"><span class="refentrytitle">greylist.conf</span>
+				(5)</span> hướng dẫn về <code class="filename">/etc/milter-greylist/greylist.conf</code> và nhiều cách khác nhau để cấu hình milter-greylist. Bạn cũng sẽ phải chỉnh sửa <code class="filename">/etc/default/milter-greylist</code> để kích hoạt nó lên.
 			</p>
 			 </div>
 		</section>
 		 <section class="section" id="id-1.14.4.11"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.4.11"/>11.1.5. Customizing Filters Based On the Recipient</h3></div></div></div>
 			
 			 <p>
-				<a class="xref" href="network-services.html#sect.restrictions-for-receiving-and-sending" title="11.1.3. Giới hạn cho việc Nhận và Gửi">Phần 11.1.3, “Giới hạn cho việc Nhận và Gửi”</a> and <a class="xref" href="network-services.html#sect.setting-up-greylisting" title="11.1.4. Setting Up greylisting">Phần 11.1.4, “Setting Up <span class="foreignphrase"><em class="foreignphrase">greylisting</em></span>”</a> reviewed many of the possible restrictions. They all have their use in limiting the amount of received spam, but they also all have their drawbacks. It is therefore more and more common to customize the set of filters depending on the recipient. At Falcot Corp, greylisting is interesting for most users, but it hinders the work of some users who need low latency in their emails (such as the technical support service). Similarly, the commercial service sometimes has problems receiving emails from some Asian providers who may be listed in blacklists; this service asked for a non-filtered address so as to be able to correspond.
+				<a class="xref" href="network-services.html#sect.restrictions-for-receiving-and-sending" title="11.1.3. Giới hạn cho việc Nhận và Gửi">Phần 11.1.3, “Giới hạn cho việc Nhận và Gửi”</a> and <a class="xref" href="network-services.html#sect.setting-up-greylisting" title="11.1.4. Cài đặt đánh dấu xám">Phần 11.1.4, “Cài đặt <span class="foreignphrase"><em class="foreignphrase">đánh dấu xám</em></span>”</a> reviewed many of the possible restrictions. They all have their use in limiting the amount of received spam, but they also all have their drawbacks. It is therefore more and more common to customize the set of filters depending on the recipient. At Falcot Corp, greylisting is interesting for most users, but it hinders the work of some users who need low latency in their emails (such as the technical support service). Similarly, the commercial service sometimes has problems receiving emails from some Asian providers who may be listed in blacklists; this service asked for a non-filtered address so as to be able to correspond.
 			</p>
 			 <p>
 				Postfix provides such a customization of filters with a “restriction class” concept. The classes are declared in the <code class="literal">smtpd_restriction_classes</code> parameter, and defined the same way as <code class="literal">smtpd_recipient_restrictions</code>. The <code class="literal">check_recipient_access</code> directive then defines a table mapping a given recipient to the appropriate set of restrictions.
