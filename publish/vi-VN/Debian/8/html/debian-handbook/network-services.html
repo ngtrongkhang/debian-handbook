@@ -594,61 +594,58 @@ smtpd_milters = inet:[127.0.0.1]:10002</pre>
 			</p>
 
 		</section>
-		 <section class="section" id="sect.authenticated-smtp"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.authenticated-smtp"/>11.1.7. Authenticated SMTP</h3></div></div></div>
+		 <section class="section" id="sect.authenticated-smtp"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.authenticated-smtp"/>11.1.7. SMTP có chứng thực</h3></div></div></div>
 			
 			 <p>
-				Being able to send emails requires an SMTP server to be reachable; it also requires said SMTP server to send emails through it. For roaming users, this may need regularly changing the configuration of the SMTP client, since Falcot's SMTP server rejects messages coming from IP addresses apparently not belonging to the company. Two solutions exist: either the roaming user installs an SMTP server on their computer, or they still use the company server with some means of authenticating as an employee. The former solution is not recommended since the computer won't be permanently connected, and it won't be able to retry sending messages in case of problems; we will focus on the latter solution.
+				Việc có thể gửi thư điện tử buộc phải kết nối được tới máy phục vụ SMTP; nó cũng cần một máy phục vụ SMTP như vậy để gửi thư điện tử xuyên qua nó. Đối với những người sử dụng hay chuyển vùng, điều này cần phải thay đổi thường xuyên cấu hình của chương trình khách SMTP(SMTP client), bởi máy phục vụ SMTP của Falcot từ chối những thông điệp đến từ những địa chỉ IP rõ ràng không thuộc về công ty. Có hai giải pháp: hoặc người sử dụng chuyển vùng cài đặt một máy phục vụ SMTP trên máy của họ, hoặc họ vẫn sử dụng máy phục vụ của công ty với một cách nào đó để đăng nhập như một nhân viên công ty. Giải pháp đầu điên không được khuyến cáo bởi máy tính của họ không được kết nối liên tục, và nó sẽ không thể thử lại việc gửi các thông điệp trong trường hợp sự cố; chúng ta sẽ tập trung vào giải pháp tiếp theo.
 			</p>
 			 <p>
-				SMTP authentication in Postfix relies on SASL (<span class="emphasis"><em>Simple Authentication and Security Layer</em></span>). It requires installing the <span class="pkg pkg">libsasl2-modules</span> and <span class="pkg pkg">sasl2-bin</span> packages, then registering a password in the SASL database for each user that needs authenticating on the SMTP server. This is done with the <span class="command"><strong>saslpasswd2</strong></span> command, which takes several parameters. The <code class="literal">-u</code> option defines the authentication domain, which must match the <code class="literal">smtpd_sasl_local_domain</code> parameter in the Postfix configuration. The <code class="literal">-c</code> option allows creating a user, and <code class="literal">-f</code> allows specifying the file to use if the SASL database needs to be stored at a different location than the default (<code class="filename">/etc/sasldb2</code>).
+				Chứng thực SMTP trong Postfix dựa trên SASL ("<span class="emphasis"><em>Lớp Chứng thực và An ninh - Simple Authentication and Security Layer</em></span>). Nó đòi hỏi việc cài đặt các gói <span class="pkg pkg">libsasl2-modules</span> và <span class="pkg pkg">sasl2-bin</span>, sau đó phải đăng ký một mật mã trên cơ sở dữ liệu SASL cho mỗi người sử dụng cần đăng nhập trên máy phục vụ SMTP. Điều này được thực hiện bằng lệnh <span class="command"><strong>saslpasswd2</strong></span>, vốn cần một vài tham số. Lựa chọn <code class="literal">-u</code> định nghĩa một miền đăng nhập (authentication domain), vốn phải hợp với tham biến <code class="literal">smtpd_sasl_local_domain</code> của cấu hình Postfix. Lựa chọn <code class="literal">-c</code> cho phép tạo một người dùng, và <code class="literal">-f</code> cho phép chỉ định một tập tin để sử dụng nếu cơ sở dữ liệu SASL cần được lưu ở một địa chỉ không phải là địa chỉ ngầm định (<code class="filename">/etc/sasldb2</code>).
 			</p>
 			 
 <pre class="screen scale scale">
 <code class="computeroutput"># </code><strong class="userinput"><code>saslpasswd2 -u `postconf -h myhostname` -f /var/spool/postfix/etc/sasldb2 -c jean</code></strong>
 <code class="computeroutput">[... type jean's password twice ...]</code></pre>
 			 <p>
-				Note that the SASL database was created in Postfix's directory. In order to ensure consistency, we also turn <code class="filename">/etc/sasldb2</code> into a symbolic link pointing at the database used by Postfix, with the <span class="command"><strong>ln -sf /var/spool/postfix/etc/sasldb2 /etc/sasldb2</strong></span> command.
+				Ghi chú một điều rằng cơ sở dữ liệu SASL được tạo ra trước đó trong thư mục của Postfix. Để đảm bảo sự thống nhất, chúng ta cũng chuyển <code class="filename">/etc/sasldb2</code> thành một đường link tượng trưng (symbolic link) dẫn đến cơ sở dữ liệu sử dụng bởi Postfix, bằng lệnh <span class="command"><strong>ln -sf /var/spool/postfix/etc/sasldb2 /etc/sasldb2</strong></span>
 			</p>
 			 <p>
-				Now we need to configure Postfix to use SASL. First the <code class="literal">postfix</code> user needs to be added to the <code class="literal">sasl</code> group, so that it can access the SASL account database. A few new parameters are also needed to enable SASL, and the <code class="literal">smtpd_recipient_restrictions</code> parameter needs to be configured to allow SASL-authenticated clients to send emails freely.
+				Bây giờ chúng ta cần cấu hình Postfix để sử dụng SASL. Trước tiên, người dùng <code class="literal">postfix</code> cần được thêm vào nhóm <code class="literal">sasl</code>, để người dùng này có thể truy cập cơ sở dữ liệu tài khoản SASL. Một vài tham số mới cũng cần để kích hoạt SASL, và tham biến <code class="literal">smtpd_recipient_restrictions</code> cần phải được cấu hình để cho phép các vị khách đã được chứng thực thông qua SASL gửi thư điện tử một cách thoải mái.
 			</p>
-			 <div class="example" id="id-1.14.4.13.7"><a xmlns="" id="id-1.14.4.13.7"/><p class="title"><strong>Ví dụ 11.15. Enabling SASL in <code class="filename">/etc/postfix/main.cf</code></strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.4.13.7"><a xmlns="" id="id-1.14.4.13.7"/><p class="title"><strong>Ví dụ 11.15. Kích hoạt SASL trong <code class="filename">/etc/postfix/main.cf</code>"</strong></p><div class="example-contents">
 				
 				 
 <pre class="programlisting">
-# Enable SASL authentication
+# Kích hoạt chứng thực SASL
 smtpd_sasl_auth_enable = yes
-# Define the SASL authentication domain to use
+# Xác định miền chứng thực SASL để sử dụng (SASL authentication domain)
 smtpd_sasl_local_domain = $myhostname
 [...]
-# Adding permit_sasl_authenticated before reject_unauth_destination
-# allows relaying mail sent by SASL-authenticated users
+# Thêm permit_sasl_authenticated vào trước reject_unauth_destination
+# cho phép chuyển phát thư gửi bởi những người dùng đã được chứng thực qua SASL
 smtpd_recipient_restrictions = permit_mynetworks,
     permit_sasl_authenticated,
     reject_unauth_destination,
-[...]
-</pre>
+[...]</pre>
 
 			</div></div>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>EXTRA</em></span> Authenticated SMTP client</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>THÔNG TIN THÊM</em></span> Chương trình khách SMTP đã được chứng thực</strong></p></div></div></div> 
 			 <p>
-				Most email clients are able to authenticate to an SMTP server before sending outgoing messages, and using that feature is a simple matter of configuring the appropriate parameters. If the client in use does not provide that feature, the workaround is to use a local Postfix server and configure it to relay email via the remote SMTP server. In this case, the local Postfix itself will be the client that authenticates with SASL. Here are the required parameters:
+				Đa số những chương trình khách thư điện tử có thể chứng thực với một máy phục vụ SMTP trước khi gửi các thông điệp ra ngoài, và sử dụng tính năng này đơn giản chỉ cần cấu hình những tham số phù hợp. Nếu chương trình khách đang được sử dụng đó không cung cấp tính năng đó, cách khác là sử dụng một máy phục vụ Postfix nội bộ và cấu hình nó để chuyển phát thư điện tử thông qua máy phục vụ SMTP. Trong trường hợp này, chính máy Postfix nội bộ sẽ là chương trình khách chứng thực thông qua SASL. Sau đây là những thông số bắt buộc:
 			</p>
 			 
 <pre class="programlisting">
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
-relay_host = [mail.falcot.com]
-</pre>
+relay_host = [mail.falcot.com]</pre>
 			 <p>
-				The <code class="filename">/etc/postfix/sasl_passwd</code> file needs to contain the username and password to use for authenticating on the <code class="literal">mail.falcot.com</code> server. Here is an example:
+				Tập tin <code class="filename">/etc/postfix/sasl_passwd</code> cần phải chứa một tên tài khoản và mật mã để sử dụng tính năng chứng thực trên máy phục vụ <code class="literal">mail.falcot.com</code>. Sau đây là một ví dụ:
 			</p>
 			 
 <pre class="programlisting">
-[mail.falcot.com]   joe:LyinIsji
-</pre>
+[mail.falcot.com]   joe:LyinIsji</pre>
 			 <p>
-				As for all Postfix maps, this file must be turned into <code class="filename">/etc/postfix/sasl_passwd.db</code> with the <span class="command"><strong>postmap</strong></span> command.
+				Giống như tất cả các ánh xạ Postfix(Postfix maps), tập tin này phải được chuyển thành <code class="filename">/etc/postfix/sasl_passwd.db</code> với lệnh <span class="command"><strong>postmap</strong></span>.
 			</p>
 			 </div>
 		</section>
