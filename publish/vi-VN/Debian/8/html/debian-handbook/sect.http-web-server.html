@@ -61,43 +61,43 @@
 			 <a id="id-1.14.5.9.9.6" class="indexterm"></a>
 			 </div>
 		</section>
-		 <section class="section" id="id-1.14.5.10"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.5.10"/>11.2.2. Configuring Virtual Hosts</h3></div></div></div>
+		 <section class="section" id="id-1.14.5.10"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.5.10"/>11.2.2. Cấu hình các máy ảo</h3></div></div></div>
 			
 			 <p>
-				A virtual host is an extra identity for the web server.
+				Một máy ảo là một danh xưng thêm cho một máy phục vụ.
 			</p>
 			 <a id="id-1.14.5.10.3" class="indexterm"></a>
 			 <p>
-				Apache considers two different kinds of virtual hosts: those that are based on the IP address (or the port), and those that rely on the domain name of the web server. The first method requires allocating a different IP address (or port) for each site, whereas the second one can work on a single IP address (and port), and the sites are differentiated by the hostname sent by the HTTP client (which only works in version 1.1 of the HTTP protocol — fortunately that version is old enough that all clients use it already).
+				Apache có hai loại máy ảo khác nhau: một loại dựa trên địa chỉ IP (hoặc cổng), và một loại dựa trên tên miền của máy phục vụ web. Phương thức đầu tiên cần tạo một địa chỉ IP khác nhau (hay cổng) cho mỗi trang, trong khi phương thức số hai có thể hoạt động với một địa chỉ IP (và cổng) duy nhất, và những trang phân biệt bởi tên máy gửi bởi chương trình khách HTTP (vốn chỉ hoạt động tốt với phiên bản 1.1 của nghi thức HTTP - may mắn rằng phiên bản này đủ lâu để tất cả các chương trình khách đã sử dụng nó lâu rồi).
 			</p>
 			 <p>
-				The (increasing) scarcity of IPv4 addresses usually favors the second method; however, it is made more complex if the virtual hosts need to provide HTTPS too, since the SSL protocol hasn't always provided for name-based virtual hosting; the SNI extension (<span class="emphasis"><em>Server Name Indication</em></span>) that allows such a combination is not handled by all browsers. When several HTTPS sites need to run on the same server, they will usually be differentiated either by running on a different port or on a different IP address (IPv6 can help there).
+				Sự khan hiếm ngày càng tăng của các địa chỉ IPv4 dẫn đến sự ưu tiên của phương thức số hai; tuy nhiên, nó được làm cho phức tạp hơn nếu các máy ảo cần cung cung cấp HTTPS, bởi vì giao thức SSL không luôn luôn cung cấp lưu trữ ảo dựa trên tên; phần mở rộng SNI (<span class="emphasis"><em>Tín hiệu chọn tên (Server Name Indication)</em></span>) vốn cho phép một sự kết hợp như vậy không được xử lý bởi tất cả trình duyệt. Khi vào trang HTTPS cần chạy trên cùng một máy phục vụ, chúng sẽ được phân biệt bằng việc chạy trên một cổng riêng biệt hoặc chạy trên một địa chỉ IP riêng biệt (IPv6 có thể giúp ích ở đây).
 			</p>
 			 <p>
-				The default configuration for Apache 2 enables name-based virtual hosts. In addition, a default virtual host is defined in the <code class="literal">/etc/apache2/sites-enabled/000-default.conf</code> file; this virtual host will be used if no host matching the request sent by the client is found.
+				Cấu hình ngầm định của Apache 2 cho phép các máy ảo dựa trên tên. Hơn nữa, một máy phục vụ ngầm định được định nghĩa trong tập tin <code class="literal">/etc/apache2/sites-enabled/000-default.conf</code>; máy ảo này sẽ được sử dụng nếu không máy được tìm thấy nào hợp với yêu cầu gửi bởi khách.
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CAUTION</em></span> First virtual host</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CẢNH BÁO</em></span> Máy ảo đầu tiên</strong></p></div></div></div> 
 			 <p>
-				Requests concerning unknown virtual hosts will always be served by the first defined virtual host, which is why we defined <code class="literal">www.falcot.com</code> first here.
+				Những yêu cầu liên quan tới những máy ảo sẽ luôn được phục vụ bởi máy ảo ngầm định đầu tiên. Đó là lý do chúng ta định nghĩa <code class="literal">www.falcot.com</code> đầu tiên ở đây.
 			</p>
-			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>QUICK LOOK</em></span> Apache supports SNI</strong></p></div></div></div> 
+			 </div> <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SƠ LƯỢC</em></span> Apache hỗ trợ SNI</strong></p></div></div></div> 
 			 <a id="id-1.14.5.10.8.2" class="indexterm"></a>
 			 <p>
-				The Apache server supports an SSL protocol extension called <span class="emphasis"><em>Server Name Indication</em></span> (SNI). This extension allows the browser to send the hostname of the web server during the establishment of the SSL connection, much earlier than the HTTP request itself, which was previously used to identify the requested virtual host among those hosted on the same server (with the same IP address and port). This allows Apache to select the most appropriate SSL certificate for the transaction to proceed.
+				Máy phục vụ Apache hỗ trợ một phần mở rộng của nghi thức SSL được gọi là <span class="emphasis"><em>Tín hiệu chọn tên(Server Name Indication)</em></span> (SNI). Phần mở rộng cho phép trình duyệt gửi tên máy của một máy phục vụ trong quá trình thiết lập kết nối SSL, sớm hơn nhiều so với chính yêu cầu HTTP, vốn được sử dụng trước đó để nhận dạng máy ảo được yêu cầu trong những máy được lưu trữ trên cùng một máy phục vụ (với cùng một địa chỉ IP và cổng). Điều này cho phép Apache chọn chứng chỉ SSL phù hợp nhất để tiếp tục giao dịch.
 			</p>
 			 <p>
-				Before SNI, Apache would always use the certificate defined in the default virtual host. Clients trying to access another virtual host would then display warnings, since the certificate they received didn't match the website they were trying to access. Fortunately, most browsers now work with SNI; this includes Microsoft Internet Explorer starting with version 7.0 (starting on Vista), Mozilla Firefox starting with version 2.0, Apple Safari since version 3.2.1, and all versions of Google Chrome.
+				Trước SNI, Apache sẽ luôn sử dụng chứng chỉ được định nghĩa trong máy ảo ngầm định. Các máy khách cố gắng truy cập một máy ảo khác sẽ hiển thị các cảnh báo, bởi chứng chỉ chúng nhận được không hợp với trang web họ đang cố gắng truy cập. May mắn thay, đa số trình duyệt bây giờ làm việc với SNI; chúng bao gồm Microsoft Internet Explorer bắt đầu với phiên bản 7.0 (trên Vista), Mozilla Firefox bắt đầu với phiên bản 2.0, Apple Safari từ phiên bản 3.2.1, và tất cả các phiên bản của Google Chrome.
 			</p>
 			 <p>
-				The Apache package provided in Debian is built with support for SNI; no particular configuration is therefore needed.
+				Gói phần mềm Apache cung cấp bởi Debian được xây dựng với hỗ trợ cho SNI; vì thế không cấu hình cụ thể nào là cần thiết.
 			</p>
 			 <p>
-				Care should also be taken to ensure that the configuration for the first virtual host (the one used by default) does enable TLSv1, since Apache uses the parameters of this first virtual host to establish secure connections, and they had better allow them!
+				Phải cẩn thận hơn trong việc đảm bảo rằng cấu hình cho máy ảo đầu tiên (cái được sử dụng ngầm định) kích hoạt TLSv1, bởi Apache dùng các tham số của máy ảo ngầm định đầu tiên để thiết lập các kết nối an toàn, và các kết nối này tốt hơn là nên cho phép chúng.
 			</p>
 			 </div> <p>
-				Each extra virtual host is then described by a file stored in <code class="filename">/etc/apache2/sites-available/</code>. Setting up a website for the <code class="literal">falcot.org</code> domain is therefore a simple matter of creating the following file, then enabling the virtual host with <span class="command"><strong>a2ensite www.falcot.org</strong></span>.
+				Mỗi máy ảo thêm được mô tả bởi một tập tin được lưu trong <code class="filename">/etc/apache2/sites-available/</code>. Vì thế, cài đặt một trang web cho miền <code class="literal">falcot.org</code> đơn giản chỉ là tạo một tập tin sau, sau đó kích hoạt máy ảo với lệnh <span class="command"><strong>a2ensite www.falcot.org</strong></span>.
 			</p>
-			 <div class="example" id="id-1.14.5.10.10"><a xmlns="" id="id-1.14.5.10.10"/><p class="title"><strong>Ví dụ 11.16. The <code class="filename">/etc/apache2/sites-available/www.falcot.org.conf</code> file</strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.5.10.10"><a xmlns="" id="id-1.14.5.10.10"/><p class="title"><strong>Ví dụ 11.16. Tập tin <code class="filename">/etc/apache2/sites-available/www.falcot.org.conf</code></strong></p><div class="example-contents">
 				
 				 
 <pre class="programlisting">
@@ -105,23 +105,21 @@
 ServerName www.falcot.org
 ServerAlias falcot.org
 DocumentRoot /srv/www/www.falcot.org
-&lt;/VirtualHost&gt;
-</pre>
+&lt;/VirtualHost&gt;</pre>
 
 			</div></div>
 			 <p>
-				The Apache server, as configured so far, uses the same log files for all virtual hosts (although this could be changed by adding <code class="literal">CustomLog</code> directives in the definitions of the virtual hosts). It therefore makes good sense to customize the format of this log file to have it include the name of the virtual host. This can be done by creating a <code class="filename">/etc/apache2/conf-available/customlog.conf</code> file that defines a new format for all log files (with the <code class="literal">LogFormat</code> directive) and by enabling it with <span class="command"><strong>a2enconf customlog</strong></span>. The <code class="literal">CustomLog</code> line must also be removed (or commented out) from the <code class="filename">/etc/apache2/sites-available/000-default.conf</code> file.
+				Máy phục vụ Apache, như được cấu hình như trước đây, sử dụng chung những tập tin nhật ký cho tất cả các máy ảo (mặc dù điều này có thể được thay đổi bằng việc thêm các chỉ thị <code class="literal">CustomLog</code> vào các định nghĩa của các máy ảo). Vì thế sẽ có lý khi tùy chỉnh định dạng của tập tin nhật ký này để nhờ nó đính kèm tên của máy ảo. Điều này có thể được thực hiện bằng việc tạo một <code class="filename">/etc/apache2/conf-available/customlog.conf</code> vốn định nghĩa một định dạng mới cho tất cả các tập tin nhật ký (với chỉ thị <code class="literal">LogFormat</code>) và bằng việc kích hoạt nó với lệnh <span class="command"><strong>a2enconf customlog</strong></span>. Dòng <code class="literal">CustomLog</code> phải được xóa bỏ (hay chuyển thành ghi chú) khỏi tập tin <code class="filename">/etc/apache2/sites-available/000-default.conf</code>.
 			</p>
-			 <div class="example" id="id-1.14.5.10.12"><a xmlns="" id="id-1.14.5.10.12"/><p class="title"><strong>Ví dụ 11.17. The <code class="filename">/etc/apache2/conf.d/customlog.conf</code> file</strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.5.10.12"><a xmlns="" id="id-1.14.5.10.12"/><p class="title"><strong>Ví dụ 11.17. Tập tin <code class="filename">/etc/apache2/conf.d/customlog.conf</code></strong></p><div class="example-contents">
 				
 				 
 <pre class="programlisting scale scale">
-# New log format including (virtual) host name
+# Định dạng nhật ký mới bao gồm tên máy (ảo)
 LogFormat "%v %h %l %u %t \"%r\" %&gt;s %b \"%{Referer}i\" \"%{User-Agent}i\"" vhost
 
-# Now let's use this "vhost" format by default
-CustomLog /var/log/apache2/access.log vhost
-</pre>
+# Bây giờ hãy sử dụng định dạng "vhost" cho lựa chọn ngầm định
+CustomLog /var/log/apache2/access.log vhost</pre>
 
 			</div></div>
 
