@@ -124,19 +124,19 @@ CustomLog /var/log/apache2/access.log vhost</pre>
 			</div></div>
 
 		</section>
-		 <section class="section" id="id-1.14.5.11"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.5.11"/>11.2.3. Common Directives</h3></div></div></div>
+		 <section class="section" id="id-1.14.5.11"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.5.11"/>11.2.3. Các chỉ thị phổ biến</h3></div></div></div>
 			
 			 <p>
-				This section briefly reviews some of the commonly-used Apache configuration directives.
+				Phần này ôn lại một số chỉ thị của các chỉ thị cấu hình thường sử dụng của Apache.
 			</p>
 			 <a id="id-1.14.5.11.3" class="indexterm"></a>
 			 <a id="id-1.14.5.11.4" class="indexterm"></a>
 			 <p>
-				The main configuration file usually includes several <code class="literal">Directory</code> blocks; they allow specifying different behaviors for the server depending on the location of the file being served. Such a block commonly includes <code class="literal">Options</code> and <code class="literal">AllowOverride</code> directives.
+				Tập tin cấu hình chính thường bao gồm các khối <code class="literal">Directory</code>; chúng cho phép chỉ định những hành vi khác nhau cho một máy phục vụ tùy theo địa chỉ của tập tin sẽ được phục vụ. Một khối như vậy thường bao gồm các chỉ thị <code class="literal">Options</code> và các chỉ thị <code class="literal">AllowOverride</code>.
 			</p>
 			 <a id="id-1.14.5.11.6" class="indexterm"></a>
 			 <a id="id-1.14.5.11.7" class="indexterm"></a>
-			 <div class="example" id="id-1.14.5.11.8"><a xmlns="" id="id-1.14.5.11.8"/><p class="title"><strong>Ví dụ 11.18. Directory block</strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.5.11.8"><a xmlns="" id="id-1.14.5.11.8"/><p class="title"><strong>Ví dụ 11.18. Khối thư mục (Directory block)</strong></p><div class="example-contents">
 				
 				 
 <pre class="programlisting">
@@ -144,60 +144,59 @@ CustomLog /var/log/apache2/access.log vhost</pre>
 Options Includes FollowSymlinks
 AllowOverride All
 DirectoryIndex index.php index.html index.htm
-&lt;/Directory&gt;
-</pre>
+&lt;/Directory&gt;</pre>
 
 			</div></div>
 			 <p>
-				The <code class="literal">DirectoryIndex</code> directive contains a list of files to try when the client request matches a directory. The first existing file in the list is used and sent as a response.
+				Chỉ thị <code class="literal">DirectoryIndex</code> bao gồm một danh sách các tập tin để thử khi yêu cầu từ chương trình khách hợp với một thư mục. Tập tin đầu tiên tồn tại trong danh sách sẽ được sử dụng và gửi đi như là một câu trả lời.
 			</p>
 			 <a id="id-1.14.5.11.10" class="indexterm"></a>
 			 <p>
-				The <code class="literal">Options</code> directive is followed by a list of options to enable. The <code class="literal">None</code> value disables all options; correspondingly, <code class="literal">All</code> enables them all except <code class="literal">MultiViews</code>. Available options include:
+				Chỉ thị <code class="literal">Options</code> được theo sau bởi một danh sách các lựa chọn để kích hoạt. Giá trị <code class="literal">None</code> tắt hết các lựa chọn; tương ứng, <code class="literal">All</code> kích hoạt tất cả ngoại trừ <code class="literal">MultiViews</code>. Các lựa chọn có sẵn bao gồm:
 			</p>
 			 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
 					<p>
-						<code class="literal">ExecCGI</code> indicates that CGI scripts can be executed. <a id="id-1.14.5.11.12.1.1.2" class="indexterm"></a>
+						<code class="literal">ExecCGI</code> báo rằng các mã kịch bản CGI có thể được thực thi. <a id="id-1.14.5.11.12.1.1.2" class="indexterm"></a>
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						<code class="literal">FollowSymlinks</code> tells the server that symbolic links can be followed, and that the response should contain the contents of the target of such links. <a id="id-1.14.5.11.12.2.1.2" class="indexterm"></a>
+						<code class="literal">FollowSymlinks</code> cho máy phục vụ biết là các đường link tượng trưng (symbolic links) có thể dùng để tìm ra địa điểm, và câu trả lời nên chứa những nội dung ở địa điểm của các đường link đó.<a id="id-1.14.5.11.12.2.1.2" class="indexterm"></a>
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						<code class="literal">SymlinksIfOwnerMatch</code> also tells the server to follow symbolic links, but only when the link and the its target have the same owner. <a id="id-1.14.5.11.12.3.1.2" class="indexterm"></a>
+						<code class="literal">SymlinksIfOwnerMatch</code> cũng bảo máy phục vụ đi theo các đường dẫn tượng trưng (symbolic links), nhưng chỉ khi đường dẫn và đích của nó có chung một người sở hữu. <a id="id-1.14.5.11.12.3.1.2" class="indexterm"></a>
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						<code class="literal">Includes</code> enables <span class="emphasis"><em>Server Side Includes</em></span> (<span class="emphasis"><em>SSI</em></span> for short). These are directives embedded in HTML pages and executed on the fly for each request. <a id="id-1.14.5.11.12.4.1.4" class="indexterm"></a>
+						<code class="literal">Includes</code> kích hoạt <span class="emphasis"><em>Các Hướng dẫn Kèm tập tin bên Máy phục vụ(Server Side Includes)</em></span>(ngắn gọn là <span class="emphasis"><em>SSI</em></span>). Những chỉ thị này được nhúng vào các trang HTML và thực thi theo yêu cầu. <a id="id-1.14.5.11.12.4.1.4" class="indexterm"></a>
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						<code class="literal">Indexes</code> tells the server to list the contents of a directory if the HTTP request sent by the client points at a directory without an index file (ie, when no files mentioned by the <code class="literal">DirectoryIndex</code> directive exists in this directory). <a id="id-1.14.5.11.12.5.1.3" class="indexterm"></a>
+						<code class="literal">Indexes</code> bảo máy phục vụ liệt kê nội dung của một thư mục nếu yêu cầu HTTP gửi bởi một chương trình khách chỉ đến một thư mục mà không có tập tin chỉ mục (index file) (nghĩa là khi không có tập tin nào được đề cập đến trong chỉ thị <code class="literal">DirectoryIndex</code> tồn tại trong thư mục này). <a id="id-1.14.5.11.12.5.1.3" class="indexterm"></a>
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						<code class="literal">MultiViews</code> enables content negotiation; this can be used by the server to return a web page matching the preferred language as configured in the browser. <a id="id-1.14.5.11.12.6.1.2" class="indexterm"></a>
+						<code class="literal">MultiViews</code> kích hoạt việc đàm phán về nội dung; điều này có thể được sử dụng bởi một máy phục vụ để trả về một trang web hợp với ngôn ngữ ưu tiên được cấu hình trong trình duyệt. <a id="id-1.14.5.11.12.6.1.2" class="indexterm"></a>
 					</p>
 
 				</li></ul></div>
 			 <p>
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> <code class="filename">.htaccess</code> file</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TRỞ VỀ CƠ BẢN</em></span> tập tin <code class="filename">.htaccess</code></strong></p></div></div></div> 
 			 <p>
-				The <code class="filename">.htaccess</code> file contains Apache configuration directives enforced each time a request concerns an element of the directory where it is stored. The scope of these directives also recurses to all the subdirectories within.
+				Tập tin <code class="filename">.htaccess</code> chứa các chỉ thị cấu hình Apache được thực thi mỗi lần một yêu cầu cần đến một phần tử của một thư mục nơi nó được lưu. Phạm vi của những chỉ thị này sẽ đi sâu xuống các thư mục con bên trong nó.
 			</p>
 			 <a id="id-1.14.5.11.14.3" class="indexterm"></a>
 			 <p>
-				Most of the directives that can occur in a <code class="literal">Directory</code> block are also legal in a <code class="filename">.htaccess</code> file.
+				Đa số những chỉ thị có thể xảy ra trong khối <code class="literal">Directory</code> cũng hợp lệ trong tập tin <code class="filename">.htaccess</code>.
 			</p>
 			 </div> <p>
-				The <code class="literal">AllowOverride</code> directive lists all the options that can be enabled or disabled by way of a <code class="filename">.htaccess</code> file. A common use of this option is to restrict <code class="literal">ExecCGI</code>, so that the administrator chooses which users are allowed to run programs under the web server's identity (the <code class="literal">www-data</code> user).
+				Chỉ thị <code class="literal">AllowOverride</code> liệt kê tất cả những lựa chọn được kích hoạt hay được tắt bởi tập tin <code class="filename">.htaccess</code>. Một mục đích sử dụng của lựa chọn này là để giới hạn <code class="literal">ExecCGI</code>, để cho nhà quản trị hệ thống lựa chọn những người sử dụng nào được cho phép chạy các chương trình dưới danh xưng của máy phục vụ web (tài khoản <code class="literal">www-data</code>).
 			</p>
 			 <a id="id-1.14.5.11.16" class="indexterm"></a>
 			 <section class="section" id="id-1.14.5.11.17"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.5.11.17"/>11.2.3.1. Requiring Authentication</h4></div></div></div>
