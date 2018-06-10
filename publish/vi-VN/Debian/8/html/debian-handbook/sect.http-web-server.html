@@ -273,20 +273,20 @@ Deny from all</pre>
 			</section>
 
 		</section>
-		 <section class="section" id="id-1.14.5.12"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.5.12"/>11.2.4. Log Analyzers</h3></div></div></div>
+		 <section class="section" id="id-1.14.5.12"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.5.12"/>11.2.4. Các chương trình phân tích nhật ký</h3></div></div></div>
 			
 			 <p>
-				A log analyzer is frequently installed on a web server; since the former provides the administrators with a precise idea of the usage patterns of the latter.
+				Một chương trình phân tích nhật ký thường được cài đặt trên một máy phục vụ web; bởi chương trình phân tích cung cấp cho các quản trị viên một cái nhìn chính xác về quy luật hoạt động của máy phục vụ web.
 			</p>
 			 <p>
-				The Falcot Corp administrators selected <span class="emphasis"><em>AWStats</em></span> (<span class="emphasis"><em>Advanced Web Statistics</em></span>) to analyze their Apache log files.
+				Các nhà quản trị hệ thống Công ty Falcot đã lựa chọn <span class="emphasis"><em>AWStats</em></span> (<span class="emphasis"><em>Advanced Web Statistics (Thông số Web Chuyên sâu)</em></span>) để phân tích các tập tin nhật ký Apache.
 			</p>
 			 <a id="id-1.14.5.12.4" class="indexterm"></a>
 			 <a id="id-1.14.5.12.5" class="indexterm"></a>
 			 <a id="id-1.14.5.12.6" class="indexterm"></a>
 			 <a id="id-1.14.5.12.7" class="indexterm"></a>
 			 <p>
-				The first configuration step is the customization of the <code class="filename">/etc/awstats/awstats.conf</code> file. The Falcot administrators keep it unchanged apart from the following parameters:
+				Bước cấu hình đầu tiên là tùy chỉnh tập tin <code class="filename">/etc/awstats/awstats.conf</code>. Các nhà quản trị hê thống của Falcot giữ phần không thay đổi của nó khỏi các thông số sau đây:
 			</p>
 			 
 <pre class="programlisting">
@@ -295,49 +295,46 @@ LogFormat = "%virtualname %host %other %logname %time1 %methodurl %code %bytesd 
 SiteDomain="www.falcot.com"
 HostAliases="falcot.com REGEX[^.*\.falcot\.com$]"
 DNSLookup=1
-LoadPlugin="tooltips"
-</pre>
+LoadPlugin="tooltips"</pre>
 			 <p>
-				All these parameters are documented by comments in the template file. In particular, the <code class="varname">LogFile</code> and <code class="varname">LogFormat</code> parameters describe the location and format of the log file and the information it contains; <code class="varname">SiteDomain</code> and <code class="varname">HostAliases</code> list the various names under which the main web site is known.
+				Tất cả những thông số này đuợc ghi chú trong tập tin mẫu(template). Cụ thể hơn, các thông số <code class="varname">LogFile</code> và <code class="varname">LogFormat</code> mô tả địa điểm và định dạng của tập tin nhật ký và thông tin chứa đựng trong nó; <code class="varname">SiteDomain</code> và <code class="varname">HostAliases</code> liệt kê những cái tên mà trang web chính thức được biết tới.
 			</p>
 			 <p>
-				For high traffic sites, <code class="varname">DNSLookup</code> should usually not be set to <code class="literal">1</code>; for smaller sites, such as the Falcot one described above, this setting allows getting more readable reports that include full machine names instead of raw IP addresses.
+				Đối với những trang web có lưu lượng truyền tải cao, <code class="varname">DNSLookup</code> thuờng không nên được cài đặt giá trị <code class="literal">1</code>; cho những trang nhỏ, như cái Falcot được mô tả phía trên, cài đặt này cho phép thu thập nhiều bản báo cáo dễ đọc hơn vốn bao gồm những tên máy đầy đủ thay vì các địa chỉ IP thô.
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SECURITY</em></span> Access to statistics</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>AN NINH</em></span> Truy cập tới các thông số</strong></p></div></div></div> 
 			 <p>
-				AWStats makes its statistics available on the website with no restrictions by default, but restrictions can be set up so that only a few (probably internal) IP addresses can access them; the list of allowed IP addresses needs to be defined in the <code class="varname">AllowAccessFromWebToFollowingIPAddresses</code> parameter
+				AWStats công bố các thông số của nó trên trang web mà không có giới hạn gì theo ngầm định, nhưng các giới hạn có thể được đặt ra để một số địa chỉ IP (có thể nội bộ) có thể truy cập chúng; danh sách các địa chỉ IP được cho phép cần phải được định nghĩa lại trong tham số <code class="varname">AllowAccessFromWebToFollowingIPAddresses</code>
 			</p>
 			 </div> <p>
-				AWStats will also be enabled for other virtual hosts; each virtual host needs its own configuration file, such as <code class="filename">/etc/awstats/awstats.www.falcot.org.conf</code>.
+				AWStats sẽ được kích hoạt cho các máy ảo(virtual host) khác;mỗi máy ảo cần có một tập tin cấu hình riêng, như là <code class="filename">/etc/awstats/awstats.www.falcot.org.conf</code>.
 			</p>
-			 <div class="example" id="id-1.14.5.12.14"><a xmlns="" id="id-1.14.5.12.14"/><p class="title"><strong>Ví dụ 11.21. AWStats configuration file for a virtual host</strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.5.12.14"><a xmlns="" id="id-1.14.5.12.14"/><p class="title"><strong>Ví dụ 11.21. Tập tin cấu hình AWStats cho một máy ảo(virtual host)</strong></p><div class="example-contents">
 				
 				 
 <pre class="programlisting">
 Include "/etc/awstats/awstats.conf"
 SiteDomain="www.falcot.org"
-HostAliases="falcot.org"
-</pre>
+HostAliases="falcot.org"</pre>
 
 			</div></div>
 			 <p>
-				AWStats uses many icons stored in the <code class="filename">/usr/share/awstats/icon/</code> directory. In order for these icons to be available on the web site, the Apache configuration needs to be adapted to include the following directive:
+				AWStats sử dụng nhiều biểu tượng lưu trong thư mục <code class="filename">/usr/share/awstats/icon/</code>. Để những biểu tượng này có thể được truy cập bởi trang web, cấu hình Apache cần được chỉnh sửa để bao gồm chỉ thị sau đây:
 			</p>
 			 
 <pre class="programlisting">
-Alias /awstats-icon/ /usr/share/awstats/icon/
-</pre>
+Alias /awstats-icon/ /usr/share/awstats/icon/</pre>
 			 <p>
-				After a few minutes (and once the script has been run a few times), the results are available online: <a class="ulink" href="http://www.falcot.com/cgi-bin/awstats.pl">http://www.falcot.com/cgi-bin/awstats.pl</a><a class="ulink" href="http://www.falcot.org/cgi-bin/awstats.pl">http://www.falcot.org/cgi-bin/awstats.pl</a>
+				Sau một vài phút (và khi đoạn mã được chạy vài lần), các kết quả nằm sẵn trên mạng: <a class="ulink" href="http://www.falcot.com/cgi-bin/awstats.pl">http://www.falcot.com/cgi-bin/awstats.pl</a><a class="ulink" href="http://www.falcot.org/cgi-bin/awstats.pl">http://www.falcot.org/cgi-bin/awstats.pl</a>
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CAUTION</em></span> Log file rotation</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CẢNH BÁO</em></span> Quay vòng các tập tin nhật ký</strong></p></div></div></div> 
 			 <p>
-				In order for the statistics to take all the logs into account, <span class="emphasis"><em>AWStats</em></span> needs to be run right before the Apache log files are rotated. Looking at the <code class="literal">prerotate</code> directive of <code class="filename">/etc/logrotate.d/apache2</code> file, this can be solved by putting a symlink to <code class="filename">/usr/share/awstats/tools/update.sh</code> in <code class="filename">/etc/logrotate.d/httpd-prerotate</code>:
+				Để những thông số này tính luôn cả các tập tin nhật ký, <span class="emphasis"><em>AWStats</em></span> cần được chạy ngay trước khi các tập tin nhật ký được xoay vòng. Xem chỉ thị <code class="literal">prerotate</code> của tập tin <code class="filename">/etc/logrotate.d/apache2</code>, điều này có thể được giải quyết bằng việc đặt một đường link tượng trưng vào <code class="filename">/usr/share/awstats/tools/update.sh</code> vào <code class="filename">/etc/logrotate.d/httpd-prerotate</code>:
 			</p>
 			 
 <pre class="screen"><code class="computeroutput">$ </code><strong class="userinput"><code>cat /etc/logrotate.d/apache2 </code></strong><code class="computeroutput">/var/log/apache2/*.log { daily missingok rotate 14 compress delaycompress notifempty create 644 root adm sharedscripts postrotate if /etc/init.d/apache2 status &gt; /dev/null ; then \ /etc/init.d/apache2 reload &gt; /dev/null; \ fi; endscript prerotate if [ -d /etc/logrotate.d/httpd-prerotate ]; then \ run-parts /etc/logrotate.d/httpd-prerotate; \ fi; \ endscript } $ </code><strong class="userinput"><code>sudo mkdir -p /etc/logrotate.d/httpd-prerotate </code></strong><code class="computeroutput">$ </code><strong class="userinput"><code>sudo ln -sf /usr/share/awstats/tools/update.sh \ /etc/logrotate.d/httpd-prerotate/awstats </code></strong></pre>
 			 <p>
-				Note also that the log files created by <span class="command"><strong>logrotate</strong></span> need to be readable by everyone, especially AWStats. In the above example, this is ensured by the <code class="literal">create 644 root adm</code> line (instead of the default <code class="literal">640</code> permissions).
+				Ghi chú rằng các tập tin nhật ký tạo ra bởi lệnh <span class="command"><strong>logrotate</strong></span> cần có thể được đọc bởi mọi người, đặc biệt là AWStats. Trong ví dụ trên, điều này được đảm bảo bằng dòng <code class="literal">create 644 root adm</code> (thay vì mã truy cập <code class="literal">640</code> ngầm định).
 			</p>
 			 </div>
 		</section>
