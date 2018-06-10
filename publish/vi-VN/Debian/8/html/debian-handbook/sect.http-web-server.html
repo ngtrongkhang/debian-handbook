@@ -227,50 +227,48 @@ AuthUserFile /etc/apache2/authfiles/htpasswd-private</pre>
 <code class="computeroutput"># </code><strong class="userinput"><code>htpasswd /etc/apache2/authfiles/htpasswd-private <em class="replaceable">user</em></code></strong><code class="computeroutput">Mật mã mới: Nhập lại mật mã mới: Thêm mật mã cho tài khoản <em class="replaceable">user</em></code></pre>
 
 			</section>
-			 <section class="section" id="id-1.14.5.11.18"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.5.11.18"/>11.2.3.2. Restricting Access</h4></div></div></div>
+			 <section class="section" id="id-1.14.5.11.18"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.5.11.18"/>11.2.3.2. Giới hạn truy cập</h4></div></div></div>
 				
 				 <a id="id-1.14.5.11.18.2" class="indexterm"></a>
 				 <p>
-					The <code class="literal">Require</code> directive controls access restrictions for a directory (and its subdirectories, recursively).
+					Chỉ thị <code class="literal">Require</code> kiểm soát các giới hạn truy cập cho một thư mục (và những thư mục con, và tiếp tục như vậy cho chúng).
 				</p>
 				 <a id="id-1.14.5.11.18.4" class="indexterm"></a>
 				 <a id="id-1.14.5.11.18.5" class="indexterm"></a>
 				 <a id="id-1.14.5.11.18.6" class="indexterm"></a>
 				 <p>
-					It can be used to restrict access based on many criteria; we will stop at describing access restriction based on the IP address of the client, but it can be made much more powerful than that, especially when several <code class="literal">Require</code> directives are combined within a <code class="literal">RequireAll</code> block.
+					Nó có thể được sử dụng để giới hạn truy cập dựa trên nhiều điều kiện; chúng ta sẽ ngưng tại việc mô tả giới hạn truy cập dựa trên địa chỉ IP của chương trình khách, nhưng nó có thể được làm cho mạnh hơn thế, đặc biệt khi vài chỉ thị <code class="literal">Require</code> được kết hợp trong một khối <code class="literal">RequireAll</code>.
 				</p>
-				 <div class="example" id="id-1.14.5.11.18.8"><a xmlns="" id="id-1.14.5.11.18.8"/><p class="title"><strong>Ví dụ 11.20. Only allow from the local network</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.5.11.18.8"><a xmlns="" id="id-1.14.5.11.18.8"/><p class="title"><strong>Ví dụ 11.20. Chỉ cho phép từ mạng nội bộ</strong></p><div class="example-contents">
 					
 					 
-<pre class="programlisting">Require ip 192.168.0.0/16
-</pre>
+<pre class="programlisting">Require ip 192.168.0.0/16</pre>
 
 				</div></div>
-				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>ALTERNATIVE</em></span> Old syntax</strong></p></div></div></div> 
+				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>LỰA CHỌN THAY THẾ</em></span> Cú pháp cũ</strong></p></div></div></div> 
 				 <p>
-					The <code class="literal">Require</code> syntax is only available in Apache 2.4 (the version in <span class="distribution distribution">Jessie</span>). For users of <span class="distribution distribution">Wheezy</span>, the Apache 2.2 syntax is different, and we describe it here mainly for reference, although it can also be made available in Apache 2.4 using the <code class="literal">mod_access_compat</code> module.
+					Cú pháp <code class="literal">Require</code> chỉ tồn tại trong Apache 2.4 (phiên bản có trong <span class="distribution distribution">Jessie</span>). Với những người sử dụng của <span class="distribution distribution">Wheezy</span>, cú pháp Apache 2.2 rất khác biệt, và chúng ta mô tả nó ở đây chủ yếu để tham khảo, mặc dù nó có thể được hỗ trợ trong Apache 2.4 bằng mô-đun <code class="literal">mod_access_compat</code>.
 				</p>
 				 <p>
-					The <code class="literal">Allow from</code> and <code class="literal">Deny from</code> directives control access restrictions for a directory (and its subdirectories, recursively).
+					Các chỉ thị <code class="literal">Allow from</code> và <code class="literal">Deny from</code> kiểm soát các giới hạn truy cập cho một thư mục (và các thư mục con, và lại tiếp tục như vậy).
 				</p>
 				 <a id="id-1.14.5.11.18.9.4" class="indexterm"></a>
 				 <a id="id-1.14.5.11.18.9.5" class="indexterm"></a>
 				 <a id="id-1.14.5.11.18.9.6" class="indexterm"></a>
 				 <p>
-					The <code class="literal">Order</code> directive tells the server of the order in which the <code class="literal">Allow from</code> and <code class="literal">Deny from</code> directives are applied; the last one that matches takes precedence. In concrete terms, <code class="literal">Order deny,allow</code> allows access if no <code class="literal">Deny from</code> applies, or if an <code class="literal">Allow from</code> directive does. Conversely, <code class="literal">Order allow,deny</code> rejects access if no <code class="literal">Allow from</code> directive matches (or if a <code class="literal">Deny from</code> directive applies).
+					Chỉ thị <code class="literal">Order</code> cho máy phục vụ biết rằng thứ tự thực thi các chỉ thị <code class="literal">Allow from</code> và <code class="literal">Deny from</code>; chỉ thị nằm cuối cùng và phải khớp được ưu tiên trước. Cụ thể hơn, <code class="literal">Order deny,allow</code> cho phép truy cập nếu không có <code class="literal">Deny from</code> nào áp dụng được, hoặc nếu một chỉ thị <code class="literal">Allow from</code> áp dụng được. Ngược lại, <code class="literal">Order allow,deny</code> từ chối truy cập nếu không có chỉ thị <code class="literal">Allow from</code> nào khớp (hoặc nếu một chỉ thị <code class="literal">Deny from</code> áp dụng được).
 				</p>
 				 <p>
-					The <code class="literal">Allow from</code> and <code class="literal">Deny from</code> directives can be followed by an IP address, a network (such as <code class="literal">192.168.0.0/255.255.255.0</code>, <code class="literal">192.168.0.0/24</code> or even <code class="literal">192.168.0</code>), a hostname or a domain name, or the <code class="literal">all</code> keyword, designating everyone.
+					Các chỉ thị <code class="literal">Allow from</code> và <code class="literal">Deny from</code> có thể được theo sau bởi một địa chỉ IP, một dãy số cho vùng mạng (như là <code class="literal">192.168.0.0/255.255.255.0</code>, <code class="literal">192.168.0.0/24</code> or even <code class="literal">192.168.0</code>), một tên máy hoặc một tên miền, hoặc từ khóa <code class="literal">all</code>, ám chỉ bất cứ ai.
 				</p>
 				 <p>
-					For instance, to reject connections by default but allow them from the local network, you could use this:
+					Ví dụ, để từ chối các kết nối theo ngầm định nhưng cho phép chúng từ mạng nội bộ, bạn có thể làm như sau:
 				</p>
 				 
 <pre class="programlisting">
 Order deny,allow
 Allow from 192.168.0.0/16
-Deny from all
-</pre>
+Deny from all</pre>
 				 </div>
 			</section>
 
