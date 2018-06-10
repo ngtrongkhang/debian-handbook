@@ -199,33 +199,32 @@ DirectoryIndex index.php index.html index.htm
 				Chỉ thị <code class="literal">AllowOverride</code> liệt kê tất cả những lựa chọn được kích hoạt hay được tắt bởi tập tin <code class="filename">.htaccess</code>. Một mục đích sử dụng của lựa chọn này là để giới hạn <code class="literal">ExecCGI</code>, để cho nhà quản trị hệ thống lựa chọn những người sử dụng nào được cho phép chạy các chương trình dưới danh xưng của máy phục vụ web (tài khoản <code class="literal">www-data</code>).
 			</p>
 			 <a id="id-1.14.5.11.16" class="indexterm"></a>
-			 <section class="section" id="id-1.14.5.11.17"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.5.11.17"/>11.2.3.1. Requiring Authentication</h4></div></div></div>
+			 <section class="section" id="id-1.14.5.11.17"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.5.11.17"/>11.2.3.1. Ràng buộc Chứng thực</h4></div></div></div>
 				
 				 <a id="id-1.14.5.11.17.2" class="indexterm"></a>
 				 <p>
-					In some circumstances, access to part of a website needs to be restricted, so only legitimate users who provide a username and a password are granted access to the contents.
+					Trong một số trường hợp, truy cập tới một phần của một trang web cần phải được giới hạn, để chỉ có những người sử dụng hợp lệ có tên tài khoản và mật mã mới được cho phép truy cập nội dung.
 				</p>
-				 <div class="example" id="id-1.14.5.11.17.4"><a xmlns="" id="id-1.14.5.11.17.4"/><p class="title"><strong>Ví dụ 11.19. <code class="filename">.htaccess</code> file requiring authentication</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.5.11.17.4"><a xmlns="" id="id-1.14.5.11.17.4"/><p class="title"><strong>Ví dụ 11.19. Tập tin <code class="filename">.htaccess</code> bắt buộc chứng thực</strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 Require valid-user
 AuthName "Private directory"
 AuthType Basic
-AuthUserFile /etc/apache2/authfiles/htpasswd-private
-</pre>
+AuthUserFile /etc/apache2/authfiles/htpasswd-private</pre>
 
 				</div></div>
-				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>SECURITY</em></span> No security</strong></p></div></div></div> 
+				 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>AN NINH</em></span> Không an toàn</strong></p></div></div></div> 
 				 <p>
-					The authentication system used in the above example (<code class="literal">Basic</code>) has minimal security as the password is sent in clear text (it is only encoded as <span class="emphasis"><em>base64</em></span>, which is a simple encoding rather than an encryption method). It should also be noted that the documents “protected” by this mechanism also go over the network in the clear. If security is important, the whole HTTP connection should be encrypted with SSL.
+					Hệ thống chứng thực sử dụng trong ví dụ trên (<code class="literal">Basic</code>) có độ an toàn rất thấp bởi mật mã được gửi đi dưới dạng chữ (nó chỉ được mã hóa dưới dạng <span class="emphasis"><em>base64</em></span>, vốn là một dạng mã đơn giản hơn là một phương thức mã hóa). Cũng cần phải ghi chú rằng những tài liệu “được bảo vệ” bởi cơ chế này cũng di chuyển trên mạng không có ai trông coi. Nếu an ninh cần được coi trọng, toàn bộ kết nối HTTP nên được mã hóa với SSL.
 				</p>
 				 </div> <p>
-					The <code class="filename">/etc/apache2/authfiles/htpasswd-private</code> file contains a list of users and passwords; it is commonly manipulated with the <span class="command"><strong>htpasswd</strong></span> command. For example, the following command is used to add a user or change their password: <a id="id-1.14.5.11.17.6.3" class="indexterm"></a>
+					Tập tin <code class="filename">/etc/apache2/authfiles/htpasswd-private</code> chứa một danh sách các tên tài khoản và mật mã; nó thường được chỉnh sửa bởi lệnh <span class="command"><strong>htpasswd</strong></span>. Ví dụ, lệnh sau được sử dụng để thêm một tài khoản hoặc thay đổi mật mã: <a id="id-1.14.5.11.17.6.3" class="indexterm"></a>
 				</p>
 				 
 <pre class="screen">
-<code class="computeroutput"># </code><strong class="userinput"><code>htpasswd /etc/apache2/authfiles/htpasswd-private <em class="replaceable">user</em></code></strong><code class="computeroutput">New password: Re-type new password: Adding password for user <em class="replaceable">user</em></code></pre>
+<code class="computeroutput"># </code><strong class="userinput"><code>htpasswd /etc/apache2/authfiles/htpasswd-private <em class="replaceable">user</em></code></strong><code class="computeroutput">Mật mã mới: Nhập lại mật mã mới: Thêm mật mã cho tài khoản <em class="replaceable">user</em></code></pre>
 
 			</section>
 			 <section class="section" id="id-1.14.5.11.18"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.5.11.18"/>11.2.3.2. Restricting Access</h4></div></div></div>
