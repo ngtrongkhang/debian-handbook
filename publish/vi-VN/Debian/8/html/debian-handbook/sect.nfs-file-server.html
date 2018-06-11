@@ -82,34 +82,33 @@
 <code class="computeroutput"># </code><strong class="userinput"><code>service nfs-kernel-server start</code></strong></pre>
 			 </div>
 		</section>
-		 <section class="section" id="id-1.14.7.12"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.7.12"/>11.4.3. NFS Client</h3></div></div></div>
+		 <section class="section" id="id-1.14.7.12"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.7.12"/>11.4.3. Chương trình khách NFS</h3></div></div></div>
 			
 			 <a id="id-1.14.7.12.2" class="indexterm"></a>
 			 <a id="id-1.14.7.12.3" class="indexterm"></a>
 			 <p>
-				As with other filesystems, integrating an NFS share into the system hierarchy requires mounting. Since this filesystem has its peculiarities, a few adjustments were required in the syntaxes of the <span class="command"><strong>mount</strong></span> command and the <code class="filename">/etc/fstab</code> file.
+				Giống như các hệ thống tập tin khác, việc tích hợp một chuẩn NFS vào cây hệ thống đòi hỏi phải có kết nối. Bởi hệ thống tập tin này khá khác biệt, một vài tùy chỉnh là cần thiết đối với cú pháp của lệnh <span class="command"><strong>mount</strong></span> và tập tin <code class="filename">/etc/fstab</code>.
 			</p>
-			 <div class="example" id="id-1.14.7.12.5"><a xmlns="" id="id-1.14.7.12.5"/><p class="title"><strong>Ví dụ 11.22. Manually mounting with the <span class="command">mount</span> command</strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.7.12.5"><a xmlns="" id="id-1.14.7.12.5"/><p class="title"><strong>Ví dụ 11.22. Kết nối thủ công với lệnh <span class="command">mount</span></strong></p><div class="example-contents">
 				
 				 
 <pre class="screen">
           <code class="computeroutput"># </code><strong class="userinput"><code>mount -t nfs4 -o rw,nosuid arrakis.internal.falcot.com:/shared /srv/shared</code></strong></pre>
 
 			</div></div>
-			 <div class="example" id="id-1.14.7.12.6"><a xmlns="" id="id-1.14.7.12.6"/><p class="title"><strong>Ví dụ 11.23. NFS entry in the <code class="filename">/etc/fstab</code> file</strong></p><div class="example-contents">
+			 <div class="example" id="id-1.14.7.12.6"><a xmlns="" id="id-1.14.7.12.6"/><p class="title"><strong>Ví dụ 11.23. Mục NFS trong tập tin <code class="filename">/etc/fstab</code></strong></p><div class="example-contents">
 				
 				 
 <pre class="programlisting">
-arrakis.internal.falcot.com:/shared /srv/shared nfs4 rw,nosuid 0 0
-</pre>
+arrakis.internal.falcot.com:/shared /srv/shared nfs4 rw,nosuid 0 0</pre>
 
 			</div></div>
 			 <p>
-				The entry described above mounts, at system startup, the <code class="filename">/shared/</code> NFS directory from the <code class="literal">arrakis</code> server into the local <code class="filename">/srv/shared/</code> directory. Read-write access is requested (hence the <code class="literal">rw</code> parameter). The <code class="literal">nosuid</code> option is a protection measure that wipes any <code class="literal">setuid</code> or <code class="literal">setgid</code> bit from programs stored on the share. If the NFS share is only meant to store documents, another recommended option is <code class="literal">noexec</code>, which prevents executing programs stored on the share. Note that on the server, the <code class="filename">shared</code> directory is below the NFSv4 root export (for example <code class="filename">/export/shared</code>), it is not a top-level directory.
+				Mục được mô tả phía trên kết nối, khi hệ thống khởi động, thư mục NFS <code class="filename">/shared/</code> từ máy phục vụ <code class="literal">arrakis</code> vào thư mục nội bộ <code class="filename">/srv/shared/</code>. Truy cập đọc-ghi được yêu cầu (và vì thế có tham số <code class="literal">rw</code>). Lựa chọn <code class="literal">nosuid</code> là một biện pháp bảo vệ vốn dọn sạch các bit <code class="literal">setuid</code> or <code class="literal">setgid</code> khỏi những chương trình được lưu trong chia sẻ. Nếu chia sẻ NFS chỉ dành cho lưu trữ các tài liệu, một lựa chọn được đề xuất khác là <code class="literal">noexec</code>, vốn chặn các chương trình đang chạy lưu lên chia sẻ. Ghi chú rằng trên máy phục vụ, thư mục <code class="filename">shared</code> nằm dưới mục xuất khẩu gốc NFSv4 (ví dụ <code class="filename">/export/shared</code>), nó không phải là một thư mục gốc.
 			</p>
 			 <p>
-				The <span class="citerefentry"><span class="refentrytitle">nfs</span>
-				 (5)</span> manual page describes all the options in some detail.
+				Trang hướng dẫn sử dụng <span class="citerefentry"><span class="refentrytitle">nfs</span>
+				 (5)</span> mô tả các lựa chọn chi tiết hơn.
 			</p>
 
 		</section>
