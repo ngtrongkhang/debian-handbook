@@ -37,46 +37,45 @@
 			 <a id="id-1.14.7.10.6" class="indexterm"></a>
 
 		</section>
-		 <section class="section" id="id-1.14.7.11"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.7.11"/>11.4.2. NFS Server</h3></div></div></div>
+		 <section class="section" id="id-1.14.7.11"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.7.11"/>11.4.2. Máy phục vụ NFS</h3></div></div></div>
 			
 			 <p>
-				The NFS server is part of the Linux kernel; in kernels provided by Debian it is built as a kernel module. If the NFS server is to be run automatically on boot, the <span class="pkg pkg">nfs-kernel-server</span> package should be installed; it contains the relevant start-up scripts.
+				Máy phục vụ NFS là một phần của nhân(kernel) Linux; trong những nhân(kernel) được cung cấp bởi Debian nó được xây dựng như một mô-đun của nhân. Nếu máy phục vụ NFS được chạy tự động khi khởi động máy, gói phần mềm <span class="pkg pkg">nfs-kernel-server</span> nên được cài đặt; nó chứa các đoạn mã kịch bản khởi động có liên quan.
 			</p>
 			 <p>
-				The NFS server configuration file, <code class="filename">/etc/exports</code>, lists the directories that are made available over the network (<span class="emphasis"><em>exported</em></span>). For each NFS share, only the given list of machines is granted access. More fine-grained access control can be obtained with a few options. The syntax for this file is quite simple:
+				Tập tin cấu hình máy phục vụ NFS, <code class="filename">/etc/exports</code>, liệt kê những thư mục được tạo sẵn trên mạng (<span class="emphasis"><em>được xuất khẩu (exported)</em></span>). Với mỗi chia sẻ NFS, chỉ có một danh sách các máy cho trước là được cung cấp truy cập. Kiểm soát truy cập chi tiết hơn có thể được đạt được với một vài lựa chọn. Cú pháp của tập tin này thì khá đơn giản:
 			</p>
 			 <a id="id-1.14.7.11.4" class="indexterm"></a>
 			 <a id="id-1.14.7.11.5" class="indexterm"></a>
 			 
 <pre class="programlisting">
-/directory/to/share machine1(option1,option2,...) machine2(...) ...
-</pre>
+/đường_dẫn/tới/thư_mục_được_chia_sẻ máy-số_1(lựa_chọn_1,lựa_chọn_2,...) máy_số_2(...) ...</pre>
 			 <p>
-				Note that with NFSv4, all exported directories must be part of a single hierarchy and that the root directory of that hierarchy must be exported and identified with the option <code class="literal">fsid=0</code> or <code class="literal">fsid=root</code>.
+				Ghi chú rằng với NFSv4, tất cả các thư mục được xuất khẩu phải là một phần của một cây duy nhất và thư mục gốc của cây đó phải được xuất ra và nhận dạng với lựa chọn <code class="literal">fsid=0</code> hoặc <code class="literal">fsid=root</code>.
 			</p>
 			 <p>
-				Each machine can be identified either by its DNS name or its IP address. Whole sets of machines can also be specified using either a syntax such as <code class="literal">*.falcot.com</code> or an IP address range such as <code class="literal">192.168.0.0/255.255.255.0</code> or <code class="literal">192.168.0.0/24</code>.
+				Mỗi máy có thể được nhận dạng bởi tên miền DNS của nó hoặc địa chỉ IP của nó. Các tập hợp đầy đủ các máy tính cũng có thể được chỉ định bằng cú pháp như <code class="literal">*.falcot.com</code> hoặc một vùng các địa chỉ IP như <code class="literal">192.168.0.0/255.255.255.0</code> hoặc <code class="literal">192.168.0.0/24</code>.
 			</p>
 			 <p>
-				Directories are made available as read-only by default (or with the <code class="literal">ro</code> option). The <code class="literal">rw</code> option allows read-write access. NFS clients typically connect from a port restricted to root (in other words, below 1024); this restriction can be lifted by the <code class="literal">insecure</code> option (the <code class="literal">secure</code> option is implicit, but it can be made explicit if needed for clarity).
+				Các thư mục được tạo sẵn chỉ để đọc theo ngầm định (hoặc với lựa chọn <code class="literal">ro</code>). Lựa chọn <code class="literal">rw</code> cho phép truy cập đọc-viết. Những chương trình khách NFS thường kết nối từ một cổng giới hạn dành cho quản trị viên (root) (nói cách khác, dưới 1024); giới hạn này có thể được xóa bỏ bởi lựa chọn <code class="literal">insecure</code> (lựa chọn <code class="literal">insecure</code> luôn được ám chỉ, nhưng có thể được công khai nếu cần phải làm rõ)
 			</p>
 			 <a id="id-1.14.7.11.10" class="indexterm"></a>
 			 <p>
-				By default, the server only answers an NFS query when the current disk operation is complete (<code class="literal">sync</code> option); this can be disabled with the <code class="literal">async</code> option. Asynchronous writes increase performance a bit, but they decrease reliability since there is a data loss risk in case of the server crashing between the acknowledgment of the write and the actual write on disk. Since the default value changed recently (as compared to the historical value of NFS), an explicit setting is recommended.
+				Theo ngầm định, máy phục vụ chỉ trả lời một yêu cầu NFS khi một tác vụ hiện thời trên đĩa là hoàn tất (lựa chọn <code class="literal">sync</code>); điều này có thể được tắt bằng lựa chọn <code class="literal">async</code>. Các lần ghi không đồng bộ giúp tăng hiệu suất một chút, nhưng chúng giảm độ tin cậy bởi có nguy cơ mất dữ liệu trong trường hợp máy phục vụ gặp sự cố giữa lúc xác nhận việc ghi dữ liệu và hành động ghi dữ liệu thật sự lên đĩa cứng. Bởi giá trị ngầm định thay đổi trong thời gian gần đây (so với giá trị trước đây của NFS), một cài đặt công khai rõ ràng luôn được khuyến khích.
 			</p>
 			 <p>
-				In order to not give root access to the filesystem to any NFS client, all queries appearing to come from a root user are considered by the server as coming from the <code class="literal">nobody</code> user. This behavior corresponds to the <code class="literal">root_squash</code> option, and is enabled by default. The <code class="literal">no_root_squash</code> option, which disables this behavior, is risky and should only be used in controlled environments. The <code class="literal">anonuid=<em class="replaceable">uid</em></code> and <code class="literal">anongid=<em class="replaceable">gid</em></code> options allow specifying another fake user to be used instead of UID/GID 65534 (which corresponds to user <code class="literal">nobody</code> and group <code class="literal">nogroup</code>).
+				Để tránh cho phép bất cứ chương trình khách NFS nào truy cập dưới quyền quản trị viên vào hệ thống tập tin, tất cả các truy cập trông như đến từ một tài khoản quyền quản trị viên được xem bởi máy phục vụ như là đến từ một tài khoản <code class="literal">nobody</code>. Hành vi này tương ứng với lựa chọn <code class="literal">root_squash</code>, và được kích hoạt theo ngầm định. Lựa chọn <code class="literal">no_root_squash</code>, vốn tắt hành vi này, là mạo hiểm và chỉ nên được sử dụng trong môi trường được kiểm soát. Lựa chọn <code class="literal">anonuid=<em class="replaceable">uid</em></code> và <code class="literal">anongid=<em class="replaceable">gid</em></code> cho phép việc chỉ định một tài khoản người dùng giả khác để được sử dụng thay cho UID/GID 65534 (vốn tương ứng với tài khoản <code class="literal">nobody</code> và nhóm <code class="literal">nogroup</code>).
 			</p>
 			 <p>
-				With NFSv4, you can add a <code class="literal">sec</code> option to indicate the security level that you want: <code class="literal">sec=sys</code> is the default with no special security features, <code class="literal">sec=krb5</code> enables authentication only, <code class="literal">sec=krb5i</code> adds integrity protection, and <code class="literal">sec=krb5p</code> is the most complete level which includes privacy protection (with data encryption). For this to work you need a working Kerberos setup (that service is not covered by this book).
+				Với NFSv4, bạn có thể thêm lựa chọn <code class="literal">sec</code> để chỉ định mức an ninh mà bạn muốn: <code class="literal">sec=sys</code> là mức ngầm định mà không có tính năng an ninh đặc biệt nào cả, <code class="literal">sec=krb5</code> chỉ kích hoạt xác thực, <code class="literal">sec=krb5i</code> thêm sự bảo vệ tính chặt chẽ, và <code class="literal">sec=krb5p</code> là mức hoàn thiện nhất vốn kèm cả sự bảo vệ tính riêng tư (với mã hóa dữ liệu). Để điều này hoạt động tốt bạn cần có một bản cài đặt Kerberos chạy tốt(dịch vụ đó không được giải thích bởi cuốn sách này).
 			</p>
 			 <p>
-				Other options are available; they are documented in the <span class="citerefentry"><span class="refentrytitle">exports</span>
-				 (5)</span> manual page.
+				Các lựa chọn khác cũng có sẵn; chúng được ghi lại trong trang <span class="citerefentry"><span class="refentrytitle">exports</span>
+				 (5)</span> của tài liệu hướng dẫn.
 			</p>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CAUTION</em></span> First installation</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CẢNH BÁO</em></span> Lần cài đặt đầu tiên</strong></p></div></div></div> 
 			 <p>
-				The <code class="filename">/etc/init.d/nfs-kernel-server</code> boot script only starts the server if the <code class="filename">/etc/exports</code> lists one or more valid NFS shares. On initial configuration, once this file has been edited to contain valid entries, the NFS server must therefore be started with the following command:
+				Kịch bản khởi động <code class="filename">/etc/init.d/nfs-kernel-server</code> chỉ khởi động máy phục vụ nếu <code class="filename">/etc/exports</code> liệt kê một hoặc nhiều chia sẻ NFS hợp lệ. Với cấu hình ban đầu, một khi tập tin này được chỉnh sửa để chứa các chỉ mục hợp lệ, khi đó máy phục vụ NFS phải được khởi động với lệnh sau:
 			</p>
 			 
 <pre class="screen">
