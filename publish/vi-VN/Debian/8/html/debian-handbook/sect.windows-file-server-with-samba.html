@@ -104,16 +104,16 @@
 						</dd></dl></div>
 
 				</section>
-				 <section class="section" id="id-1.14.8.9.8.3"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.8.9.8.3"/>11.5.1.2.2. Adding Users</h5></div></div></div>
+				 <section class="section" id="id-1.14.8.9.8.3"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.8.9.8.3"/>11.5.1.2.2. Thêm các người dùng</h5></div></div></div>
 					
 					 <p>
-						Each Samba user needs an account on the server; the Unix accounts must be created first, then the user needs to be registered in Samba's database. The Unix step is done quite normally (using <span class="command"><strong>adduser</strong></span> for instance).
+						Mỗi một người sử dụng Samba cần một tài khoản trên máy phục vụ; các tài khoản Unix phải được tạo trước, sau đó mỗi người sử dụng cần phải được đăng ký vào cơ sở dữ liệu của Samba. Bước Unix được thực hiện như bình thường (ví dụ, sử dụng lệnh <span class="command"><strong>adduser</strong></span>).
 					</p>
 					 <p>
-						Adding an existing user to the Samba database is a matter of running the <span class="command"><strong>smbpasswd -a <em class="replaceable">user</em></strong></span> command; this command asks for the password interactively.
+						Thêm một người dùng đã tồn tại vào cơ sở dữ liệu Samba chỉ cần chạy lệnh <span class="command"><strong>smbpasswd -a <em class="replaceable">user</em></strong></span>; lệnh này hỏi mật mã theo cách tương tác trực tiếp.
 					</p>
 					 <p>
-						A user can be deleted with the <span class="command"><strong>smbpasswd -x <em class="replaceable">user</em></strong></span> command. A Samba account can also be temporarily disabled (with <span class="command"><strong>smbpasswd -d <em class="replaceable">user</em></strong></span>) and re-enabled later (with <span class="command"><strong>smbpasswd -e <em class="replaceable">user</em></strong></span>).
+						Một người sử dụng có thể bị xóa với lệnh <span class="command"><strong>smbpasswd -x <em class="replaceable">user</em></strong></span>. Một tài khoản Samba có thể bị tắt đi tạm thời (với lệnh <span class="command"><strong>smbpasswd -d <em class="replaceable">user</em></strong></span>) và được kích hoạt lại sau đó (với lệnh <span class="command"><strong>smbpasswd -e <em class="replaceable">user</em></strong></span>).
 					</p>
 
 				</section>
@@ -121,86 +121,84 @@
 			</section>
 
 		</section>
-		 <section class="section" id="id-1.14.8.10"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.8.10"/>11.5.2. Samba Client</h3></div></div></div>
+		 <section class="section" id="id-1.14.8.10"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.8.10"/>11.5.2. Chương trình khách Samba</h3></div></div></div>
 			
 			 <p>
-				The client features in Samba allow a Linux machine to access Windows shares and shared printers. The required programs are available in the <span class="pkg pkg">cifs-utils</span> and <span class="pkg pkg">smbclient</span> packages.
+				Các tính năng của chương trình khách trong Samba cho phép một máy tính Linux truy cập các chia sẻ và các máy in được chia sẻ của Windows. Các chương trình bắt buộc đã có sẵn trong các gói phần mềm <span class="pkg pkg">cifs-utils</span> và <span class="pkg pkg">smbclient</span>.
 			</p>
 			 <a id="id-1.14.8.10.3" class="indexterm"></a>
 			 <a id="id-1.14.8.10.4" class="indexterm"></a>
-			 <section class="section" id="id-1.14.8.10.5"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.10.5"/>11.5.2.1. The <span class="command"><strong>smbclient</strong></span> Program</h4></div></div></div>
+			 <section class="section" id="id-1.14.8.10.5"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.10.5"/>11.5.2.1. Chương trình <span class="command"><strong>smbclient</strong></span> </h4></div></div></div>
 				
 				 <p>
-					The <span class="command"><strong>smbclient</strong></span> program queries SMB servers. It accepts a <code class="literal">-U <em class="replaceable">user</em></code> option, for connecting to the server under a specific identity. <span class="command"><strong>smbclient //<em class="replaceable">server</em>/<em class="replaceable">share</em></strong></span> accesses the share in an interactive way similar to the command-line FTP client. <span class="command"><strong>smbclient -L <em class="replaceable">server</em></strong></span> lists all available (and visible) shares on a server.
+					Chương trình <span class="command"><strong>smbclient</strong></span> truy xuất các máy phục vụ SMB. Nó chấp nhận lựa chọn <code class="literal">-U <em class="replaceable">user</em></code>, để kết nối tới máy phục vụ dưới một danh tính cụ thể nào đó. Lệnh <span class="command"><strong>smbclient //<em class="replaceable">server</em>/<em class="replaceable">share</em></strong></span> truy cập chia sẻ đó theo một cách có tương tác tương tự như chương trình khách FTP trên dòng lệnh. Lệnh <span class="command"><strong>smbclient -L <em class="replaceable">server</em></strong></span> liệt kê tất cả các chia sẻ có sẵn (và nhìn thấy được) trên một máy phục vụ.
 				</p>
 
 			</section>
-			 <section class="section" id="id-1.14.8.10.6"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.10.6"/>11.5.2.2. Mounting Windows Shares</h4></div></div></div>
+			 <section class="section" id="id-1.14.8.10.6"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.10.6"/>11.5.2.2. Kết nối các chia sẻ Windows</h4></div></div></div>
 				
 				 <p>
-					The <span class="command"><strong>mount</strong></span> command allows mounting a Windows share into the Linux filesystem hierarchy (with the help of <span class="command"><strong>mount.cifs</strong></span> provided by <span class="pkg pkg">cifs-utils</span>).
+					Lệnh <span class="command"><strong>mount</strong></span> cho phép kết nối một chia sẻ Windows vào một cây hệ thống tập tin Linux (với sự giúp đỡ của <span class="command"><strong>mount.cifs</strong></span> được cung cấp bởi <span class="pkg pkg">cifs-utils</span>).
 				</p>
 				 <a id="id-1.14.8.10.6.3" class="indexterm"></a>
 				 <a id="id-1.14.8.10.6.4" class="indexterm"></a>
-				 <div class="example" id="id-1.14.8.10.6.5"><a xmlns="" id="id-1.14.8.10.6.5"/><p class="title"><strong>Ví dụ 11.24. Mounting a Windows share</strong></p><div class="example-contents">
+				 <div class="example" id="id-1.14.8.10.6.5"><a xmlns="" id="id-1.14.8.10.6.5"/><p class="title"><strong>Ví dụ 11.24. Kết nối một chia sẻ Windows</strong></p><div class="example-contents">
 					
 					 
 <pre class="programlisting">
 mount -t cifs //arrakis/shared /shared \
-      -o credentials=/etc/smb-credentials
-</pre>
+      -o credentials=/etc/smb-credentials</pre>
 
 				</div></div>
 				 <p>
-					The <code class="filename">/etc/smb-credentials</code> file (which must not be readable by users) has the following format:
+					Tập tin <code class="filename">/etc/smb-credentials</code> (vốn phải không đọc được bởi người sử dụng) có định dạng sau:
 				</p>
 				 
 <pre class="programlisting">
 username = <em class="replaceable">user</em>
 password = <em class="replaceable">password</em></pre>
 				 <p>
-					Other options can be specified on the command-line; their full list is available in the <span class="citerefentry"><span class="refentrytitle">mount.cifs</span>
-					 (1)</span> manual page. Two options in particular can be interesting: <code class="literal">uid</code> and <code class="literal">gid</code> allow forcing the owner and group of files available on the mount, so as not to restrict access to root.
+					Các lựa chọn khác có thể được chỉ định trên dòng lệnh; danh sách đầy đủ của chúng có sẵn trong trang hướng dẫn sử dụng <span class="citerefentry"><span class="refentrytitle">mount.cifs</span>
+					 (1)</span>. Hai lựa chọn cụ thể có thể thú vị: <code class="literal">uid</code> và <code class="literal">gid</code> cho phép ép buộc người sở hữu và danh sách các tập tin sẽ được hiện ra trên kết nối, để khỏi phải giới hạn truy cập chỉ cho tài khoản quản trị.
 				</p>
 				 <p>
-					A mount of a Windows share can also be configured in <code class="filename">/etc/fstab</code>:
+					Một chia sẻ Windows cũng có thể được cấu hình trong <code class="filename">/etc/fstab</code>:
 				</p>
 				 
 <pre class="programlisting">
-//<em class="replaceable">server</em>/shared /shared cifs credentials=/etc/smb-credentials
-</pre>
+//<em class="replaceable">server</em>/shared /shared cifs credentials=/etc/smb-credentials</pre>
 				 <p>
-					Unmounting a SMB/CIFS share is done with the standard <span class="command"><strong>umount</strong></span> command.
+					Bỏ kết nối SMB/CIFS được thực hiện với lệnh <span class="command"><strong>umount</strong></span>.
 				</p>
 
 			</section>
-			 <section class="section" id="id-1.14.8.10.7"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.10.7"/>11.5.2.3. Printing on a Shared Printer</h4></div></div></div>
+			 <section class="section" id="id-1.14.8.10.7"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.10.7"/>11.5.2.3. In ấn trên một máy in được chia sẻ</h4></div></div></div>
 				
 				 <p>
-					CUPS is an elegant solution for printing from a Linux workstation to a printer shared by a Windows machine. When the <span class="pkg pkg">smbclient</span> is installed, CUPS allows installing Windows shared printers automatically.
+					CUPS là một giải pháp tiện lợi cho in ấn từ một máy trạm Linux sang một máy in được chia sẻ bởi một máy Windows. Khi <span class="pkg pkg">smbclient</span> được cài đặt, CUPS cho phép cài đặt các máy in được chia sẻ bởi Windows một cách tự động.
 				</p>
 				 <a id="id-1.14.8.10.7.3" class="indexterm"></a>
 				 <p>
-					Here are the required steps:
+					Đây là các bước bắt buộc
 				</p>
 				 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
 						<p>
-							Enter the CUPS configuration interface: <code class="literal">http://localhost:631/admin</code>
+							Nhập vào địa chỉ của giao diện cấu hình CUPS: <code class="literal">http://localhost:631/admin</code>
 						</p>
 
 					</li><li class="listitem">
 						<p>
-							Click on “Add Printer”.
+							Nhấn chuộc vào “Thêm Máy In (Add Printer)”.
 						</p>
 
 					</li><li class="listitem">
 						<p>
-							Choose the printer device, pick “Windows Printer via SAMBA”.
+							Chọn thiết bị in, chọn “Máy in Windows thông qua SAMBA“.
 						</p>
 
 					</li><li class="listitem">
 						<p>
-							Enter the connection URI for the network printer. It should look like the following:
+							Nhập đường dẫn URI cho kết nối đến máy in mạng. Nó giống như sau:
 						</p>
 						 <p>
 							<code class="literal">smb://<em class="replaceable">user</em>:<em class="replaceable">password</em>@<em class="replaceable">server</em>/<em class="replaceable">printer</em></code>.
@@ -208,17 +206,17 @@ password = <em class="replaceable">password</em></pre>
 
 					</li><li class="listitem">
 						<p>
-							Enter the name that will uniquely identify this printer. Then enter the description and location of the printer. Those are the strings that will be shown to end users to help them identify the printers.
+							Nhập tên vốn sẽ nhận diện được ngay máy in này. Sau đó nhập mô tả và địa điểm của máy in. Đó là những chuỗi ký tự sẽ được xuất ra cho những người dùng cuối để giúp họ nhận ra các máy in.
 						</p>
 
 					</li><li class="listitem">
 						<p>
-							Indicate the manufacturer/model of the printer, or directly provide a working printer description file (PPD).
+							Báo nhà sản xuất/mô-đen của máy in hoặc trực tiếp cung cấp một tập tin mô tả máy in đang chạy tốt (Printer Description file - PPD).
 						</p>
 
 					</li></ul></div>
 				 <p>
-					Voilà, the printer is operational!
+					Voilà, máy in đã hoạt động!
 				</p>
 
 			</section>
