@@ -50,55 +50,55 @@
 				 <a id="id-1.14.8.9.7.5" class="indexterm"></a>
 
 			</section>
-			 <section class="section" id="id-1.14.8.9.8"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.9.8"/>11.5.1.2. Configuring Manually</h4></div></div></div>
+			 <section class="section" id="id-1.14.8.9.8"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.8.9.8"/>11.5.1.2. Cấu hình thủ công</h4></div></div></div>
 				
-				 <section class="section" id="id-1.14.8.9.8.2"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.8.9.8.2"/>11.5.1.2.1. Changes to <code class="filename">smb.conf</code></h5></div></div></div>
+				 <section class="section" id="id-1.14.8.9.8.2"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.8.9.8.2"/>11.5.1.2.1. Những thay đổi cho <code class="filename">smb.conf</code></h5></div></div></div>
 					
 					 <p>
-						The requirements at Falcot require other options to be modified in the <code class="filename">/etc/samba/smb.conf</code> configuration file. The following excerpts summarize the changes that were effected in the <code class="literal">[global]</code> section.
+						Những yêu cầu tại Falcot bắt buộc các lựa chọn khác phải được thay đổi trong tập tin cấu hình <code class="filename">/etc/samba/smb.conf</code>. Đoạn mã sau tóm tắt các thay đổi trong phần <code class="literal">[global]</code>.
 					</p>
 					 
 <pre class="programlisting">
 [global]
 
-## Browsing/Identification ###
+## Duyệt/Nhận dạng ###
 
-# Change this to the workgroup/NT-domain name your Samba server will part of
+# Thay đổi dòng sau thành nhóm-làm-việc/miền-máy-tính-NT mà máy phục vụ Samba sẽ là một phần trong đó
    workgroup = FALCOTNET
 
-# Windows Internet Name Serving Support Section:
-# WINS Support - Tells the NMBD component of Samba to enable its WINS Server
+# Phần hỗ trợ Windows Internet Name Serving:
+# WINS Support - Bảo thành phần NMBD của Samba để kích hoạt máy phục vụ WINS
    wins support = yes <span id="smb.conf.wins"/><a xmlns="" id="smb.conf.wins"/><span class="callout">1</span>
 
 [...]
 
-####### Authentication #######
+####### Xác thực #######
 
-# Server role. Defines in which mode Samba will operate. Possible
-# values are "standalone server", "member server", "classic primary
-# domain controller", "classic backup domain controller", "active
-# directory domain controller". 
+# Vai trò máy phục vụ. Xác định chế độ mà Samba sẽ hoạt động. Các giá trị có khả thi
+# là "máy phục vụ đơn độc", "máy phục vụ thành viên", "trạm điều khiển miền máy tính chủ lực cổ điển 
+# (classic primary domain controller)", "trạm điều khiển miền máy tính dự phòng cổ điển
+# (classic backup domain controller)", "trạm điều khiển miền máy tính active directory 
+# (active directory domain controller)".
 #
-# Most people will want "standalone sever" or "member server".
-# Running as "active directory domain controller" will require first
-# running "samba-tool domain provision" to wipe databases and create a
-# new domain.
+# Đa số người dùng sẽ muốn "máy phục vụ đơn độc" hoặc "máy phục vụ thành viên".
+# Chạy như "trạm điều khiển miền máy tính active directory" sẽ buộc trước tiên
+# chạy "samba-tool domain provision" để xóa sạch các cơ sở dữ liệu và tạo một miền máy tính
+# mới.
    server role = standalone server
 
-# "security = user" is always a good idea. This will require a Unix account
-# in this server for every user accessing the server.
+# "security = user" luôn là một ý tốt. Điều này sẽ buộc phải có một tài khoản Unix
+# trong máy phục vụ này cho mỗi người sử dụng truy cập máy phục vụ.
    security = user <span id="smb.conf.security"/><a xmlns="" id="smb.conf.security"/><span class="callout">2</span>
 
-[...]
-</pre>
+[...]</pre>
 					 <div class="calloutlist"><dl class="calloutlist"><dt><a href="#smb.conf.wins"><span class="callout">1</span></a> </dt><dd>
 							<p>
-								Indicates that Samba should act as a Netbios name server (WINS) for the local network.
+								Chỉ ra rằng Samba nên hoạt động như một máy phục vụ tên Netbios (Netbios name server) cho mạng nội bộ.
 							</p>
 
 						</dd><dt><a href="#smb.conf.security"><span class="callout">2</span></a> </dt><dd>
 							<p>
-								This is the default value for this parameter; however, since it is central to the Samba configuration, filling it explicitly is recommended. Each user must authenticate before accessing any share.
+								Đây là giá trị ngầm định cho tham biến này; tuy nhiên, bởi nó là cốt lõi trong cấu hình Samba, điền giá trị vào một cách công khai được khuyến cáo. Mỗi người sử dụng phải xác thực trước khi truy cập một chia sẻ nào.
 							</p>
 
 						</dd></dl></div>
