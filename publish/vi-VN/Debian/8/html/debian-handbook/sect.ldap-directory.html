@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>11.7. LDAP Directory</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Postfix, Apache, NFS, Samba, Squid, OpenLDAP, SIP"/><link rel="prev" href="sect.http-ftp-proxy.html" title="11.6. Trạm chuyển hướng HTTP/FTP"/><link rel="next" href="sect.rtc-services.html" title="11.8. Real-Time Communication Services"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.ldap-directory.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.http-ftp-proxy.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.rtc-services.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.ldap-directory"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.ldap-directory"/>11.7. LDAP Directory</h2></div></div></div>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>11.7. Danh bạ LDAP</title><meta name="generator" content="publican v4.3.2"/><meta name="keywords" content="Postfix, Apache, NFS, Samba, Squid, OpenLDAP, SIP"/><link rel="prev" href="sect.http-ftp-proxy.html" title="11.6. Trạm chuyển hướng HTTP/FTP"/><link rel="next" href="sect.rtc-services.html" title="11.8. Real-Time Communication Services"/><link xmlns="" rel="canonical" href="https://debian-handbook.info/browse/vi-VN/stable/sect.ldap-directory.html"/></head><body onLoad="initSwitchery(); jQuery(&quot;#poptoc&quot;).load('index.html .toc:eq(0)'); jQuery('.programlisting').each(function(i, block){hljs.highlightBlock(block);});" onClick="hide('poptoc');"><header><div id="banner"><a href="http://debian-handbook.info/get/"><span class="text">Download the ebook</span></a></div><ul class="docnav top"><li class="previous"><a accesskey="p" href="sect.http-ftp-proxy.html"><strong>Trước đó</strong></a></li><li class="home" onClick="work=1;showhide('poptoc');">Sổ tay Quản trị Debian</li><li class="next"><a accesskey="n" href="sect.rtc-services.html"><strong>Kế tiếp</strong></a></li></ul></header><div id="poptoc" class="hidden"> </div><section class="section" id="sect.ldap-directory"><div class="titlepage"><div><div><h2 class="title"><a xmlns="" id="sect.ldap-directory"/>11.7. Danh bạ LDAP</h2></div></div></div>
 		
 		 <a id="id-1.14.10.2" class="indexterm"></a>
 		 <a id="id-1.14.10.3" class="indexterm"></a>
 		 <a id="id-1.14.10.4" class="indexterm"></a>
 		 <p>
-			OpenLDAP is an implementation of the LDAP protocol; in other words, it is a special-purpose database designed for storing directories. In the most common use case, using an LDAP server allows centralizing management of user accounts and the related permissions. Moreover, an LDAP database is easily replicated, which allows setting up multiple synchronized LDAP servers. When the network and the user base grows quickly, the load can then be balanced across several servers.
+			OpenLDAP là một sự hiện thực hoá của giao thức LDAP; nói cách khác, nó là một cơ sở dữ liệu chuyên dùng để lưu trữ danh bạ. Trong trường hợp sử dụng phổ biến nhất, sử dụng một máy phục vụ LDAP cho phép quản lý tập trung các tài khoản người dùng và các quyền sử dụng liên quan. Hơn thế, một cơ sở dữ liệu LDAP rất dễ sao chép, cho phép cài đặt nhiều máy phục vụ LDAP đồng bộ với nhau. Khi mạng và lượng người sử dụng tăng nhanh, tải có thể được cân bằng giữa nhiều máy phục vụ.
 		</p>
 		 <p>
-			LDAP data is structured and hierarchical. The structure is defined by “schemas” which describe the kind of objects that the database can store, with a list of all their possible attributes. The syntax used to refer to a particular object in the database is based on this structure, which explains its complexity.
+			Dữ liệu LDAP có cấu trúc và có tính hệ thống. Cấu trúc được định nghĩa bởi các “schemas” vốn mô tả các loại đối tượng mà cơ sở dữ liệu lưu trữ, cùng với một danh sách tất cả các đặc trưng có thể có của chúng. Cú pháp được sử dụng để xác định một đối tượng nào đó trong cơ sở dữ liệu được hình thành dựa trên cấu trúc này, vốn cho thấy sự phức tạp của nó.
 		</p>
 		 <section class="section" id="id-1.14.10.7"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="id-1.14.10.7"/>11.7.1. Cài đặt</h3></div></div></div>
 			
 			 <p>
-				The <span class="pkg pkg">slapd</span> package contains the OpenLDAP server. The <span class="pkg pkg">ldap-utils</span> package includes command-line tools for interacting with LDAP servers.
+				Gói phần mềm <span class="pkg pkg">slapd</span> chứa máy phục vụ OpenLDAP. Gói phần mềm <span class="pkg pkg">ldap-utils</span> bao gồm cả các công cụ dòng lệnh để tương tác với các máy phục vụ LDAP.
 			</p>
 			 <a id="id-1.14.10.7.3" class="indexterm"></a>
 			 <p>
-				Installing <span class="pkg pkg">slapd</span> usually asks very few questions and the resulting database is unlikely to suit your needs. Fortunately a simple <span class="command"><strong>dpkg-reconfigure slapd</strong></span> will let you reconfigure the LDAP database with more details:
+				Cài đặt <span class="pkg pkg">slapd</span> thường hỏi rất ít câu hỏi và cơ sở dữ liệu có được thường ít đáp ứng được các nhu cầu của bạn. May mắn thay, dòng lệnh đơn giản <span class="command"><strong>dpkg-reconfigure slapd</strong></span> sẽ cho phép bạn cấu hình lại cơ sở dữ liệu LDAP với nhiều chi tiết hơn:
 			</p>
 			 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
 					<p>
-						Omit OpenLDAP server configuration? No, of course, we want to configure this service.
+						Bỏ qua cấu hình máy phục vụ OpenLDAP? Dĩ nhiên là không, chúng ta muốn cấu hình dịch vụ này.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						DNS domain name: “<code class="literal">falcot.com</code>”.
+						Tên miền DNS: “<code class="literal">falcot.com</code>”.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						Organization name: “Falcot Corp”.
+						Tên tổ chức: “Falcot Corp”.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						An administrative passwords needs to be typed in.
+						Các mật mã quản trị cần phải được nhập vào.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						Database backend to use: “MDB”.
+						Cơ sở dữ liệu để sử dụng ở hậu phương: “MDB”.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						Do you want the database to be removed when <span class="pkg pkg">slapd</span> is purged? No. No point in risking losing the database in case of a mistake.
+						Bạn có muốn cơ sở dữ liệu được tháo bỏ khi <span class="pkg pkg">slapd</span> bị xóa? Không. Sẽ không có nghĩa gì khi mạo hiểm mất cơ sở dữ liệu nếu có lỗi phát sinh.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						Move old database? This question is only asked when the configuration is attempted while a database already exists. Only answer “yes” if you actually want to start again from a clean database, for instance if you run <span class="command"><strong>dpkg-reconfigure slapd</strong></span> right after the initial installation.
+						Di chuyển cơ sở dữ liệu cũ? Câu hỏi này chỉ được hỏi khi cấu hình này được thử trong khi cơ sở dữ liệu đã tồn tại. Chỉ trả lời “yes” nếu bạn thực sự muốn bắt đầu lại từ đầu với một cơ sở dữ liệu trống, ví dụ như nếu bạn chạy lệnh <span class="command"><strong>dpkg-reconfigure slapd</strong></span> ngay sau lần cài đặt đầu tiên.
 					</p>
 
 				</li><li class="listitem">
 					<p>
-						Allow LDAPv2 protocol? No, there is no point in that. All the tools we are going to use understand the LDAPv3 protocol.
+						Cho phép giao thức LDAP phiên bản số 2? Không, không có lý gì cả. Tất cả các công cụ chúng ta sẽ sử dụng đều đã hiểu được giao thức LDAP phiên bản số 3.
 					</p>
 
 				</li></ul></div>
-			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>BACK TO BASICS</em></span> LDIF format</strong></p></div></div></div> 
+			 <div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TRỞ VỀ CƠ BẢN</em></span> Định dạng LDIF</strong></p></div></div></div> 
 			 <p>
-				An LDIF file (<span class="emphasis"><em>LDAP Data Interchange Format</em></span>) is a portable text file describing the contents of an LDAP database (or a portion thereof); this can then be used to inject the data into any other LDAP server.
+				Một tập tin LDIF (<span class="emphasis"><em>Định dạng Trao đổi Dữ liệu LDAP(LDAP Data Interchange Format)</em></span>) là một tập tin chữ cơ động mô tả nội dung của một cơ sở dữ liệu LDAP (hoặc chỉ một phần của nó); điều này có thể được sử dụng để chèn dữ liệu vào bất kỳ một máy phục vụ LDAP nào khác.
 			</p>
 			 <a id="id-1.14.10.7.6.3" class="indexterm"></a>
 			 </div> <p>
-				A minimal database is now configured, as demonstrated by the following query:
+				Cơ sở dữ liệu tối thiểu đã được cấu hình, như được trình bày trong truy xuất sau:
 			</p>
 			 
 <pre class="screen">
 <code class="computeroutput">$ </code><strong class="userinput"><code>ldapsearch -x -b dc=falcot,dc=com</code></strong>
 <code class="computeroutput"># extended LDIF # # LDAPv3 # base &lt;dc=falcot,dc=com&gt; with scope sub # filter: (objectclass=*) # requesting: ALL # # falcot.com dn: dc=falcot,dc=com objectClass: top objectClass: dcObject objectClass: organization o: Falcot Corp dc: falcot # admin, falcot.com dn: cn=admin,dc=falcot,dc=com objectClass: simpleSecurityObject objectClass: organizationalRole cn: admin description: LDAP administrator # search result search: 2 result: 0 Success # numResponses: 3 # numEntries: 2 </code></pre>
 			 <p>
-				The query returned two objects: the organization itself, and the administrative user.
+				Truy xuất trả về hai đối tượng: tổ chức và người dùng quản trị.
 			</p>
 
 		</section>
