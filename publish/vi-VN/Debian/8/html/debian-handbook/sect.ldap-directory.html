@@ -90,69 +90,68 @@ netgroup: ldap files</pre></div></div><div class="para">
 					Mô-đun LDAP cho PAM được cung cấp bởi gói phần mềm <span class="pkg pkg">libpam-ldap</span>. Cài đặt gói phần mềm này hỏi một vài câu hỏi tương tự những câu hỏi ở <span class="pkg pkg">libnss-ldap</span>; một vài tham biến cấu hình (như là Đường dẫn Chuẩn đến Tài nguyên (URI) cho máy phục vụ LDAP) thậm chí thực ra được chia sẻ với gói <span class="pkg pkg">libnss-ldap</span>. Các câu trả lời được tóm tắt ở <a class="xref" href="sect.ldap-directory.html#tab-libpam-ldap">Bảng 11.3</a>.
 				</div><a id="id-1.14.10.9.4.5" class="indexterm"></a><div class="table"><a xmlns="" id="tab-libpam-ldap"></a><p class="title"><strong>Bảng 11.3. Cấu hình của <span class="emphasis"><em>libpam-ldap</em></span></strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols lt-7-rows" summary="Cấu hình của libpam-ldap"><colgroup><col align="justify" /><col align="justify" /></colgroup><thead><tr><th align="justify">Câu hỏi</th><th align="justify">Câu trả lời</th></tr></thead><tbody><tr><td align="justify">Cho phép tài khoản quản trị LDAP hành động như một quản trị viên của máy nội bộ</td><td align="justify">Đồng ý. Điều này cho phép sử dụng lệnh thông thường <code class="command">passwd</code> để thay đổi mật mã lưu trong cơ sở dữ liệu LDAP</td></tr><tr><td align="justify">LDAP có bắt buộc đăng nhập?</td><td align="justify">no</td></tr><tr><td align="justify">Tài khoản LDAP cho quản trị viên</td><td align="justify"><code class="literal">cn=admin,dc=falcot,dc=com</code></td></tr><tr><td align="justify">Mật mã tài khoản quản trị viên LDAP</td><td align="justify">mật mã quản trị cơ sở dữ liệu LDAP</td></tr><tr><td align="justify">Thuật toán mã hóa nội bộ để sử dụng cho các mật mã</td><td align="justify">crypt</td></tr></tbody></table></div></div><div class="para">
 					Việc cài đặt <span class="pkg pkg">libpam-ldap</span> sẽ tự động thay đổi cấu hình định nghĩa trong các tập tin <code class="filename">/etc/pam.d/common-auth</code>, <code class="filename">/etc/pam.d/common-password</code> và <code class="filename">/etc/pam.d/common-account</code>. Cơ chế này sử dụng công cụ chuyên dụng <code class="command">pam-auth-update</code> (cung cấp bởi gói phần mềm <span class="pkg pkg">libpam-runtime</span>). Công cụ này cũng có thể được chạy bởi quản trị viên nếu họ muốn kích hoạt hay bỏ kích hoạt các mô-đun PAM.
-				</div><a id="id-1.14.10.9.4.8" class="indexterm"></a><a id="id-1.14.10.9.4.9" class="indexterm"></a><a id="id-1.14.10.9.4.10" class="indexterm"></a><a id="id-1.14.10.9.4.11" class="indexterm"></a><a id="id-1.14.10.9.4.12" class="indexterm"></a><a id="id-1.14.10.9.4.13" class="indexterm"></a></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.10.9.5"></a>11.7.3.3. Securing LDAP Data Exchanges</h4></div></div></div><a id="id-1.14.10.9.5.2" class="indexterm"></a><div class="para">
-					By default, the LDAP protocol transits on the network as cleartext; this includes the (encrypted) passwords. Since the encrypted passwords can be extracted from the network, they can be vulnerable to dictionary-type attacks. This can be avoided by using an extra encryption layer; enabling this layer is the topic of this section.
-				</div><div class="section"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.10.9.5.4"></a>11.7.3.3.1. Configuring the Server</h5></div></div></div><a id="id-1.14.10.9.5.4.2" class="indexterm"></a><a id="id-1.14.10.9.5.4.3" class="indexterm"></a><div class="para">
-						The first step is to create a key pair (comprising a public key and a private key) for the LDAP server. The Falcot administrators reuse <span class="emphasis"><em>easy-rsa</em></span> to generate it (see <a class="xref" href="sect.virtual-private-network.html#sect.easy-rsa">Phần 10.2.1.1, “Public Key Infrastructure: <span class="emphasis"><em>easy-rsa</em></span>”</a>). Running <code class="command">./build-key-server ldap.falcot.com</code> asks a few mundane questions (location, organization name and so on). The answer to the “common name” question <span class="emphasis"><em>must</em></span> be the fully-qualified hostname for the LDAP server; in our case, <code class="literal">ldap.falcot.com</code>.
+				</div><a id="id-1.14.10.9.4.8" class="indexterm"></a><a id="id-1.14.10.9.4.9" class="indexterm"></a><a id="id-1.14.10.9.4.10" class="indexterm"></a><a id="id-1.14.10.9.4.11" class="indexterm"></a><a id="id-1.14.10.9.4.12" class="indexterm"></a><a id="id-1.14.10.9.4.13" class="indexterm"></a></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="id-1.14.10.9.5"></a>11.7.3.3. Bảo vệ các Giao dịch Dữ liệu LDAP</h4></div></div></div><a id="id-1.14.10.9.5.2" class="indexterm"></a><div class="para">
+					Theo ngầm định, giao thức LDAP di chuyển trên mạng không có mã hóa; điều này bao gồm các mật mã (đã mã hóa). Bởi các mật mã đã mã hóa có thể được trích xuất từ trên mạng, chúng có thể bị tấn công bởi các loại hình tấn công dựa trên từ điển. Điều này có thể tránh được bằng việc sử dụng một lớp mã hóa thêm; kích hoạt lớp này là chủ đề của phần này.
+				</div><div class="section"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.10.9.5.4"></a>11.7.3.3.1. Cấu hình máy phục vụ</h5></div></div></div><a id="id-1.14.10.9.5.4.2" class="indexterm"></a><a id="id-1.14.10.9.5.4.3" class="indexterm"></a><div class="para">
+						Bước đầu tiên là tạo một cặp chìa khóa (bao gồm chìa khóa công cộng và chìa khóa riêng tư) cho máy phục vụ LDAP. Các quản trị viên của Falcot sử dụng lại <span class="emphasis"><em>easy-rsa</em></span> để tạo ra nó (xem <a class="xref" href="sect.virtual-private-network.html#sect.easy-rsa">Phần 10.2.1.1, “Public Key Infrastructure: <span class="emphasis"><em>easy-rsa</em></span>”</a>). Chạy <code class="command">./build-key-server ldap.falcot.com</code> sẽ hỏi một vài câu hỏi có vẻ thừa (vị trí, tên tổ chức và vâng vâng). Câu trả lời cho câu hỏi “tên thông thường(common name)“ <span class="emphasis"><em>phải</em></span> là một tên máy tính đầy đủ cho máy phục vụ LDAP; trong trường hợp của chúng ta, <code class="literal">ldap.falcot.com</code>.
 					</div><div class="para">
-						This command creates a certificate in the <code class="filename">keys/ldap.falcot.com.crt</code> file; the corresponding private key is stored in <code class="filename">keys/ldap.falcot.com.key</code>.
+						Lệnh này tạo ra một chứng chỉ trong tập tin <code class="filename">keys/ldap.falcot.com.crt</code>; chìa khóa riêng tư tương ứng này được lưu trong <code class="filename">keys/ldap.falcot.com.key</code>.
 					</div><div class="para">
-						Now these keys have to be installed in their standard location, and we must make sure that the private file is readable by the LDAP server which runs under the <code class="literal">openldap</code> user identity:
+						Bây giờ các chìa khóa phải được cài đặt vào vị trí chuẩn của chúng, và chúng ta phải đảm bảo rằng tập tin riêng tư có thể đọc được bởi máy phục vụ LDAP vốn chạy dưới danh tính của tài khoản <code class="literal">openldap</code>:
 					</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>adduser openldap ssl-cert </code></strong><code class="computeroutput">Adding user `openldap' to group `ssl-cert' ... Adding user openldap to group ssl-cert Done. # </code><strong class="userinput"><code>mv keys/ldap.falcot.com.key /etc/ssl/private/ldap.falcot.com.key </code></strong><code class="computeroutput"># </code><strong class="userinput"><code>chown root:ssl-cert /etc/ssl/private/ldap.falcot.com.key </code></strong><code class="computeroutput"># </code><strong class="userinput"><code>chmod 0640 /etc/ssl/private/ldap.falcot.com.key </code></strong><code class="computeroutput"># </code><strong class="userinput"><code>mv newcert.pem /etc/ssl/certs/ldap.falcot.com.pem </code></strong></pre><div class="para">
-						Dịch vụ chạy nền <code class="command">slapd</code> cũng cần phải được báo cho biết để sử dụng các chìa khóa này cho việc mã hóa. Cấu hình máy phục vụ LDAP được quản lý động: cấu hình có thể được cập nhật với các tác vụ LDAP bình thường trên cây đối tượng <code class="literal">cn=config</code>, và máy phục vụ cập nhật <code class="filename">/etc/ldap/slapd.d</code> trong thời gian thực để giữ cho cấu hình luôn luôn mới nhất.
+						Dịch vụ chạy nền <code class="command">slapd</code> cũng cần phải được báo cho biết để sử dụng các chìa khóa này cho việc mã hóa. Cấu hình máy phục vụ LDAP được quản lý động: cấu hình có thể được cập nhật với các tác vụ LDAP bình thường trên cây đối tượng <code class="literal">cn=config</code>, và máy phục vụ sẽ cập nhật <code class="filename">/etc/ldap/slapd.d</code> trong thời gian thực để giữ cho cấu hình luôn luôn mới nhất.
 					</div><div class="example"><a xmlns="" id="id-1.14.10.9.5.4.9"></a><p class="title"><strong>Ví dụ 11.27. Cấu hình <code class="command">slapd</code> cho mã hóa</strong></p><div class="example-contents"><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>cat &gt;ssl.ldif &lt;&lt;END dn: cn=config changetype: modify add: olcTLSCertificateFile olcTLSCertificateFile: /etc/ssl/certs/ldap.falcot.com.pem - add: olcTLSCertificateKeyFile olcTLSCertificateKeyFile: /etc/ssl/private/ldap.falcot.com.key - END </code></strong><code class="computeroutput"># </code><strong class="userinput"><code>ldapmodify -Y EXTERNAL -H ldapi:/// -f ssl.ldif </code></strong><code class="computeroutput">SASL/EXTERNAL authentication started SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth SASL SSF: 0 modifying entry "cn=config" </code></pre></div></div><div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>CÔNG CỤ</em></span> <code class="command">ldapvi</code> để chỉnh sửa một danh bạ LDAP</strong></p></div></div></div><a id="id-1.14.10.9.5.4.10.2" class="indexterm"></a><div class="para">
-						With <code class="command">ldapvi</code>, you can display an LDIF output of any part of the LDAP directory, make some changes in the text editor, and let the tool do the corresponding LDAP operations for you.
+						Với <code class="command">ldapvi</code>, bạn có thể hiển thị kết xuất LDIF của bất cứ phần nào của danh bạ LDAP, tạo ra một số thay đổi trong trình chỉnh sửa văn bản, và để công cụ này thực hiện các tác vụ LDAP tương ứng cho bạn.
 					</div><div class="para">
-						It is thus a convenient way to update the configuration of the LDAP server, simply by editing the <code class="literal">cn=config</code> hierarchy.
+						Vì vậy đó là một cách thuận tiện để cập nhật cấu hình máy phục vụ LDAP, đơn giản bằng việc chỉnh sửa cây <code class="literal">cn=config</code>
 					</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>ldapvi -Y EXTERNAL -h ldapi:/// -b cn=config </code></strong></pre></div><div class="para">
-						The last step for enabling encryption involves changing the <code class="varname">SLAPD_SERVICES</code> variable in the <code class="filename">/etc/default/slapd</code> file. We'll play it safe and disable unsecured LDAP altogether.
-					</div><div class="example"><a xmlns="" id="id-1.14.10.9.5.4.12"></a><p class="title"><strong>Ví dụ 11.28. The <code class="filename">/etc/default/slapd</code> file</strong></p><div class="example-contents"><pre class="programlisting">
-# Default location of the slapd.conf file or slapd.d cn=config directory. If
-# empty, use the compiled-in default (/etc/ldap/slapd.d with a fallback to
+						Bước cuối cùng để kích hoạt mã hóa liên quan tới thay đổi tham biến <code class="varname">SLAPD_SERVICES</code> trong tập tin <code class="filename">/etc/default/slapd</code>. Chúng ta sẽ theo cách an toàn và tắt hết LDAP không được đảm bảo an ninh.
+					</div><div class="example"><a xmlns="" id="id-1.14.10.9.5.4.12"></a><p class="title"><strong>Ví dụ 11.28. Tập tin <code class="filename">/etc/default/slapd</code></strong></p><div class="example-contents"><pre class="programlisting">
+# Địa chỉ ngầm định của tập tin slapd.conf hoặc danh bạ slapd.d cn=config. Nếu
+# trống rỗng, sử dụng giá trị ngầm định được biên dịch sẵn (/etc/ldap/slapd.d với phương án dự phòng
 # /etc/ldap/slapd.conf).
 SLAPD_CONF=
 
-# System account to run the slapd server under. If empty the server
-# will run as root.
+# Tài khoản quyền hệ thống để chạy máy phục vụ slapd. Nếu bỏ trống, máy phục vụ
+# sẽ được chạy dưới quyền quản trị viên.
 SLAPD_USER="openldap"
 
-# System group to run the slapd server under. If empty the server will
-# run in the primary group of its user.
+# Nhóm người sử dụng có quyền hệ thống để chạy máy phục vụ slapd. Nếu bỏ trống máy phục vụ sẽ
+# chạy dưới nhóm chính của người sử dụng của nó.
 SLAPD_GROUP="openldap"
 
-# Path to the pid file of the slapd server. If not set the init.d script
-# will try to figure it out from $SLAPD_CONF (/etc/ldap/slapd.conf by
-# default)
+# Đường dẫn đến tập tin pid của máy phục vụ slapd. Nếu bỏ trống kịch bản init.d
+# sẽ cố gắng tự suy ra dựa trên $SLAPD_CONF (/etc/ldap/slapd.conf theo ngầm
+# định)
 SLAPD_PIDFILE=
 
-# slapd normally serves ldap only on all TCP-ports 389. slapd can also
-# service requests on TCP-port 636 (ldaps) and requests via unix
-# sockets.
-# Example usage:
+# slapd thông thường chỉ phục vụ ldap trên tất cả các cổng TCP 389. slapd cũng có thể
+# phục vụ các yêu cầu trên cổng TCP 636 (ldaps) và các yêu cầu thông qua các unix
+# socket.
+# Ví dụ cách sử dụng:
 # SLAPD_SERVICES="ldap://127.0.0.1:389/ ldaps:/// ldapi:///"
 SLAPD_SERVICES="ldaps:/// ldapi:///"
 
-# If SLAPD_NO_START is set, the init script will not start or restart
-# slapd (but stop will still work).  Uncomment this if you are
-# starting slapd via some other means or if you don't want slapd normally
-# started at boot.
+# Nếu SLAPD_NO_START được bật, kịch bản khởi động sẽ không kích hoạt hoặc khởi động lại
+# slapd (nhưng lệnh dừng lại vẫn hoạt động tốt).  Bỏ ghi chú dòng sau nếu bạn sẽ
+# khởi động slapd thông qua các phương pháp khác hoặc nếu bạn không muốn slapd thông thường
+# được kích hoạt khi máy khởi động.
 #SLAPD_NO_START=1
 
-# If SLAPD_SENTINEL_FILE is set to path to a file and that file exists,
-# the init script will not start or restart slapd (but stop will still
-# work).  Use this for temporarily disabling startup of slapd (when doing
-# maintenance, for example, or through a configuration management system)
-# when you don't want to edit a configuration file.
+# Nếu SLAPD_SENTINEL_FILE được gán giá trị là một đường dẫn đến một tập tin và tập tin đó có tồn tại,
+# kịch bản khởi động sẽ không kích hoạt hoặc khởi động lại slapd (nhưng lệnh dừng hoạt động vẫn
+# hoạt động).  Dùng dòng sau để tắt tạm thời việc khởi động slapd (ví dụ như khi thực hiện
+# bảo trì hoặc thông qua một hệ thống quản lý các cấu hình)
+# khi bạn không muốn chỉnh sửa một tập tin cấu hình.
 SLAPD_SENTINEL_FILE=/etc/ldap/noslapd
 
-# For Kerberos authentication (via SASL), slapd by default uses the system
-# keytab file (/etc/krb5.keytab).  To use a different keytab file,
-# uncomment this line and change the path.
+# Đối với xác thực Kerberos (thông qua SASL), slapd theo ngầm định sử dụng tập tin
+# keytab của hệ thống (/etc/krb5.keytab).  Để sử dụng một tập tin keytab khác,
+# bỏ ghi chú dòng sau và thay đổi đường dẫn.
 #export KRB5_KTNAME=/etc/krb5.keytab
 
-# Additional options to pass to slapd
-SLAPD_OPTIONS=""
-</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.10.9.5.5"></a>11.7.3.3.2. Configuring the Client</h5></div></div></div><div class="para">
+# Các lựa chọn thêm để chuyển tới slapd
+SLAPD_OPTIONS=""</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.10.9.5.5"></a>11.7.3.3.2. Configuring the Client</h5></div></div></div><div class="para">
 						On the client side, the configuration for the <span class="emphasis"><em>libpam-ldap</em></span> and <span class="emphasis"><em>libnss-ldap</em></span> modules needs to be modified to use an <code class="literal">ldaps://</code> URI.
 					</div><div class="para">
 						LDAP clients also need to be able to authenticate the server. In a X.509 public key infrastructure, public certificates are signed by the key of a certificate authority (CA). With <span class="emphasis"><em>easy-rsa</em></span>, the Falcot administrators have created their own CA and they now need to configure the system to trust the signatures of Falcot's CA. This can be done by putting the CA certificate in <code class="filename">/usr/local/share/ca-certificates</code> and running <code class="command">update-ca-certificates</code>.
