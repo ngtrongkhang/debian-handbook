@@ -151,18 +151,18 @@ SLAPD_SENTINEL_FILE=/etc/ldap/noslapd
 #export KRB5_KTNAME=/etc/krb5.keytab
 
 # Các lựa chọn thêm để chuyển tới slapd
-SLAPD_OPTIONS=""</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.10.9.5.5"></a>11.7.3.3.2. Configuring the Client</h5></div></div></div><div class="para">
-						On the client side, the configuration for the <span class="emphasis"><em>libpam-ldap</em></span> and <span class="emphasis"><em>libnss-ldap</em></span> modules needs to be modified to use an <code class="literal">ldaps://</code> URI.
+SLAPD_OPTIONS=""</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h5 class="title"><a xmlns="" id="id-1.14.10.9.5.5"></a>11.7.3.3.2. Cấu hình Chương trình khách</h5></div></div></div><div class="para">
+						Bên chương trình khách, cấu hình cho các mô-đun <span class="emphasis"><em>libpam-ldap</em></span> và <span class="emphasis"><em>libnss-ldap</em></span> cần phải được điều chỉnh để dùng URI <code class="literal">ldaps://</code>.
 					</div><div class="para">
-						LDAP clients also need to be able to authenticate the server. In a X.509 public key infrastructure, public certificates are signed by the key of a certificate authority (CA). With <span class="emphasis"><em>easy-rsa</em></span>, the Falcot administrators have created their own CA and they now need to configure the system to trust the signatures of Falcot's CA. This can be done by putting the CA certificate in <code class="filename">/usr/local/share/ca-certificates</code> and running <code class="command">update-ca-certificates</code>.
+						Các chương trình khách LDAP cũng cần có thể xác thực được với máy phục vụ. Trong hạ tầng chìa khóa công cộng X.509, các chứng chỉ công cộng được ký bằng chìa khóa của một đại diện chứng chỉ (CA). Với <span class="emphasis"><em>easy-rsa</em></span>, các quản trị viên của Falcot đã tạo một đại diện chứng chỉ (CA) riêng cho ho và họ bây giờ cần cấu hình hệ thống để có thể tin tưởng các chữ ký của đại diện chứng chỉ (CA) của Falcot. Điều này có thể được thực hiện bằng việc đặt chứng chỉ của CA vào trong <code class="filename">/usr/local/share/ca-certificates</code> và chạy lệnh <code class="command">update-ca-certificates</code>.
 					</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>cp keys/ca.crt /usr/local/share/ca-certificates/falcot.crt </code></strong><code class="computeroutput"># </code><strong class="userinput"><code>update-ca-certificates </code></strong><code class="computeroutput">Updating certificates in /etc/ssl/certs... 1 added, 0 removed; done. Running hooks in /etc/ca-certificates/update.d.... Adding debian:falcot.pem done. done. </code></pre><div class="para">
-						Last but not least, the default LDAP URI and default base DN used by the various command line tools can be modified in <code class="filename">/etc/ldap/ldap.conf</code>. This will save quite some typing.
-					</div><div class="example"><a xmlns="" id="id-1.14.10.9.5.5.6"></a><p class="title"><strong>Ví dụ 11.29. The <code class="filename">/etc/ldap/ldap.conf</code> file</strong></p><div class="example-contents"><pre class="programlisting">#
-# LDAP Defaults
+						Cuối cùng, URI LDAP ngầm định và cơ sở DN ngầm định được sử dụng bởi các công cụ dòng lệnh có thể được chỉnh sửa trong <code class="filename">/etc/ldap/ldap.conf</code>. Điều này sẽ giúp giảm bớt một ít việc đánh máy.
+					</div><div class="example"><a xmlns="" id="id-1.14.10.9.5.5.6"></a><p class="title"><strong>Ví dụ 11.29. Tập tin <code class="filename">/etc/ldap/ldap.conf</code></strong></p><div class="example-contents"><pre class="programlisting">#
+# Các thiết lập LDAP ngầm định
 #
 
-# See ldap.conf(5) for details
-# This file should be world readable but not world writable.
+# Xem thêm ldap.conf(5) để biết thêm chi tiết
+# Tập tin này nên cho phép bất cứ ai cũng có thể đọc nhưng không phải ai cũng có thể ghi.
 
 BASE   dc=falcot,dc=com
 URI    ldaps://ldap.falcot.com
@@ -171,6 +171,5 @@ URI    ldaps://ldap.falcot.com
 #TIMELIMIT      15
 #DEREF          never
 
-# TLS certificates (needed for GnuTLS)
-TLS_CACERT      /etc/ssl/certs/ca-certificates.crt
-</pre></div></div></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="sect.http-ftp-proxy.html"><strong>Trước đó</strong>11.6. Trạm chuyển hướng HTTP/FTP</a></li><li class="up"><a accesskey="u" href="#"><strong>Lên</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Đầu</strong></a></li><li class="next"><a accesskey="n" href="sect.rtc-services.html"><strong>Kế tiếp</strong>11.8. Real-Time Communication Services</a></li></ul></body></html>
+# Các chứng chỉ TLS (cần có cho GnuTLS)
+TLS_CACERT      /etc/ssl/certs/ca-certificates.crt</pre></div></div></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="sect.http-ftp-proxy.html"><strong>Trước đó</strong>11.6. Trạm chuyển hướng HTTP/FTP</a></li><li class="up"><a accesskey="u" href="#"><strong>Lên</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Đầu</strong></a></li><li class="next"><a accesskey="n" href="sect.rtc-services.html"><strong>Kế tiếp</strong>11.8. Real-Time Communication Services</a></li></ul></body></html>
