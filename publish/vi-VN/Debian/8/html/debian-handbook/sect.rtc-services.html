@@ -133,40 +133,37 @@ EnableCertificateAuthenticator = True</pre><div class="para">
 				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.sip-server-management"></a>11.8.3.2. Quản lý trạm chuyển phát SIP</h4></div></div></div><div class="para">
 					Chuyển đến giao diện web tại <code class="literal">http://sip-proxy.falcot.com:5080</code> để hoàn tất cấu hình bằng việc thêm các miền máy tính, các người dùng nội bộ và các định tuyến tĩnh(static routes).
 				</div><div class="para">
-					Bước đầu tiên là thêm một miền máy tính nội bộ. Tiến trình phải được khởi động lại sau khi thêm hoặc bỏ đi những miền máy tính khỏi danh sách này.
+					Bước đầu tiên là th��m một miền máy tính nội bộ. Tiến trình phải được khởi động lại sau khi thêm hoặc bỏ đi những miền máy tính khỏi danh sách này.
 				</div><div class="para">
 					Trạm chuyển phát biết cách để định tuyến các cuộc gọi giữa các người sử dụng nội bộ và địa chỉ SIP đầy đủ, cấu hình định tuyến này chỉ thực sự cần thiết để từ chối (override) hành vi ngầm định, ví dụ, để nhận dạng các số điện thoại và thêm một tiền tố và định tuyến nó đến một nhà cung cấp SIP.
-				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.xmpp-server"></a>11.8.4. XMPP Server</h3></div></div></div><div class="para">
-				An XMPP server manages connectivity between local XMPP users and XMPP users in other domains on the public Internet.
-			</div><a id="id-1.14.11.14.3" class="indexterm"></a><div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>VOCABULARY</em></span> XMPP or Jabber?</strong></p></div></div></div><a id="id-1.14.11.14.4.2" class="indexterm"></a><div class="para">
-				XMPP is sometimes referred to as Jabber. In fact, Jabber is a trademark and XMPP is the official name of the standard.
+				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.xmpp-server"></a>11.8.4. Máy phục vụ XMPP</h3></div></div></div><div class="para">
+				Một máy phục vụ XMPP quản lý kết nối giữa các người sử dụng XMPP nội bộ và những người sử dụng XMPP ở những miền máy tính khác trên mạng Internet công cộng.
+			</div><a id="id-1.14.11.14.3" class="indexterm"></a><div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>TỪ VỰNG</em></span> XMPP hay Jabber?</strong></p></div></div></div><a id="id-1.14.11.14.4.2" class="indexterm"></a><div class="para">
+				XMPP thỉnh thoảng được biết tới như là Jabber. Thực ra, Jabber là một thương hiệu và XMPP là tên chính thức của một tiêu chuẩn.
 			</div><a id="id-1.14.11.14.4.4" class="indexterm"></a></div><div class="para">
-				Prosody is a popular XMPP server that operates reliably on Debian servers.
-			</div><a id="id-1.14.11.14.6" class="indexterm"></a><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.xmpp-server-install"></a>11.8.4.1. Install the XMPP server</h4></div></div></div><div class="para">
-					Install the <span class="pkg pkg">prosody</span> package. Using the package from <span class="distribution distribution">jessie-backports</span> is highly recommended, as it has the latest improvements for maximizing connectivity and resilience.
+				Prosody là một máy phục vụ XMPP vốn hoạt động ổn định trên các máy phục vụ Debian.
+			</div><a id="id-1.14.11.14.6" class="indexterm"></a><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.xmpp-server-install"></a>11.8.4.1. Cài đặt máy phục vụ XMPP</h4></div></div></div><div class="para">
+					Cài đặt gói phần mềm <span class="pkg pkg">prosody</span>. Sử dụng gói phần mềm này từ <span class="distribution distribution">jessie-backports</span> là rất được khuyến cáo, bởi nó có những tiến bộ mới nhất để tối đa hóa kết nối và khả năng phục hồi khi gặp sự cố.
 				</div><a id="id-1.14.11.14.7.3" class="indexterm"></a><div class="para">
-					Review the <code class="filename">/etc/prosody/prosody.cfg.lua</code> configuration file. The most important thing to do is insert JIDs of the users who are permitted to manage the server.
+					Xem tập tin cấu hình <code class="filename">/etc/prosody/prosody.cfg.lua</code>. Điều quan trọng nhất để làm là chèn những JID của những người sử dụng được cho phép quản lý máy phục vụ.
 				</div><pre class="programlisting">
-admins = { "joe@falcot.com" }
-</pre><div class="para">
-					An individual configuration file is also needed for each domain. Copy the sample from <code class="filename">/etc/prosody/conf.avail/example.com.cfg.lua</code> and use it as a starting point. Here is <code class="literal">falcot.com.cfg.lua</code>:
+admins = { "joe@falcot.com" }</pre><div class="para">
+					Một tập tin cấu hình cũng cần thiết cho mỗi miền máy tính. Sao chép mẫu sau từ <code class="filename">/etc/prosody/conf.avail/example.com.cfg.lua</code> và sử dụng nó như một điểm khởi động. Đây là <code class="literal">falcot.com.cfg.lua</code>:
 				</div><pre class="programlisting">
 VirtualHost "falcot.com"
         enabled = true
         ssl = {
                 key = "/etc/ssl/private/falcot.com-key.pem";
                 certificate = "/etc/ssl/public/falcot.com.pem";
-                }
-</pre><div class="para">
-					To enable the domain, there must be a symlink from <code class="filename">/etc/prosody/conf.d/</code>. Create it that way:
+                }</pre><div class="para">
+					Để kích hoạt miền máy tính, phải có một đường dẫn tượng trưng (symbolic link) xuất phát từ <code class="filename">/etc/prosody/conf.d/</code>. Hãy tạo nó theo cách đó:
 				</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>ln -s /etc/prosody/conf.avail/falcot.com.cfg.lua /etc/prosody/conf.d/</code></strong></pre><div class="para">
 					Khởi động lại dịch vụ để sử dụng cấu hình mới.
-				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.xmpp-server-management"></a>11.8.4.2. Managing the XMPP server</h4></div></div></div><div class="para">
-					Some management operations can be performed using the <code class="literal">prosodyctl</code> command line utility. For example, to add the administrator account specified in <code class="filename">/etc/prosody/prosody.cfg.lua</code>:
+				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.xmpp-server-management"></a>11.8.4.2. Quản lý một máy phục vụ XMPP</h4></div></div></div><div class="para">
+					Một số tác vụ quản lý có thể được thực hiện bằng tiện ích dòng lệnh <code class="literal">prosodyctl</code>. Ví dụ, để thêm một tài khoản quản trị viên vốn được chỉ định trong <code class="filename">/etc/prosody/prosody.cfg.lua</code>:
 				</div><pre class="programlisting">
-# prosodyctl adduser joe@falcot.com
-</pre><div class="para">
-					See the <a href="http://prosody.im/doc/configure"> Prosody online documentation</a> for more details about how to customize the configuration.
+# prosodyctl adduser joe@falcot.com</pre><div class="para">
+					Xem <a href="http://prosody.im/doc/configure"> Tài liệu hướng dẫn trên mạng của Prosody</a> để biết thêm chi tiết về cách để tùy chỉnh cấu hình này.
 				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.rtc-port-443"></a>11.8.5. Running services on port 443</h3></div></div></div><div class="para">
 				Some administrators prefer to run all of their RTC services on port 443. This helps users to connect from remote locations such as hotels and airports where other ports may be blocked or Internet traffic is routed through HTTP proxy servers.
 			</div><div class="para">
