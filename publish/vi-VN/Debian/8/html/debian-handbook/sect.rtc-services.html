@@ -60,7 +60,7 @@ UserDatabaseHashedPasswords = true</pre><div class="para">
 				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.turn-server-management"></a>11.8.2.2. Quản lý các người sử dụng TURN</h4></div></div></div><div class="para">
 					Sử dụng công cụ htdigest để quản lý danh sách người sử dụng của máy phục vụ TURN
 				</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>htdigest /etc/reTurn/users.txt myrealm joe</code></strong></pre><div class="para">
-					Sử dụng tín hiệu HUP để buộc máy phục vụ tự cập nhật tập tin <code class="filename">/etc/reTurn/users.txt</code> sau khi chỉnh sửa nó hoặc kích hoạt tính năng tự động cập nhật trong <code class="filename">/etc/reTurn/reTurnServer.config</code>.
+					Use the HUP signal to make the server reload the <code class="filename">/etc/reTurn/users.txt</code> file after changing it or enable the automatic reload feature in <code class="filename">/etc/reTurn/reTurnServer.config</code>.
 				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.sip-server"></a>11.8.3. Máy phục vụ Trạm Chuyển hướng SIP</h3></div></div></div><div class="para">
 				Máy phục vụ trạm chuyển hướng SIP quản lý các kết nối SIP đến và đi giữa các tổ chức, các nhà cung cấp dịch vụ thoại và truyền tải đa phương tiện trên SIP, các chi nhánh giao dịch tư nhân SIP (SIP PBX) như là Asterisk, các điện thoại chạy trên SIP, các chương trình gọi điện thoại dựa trên SIP và các chương trình WebRTC.
 			</div><a id="id-1.14.11.13.3" class="indexterm"></a><a id="id-1.14.11.13.4" class="indexterm"></a><a id="id-1.14.11.13.5" class="indexterm"></a><a id="id-1.14.11.13.6" class="indexterm"></a><div class="para">
@@ -133,7 +133,7 @@ EnableCertificateAuthenticator = True</pre><div class="para">
 				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.sip-server-management"></a>11.8.3.2. Quản lý trạm chuyển phát SIP</h4></div></div></div><div class="para">
 					Chuyển đến giao diện web tại <code class="literal">http://sip-proxy.falcot.com:5080</code> để hoàn tất cấu hình bằng việc thêm các miền máy tính, các người dùng nội bộ và các định tuyến tĩnh(static routes).
 				</div><div class="para">
-					Bước đầu tiên là th��m một miền máy tính nội bộ. Tiến trình phải được khởi động lại sau khi thêm hoặc bỏ đi những miền máy tính khỏi danh sách này.
+					Bước đầu tiên là thêm một miền máy tính nội bộ. Tiến trình phải được khởi động lại sau khi thêm hoặc bỏ đi những miền máy tính khỏi danh sách này.
 				</div><div class="para">
 					Trạm chuyển phát biết cách để định tuyến các cuộc gọi giữa các người sử dụng nội bộ và địa chỉ SIP đầy đủ, cấu hình định tuyến này chỉ thực sự cần thiết để từ chối (override) hành vi ngầm định, ví dụ, để nhận dạng các số điện thoại và thêm một tiền tố và định tuyến nó đến một nhà cung cấp SIP.
 				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.xmpp-server"></a>11.8.4. Máy phục vụ XMPP</h3></div></div></div><div class="para">
@@ -168,47 +168,46 @@ VirtualHost "falcot.com"
 				Một vài quản trị viên thích sử dụng tất cả các dịch vụ RTC trên cổng 443. Điều này có thể giúp người sử dụng kết nối từ những địa điểm xa xôi như các khách sạn và sân bay nơi mà các cổng khác bị khóa hay đường truyền Internet bị điều hướng xuyên qua các máy phục vụ chuyển hướng HTTP.
 			</div><div class="para">
 				Để xử dụng chiến thuật này, mỗi dịch vụ (SIP, XMPP và TURN) cần một địa chỉ IP riêng biệt. Tất cả các dịch vụ này có thể nằm trên cùng một máy bởi Linux hỗ trợ nhiều địa chỉ IP cho một máy tính duy nhất. Cổng số 443 phải được chỉ định trong các tập tin cấu hình cho mỗi tiến trình và cũng như trong các mẩu tin DNS SRV.
-			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.rtc-webrtc"></a>11.8.6. Adding WebRTC</h3></div></div></div><div class="para">
-				Falcot wants to let customers make phone calls directly from the web site. The Falcot administrators also want to use WebRTC as part of their disaster recovery plan, so staff can use web browsers at home to log in to the company phone system and work normally in an emergency.
-			</div><a id="id-1.14.11.16.3" class="indexterm"></a><a id="id-1.14.11.16.4" class="indexterm"></a><div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>IN PRACTICE</em></span> Try WebRTC</strong></p></div></div></div><a id="id-1.14.11.16.5.2" class="indexterm"></a><div class="para">
-				If you have not tried WebRTC before, there are various sites that give an online demonstration and test facilities. <div xmlns="" class="url">→ <a xmlns="http://www.w3.org/1999/xhtml" href="http://www.sip5060.net/test-calls">http://www.sip5060.net/test-calls</a></div>
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.rtc-webrtc"></a>11.8.6. Thêm tính năng WebRTC</h3></div></div></div><div class="para">
+				Falcot muốn để các khách hàng gọi điện thoại trực tiếp từ trang web. Các quản trị viên của Falcot cũng muốn sử dụng WebRTC là một phần trong kế hoạch phục hồi sau thảm họa của họ, để các nhân viên có thể sử dụng các trình duyệt web tại nhà để đăng nhập vào hệ thống điện thoại của công ty và làm việc bình thường trong trường hợp khẩn cấp.
+			</div><a id="id-1.14.11.16.3" class="indexterm"></a><a id="id-1.14.11.16.4" class="indexterm"></a><div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>THỰC TẾ</em></span> Hãy thử WebRTC</strong></p></div></div></div><a id="id-1.14.11.16.5.2" class="indexterm"></a><div class="para">
+				Nếu bạn chưa sử dụng WebRTC trước đây, có nhiều trang thông tin điện tử trình diễn trực tuyến và kiểm tra các hệ thống cho bạn. <div xmlns="" class="url">→ <a xmlns="http://www.w3.org/1999/xhtml" href="http://www.sip5060.net/test-calls">http://www.sip5060.net/test-calls</a></div>
 			</div></div><div class="para">
-				WebRTC is a rapidly evolving technology and it is essential to use packages from the <span class="distribution distribution">jessie-backports</span> or <span class="distribution distribution">Testing</span> distributions.
+				WebRTC là một công nghệ tiến hóa rất nhanh và việc sử dụng các gói phần mềm từ các bản phân phối <span class="distribution distribution">jessie-backports</span> hoặc <span class="distribution distribution">Testing</span> là rất quan trọng.
 			</div><div class="para">
-				JSCommunicator is a generic, unbranded WebRTC phone that does not require any server-side scripting such as PHP. It is built exclusively with HTML, CSS and JavaScript. It is the basis for many other WebRTC services and modules for more advanced web publishing frameworks. <div xmlns="" class="url">→ <a xmlns="http://www.w3.org/1999/xhtml" href="http://jscommunicator.org">http://jscommunicator.org</a></div>
+				JSCommunicator là một điện thoại WebRTC ít kén chọn, không mang một thương hiệu, vốn không buộc phải có các mã kịch bản bên máy phục vụ ví dụ như PHP. Nó được xây dựng chỉ dành cho HTML, CSS và JavaScript. Nó là cơ sở cho rất nhiều các dịch vụ và các mô-đun WebRTC khác để hỗ trợ các bộ công cụ phát triển phức tạp cho xuất bản điện tử(web publishing framework).
 			</div><a id="id-1.14.11.16.8" class="indexterm"></a><div class="para">
-				The package <span class="pkg pkg">jscommunicator-web-phone</span> is the quickest way to install a WebRTC phone into a web site. It requires a SIP proxy with a WebSocket transport. The instructions in <a class="xref" href="sect.rtc-services.html#sect.sip-server-install">Phần 11.8.3.1, “Cài đặt một trạm chuyển phát SIP”</a> include the necessary details to enable the WebSocket transport in the <span class="pkg pkg">repro</span> SIP proxy.
+				Gói phần mềm <span class="pkg pkg">jscommunicator-web-phone</span> là con đường nhanh nhất để cài đặt một điện thoại WebRTC vào một trang thông tin điện tử. Nó đòi hỏi phải có một trạm chuyển hướng SIP (SIP Proxy) cùng với một phương thức di chuyển dữ liệu WebSocket. Các hướng dẫn trong <a class="xref" href="sect.rtc-services.html#sect.sip-server-install">Phần 11.8.3.1, “Cài đặt một trạm chuyển phát SIP”</a> bao gồm các chi tiết cần thiết để kích hoạt phương thức di chuyển dữ liệu WebSocket trong trạm chuyển hướng SIP <span class="pkg pkg">repro</span>.
 			</div><div class="para">
-				After installing <span class="pkg pkg">jscommunicator-web-phone</span>, there are various ways to use it. A simple strategy is to include or copy the configuration from <code class="filename">/etc/jscommunicator-web-phone/apache.conf</code> into an Apache virtual host configuration.
+				Sau khi cài đặt <span class="pkg pkg">jscommunicator-web-phone</span>, có nhiều cách để sử dụng nó. Một phương thức đơn giản là đính kèm hoặc sao chép cấu hình từ <code class="filename">/etc/jscommunicator-web-phone/apache.conf</code> vào một cấu hình máy ảo(virtual host) Apache.
 			</div><div class="para">
-				Once the web-phone files are available in the web server, customize the <code class="filename">/etc/jscommunicator-web-phone/config.js</code> to point at the TURN server and SIP proxy. For example:
+				Một khi các tập tin điện thoại-mạng (web-phone) có sẵn trong máy phục vụ web, tùy chỉnh <code class="filename">/etc/jscommunicator-web-phone/config.js</code> để chỉ đến máy phục vụ TURN hay trạm chuyển hướng SIP. Ví dụ:
 			</div><pre class="programlisting">
 JSCommSettings = {
 
-  // Web server environment
+  // Môi trường máy phục vụ Web
   webserver: {
-    url_prefix: null            // If set, prefix used to construct sound/ URLs
+    url_prefix: null            // Nếu được bật, tiền tố được sử dụng để xây dựng các URL dễ đọc URLs
   },
 
-  // STUN/TURN media relays
+  // Các trạm chuyển phát thông tin đa phương tiện (media relays) STUN/TURN
   stun_servers: [],
   turn_servers: [
     { server:"turn:turn-server.falcot.com?transport=udp", username:"joe", password:"j0Ep455d" }
   ],
 
-  // WebSocket connection
+  // Kết nối WebSocket
   websocket: {
-      // Notice we use the falcot.com domain certificate and port 8443
-      // This matches the Transport3 and Transport4 example in
-      // the falcot.com repro.config file
+      // Chú ý rằng chúng ta sử dụng chứng chỉ miền falcot.com và cổng 8443
+      // Điều này khớp với ví dụ Transport3 và Transport4 trong
+      // tập tin repro.config của falcot.com
     servers: 'wss://falcot.com:8443',
     connection_recovery_min_interval: 2,
     connection_recovery_max_interval: 30
   },
 
-  ...
-</pre><div class="para">
-				More advanced click-to-call web sites typically use server-side scripting to generate the <code class="literal">config.js</code> file dynamically. The <a href="http://drucall.org">DruCall</a> source code demonstrates how to do this with PHP.
+  ...</pre><div class="para">
+				Các trang thông tin điện tử phức tạp có tính năng nhấn chuột-để-gọi thường sử dụng kịch bản bên máy phục vụ để tạo ra tập tin <code class="literal">config.js</code>. Mã nguồn <a href="http://drucall.org">DruCall</a> cho thấy cách làm điều này như thế nào với PHP.
 			</div><a id="id-1.14.11.16.14" class="indexterm"></a><div class="para">
-				This chapter sampled only a fraction of the available server software; however, most of the common network services were described. Now it is time for an even more technical chapter: we'll go into deeper detail for some concepts, describe massive deployments and virtualization.
+				Chương này làm mẫu chỉ một phần nhỏ của những phần mềm có sẵn cho máy phục vụ; tuy nhiên, đa số các dịch vụ mạng thông thường đã được mô tả. Bây giờ là lúc để cho một chương có nhiều tính kĩ thuật hơn: chúng ta sẽ đi sâu hơn về các khái niệm, mô tả các sự triển khai và ảo hóa ở quy mô lớn hơn.
 			</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="sect.ldap-directory.html"><strong>Trước đó</strong>11.7. Danh bạ LDAP</a></li><li class="up"><a accesskey="u" href="#"><strong>Lên</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Đầu</strong></a></li><li class="next"><a accesskey="n" href="advanced-administration.html"><strong>Kế tiếp</strong>Chương 12. Advanced Administration</a></li></ul></body></html>
