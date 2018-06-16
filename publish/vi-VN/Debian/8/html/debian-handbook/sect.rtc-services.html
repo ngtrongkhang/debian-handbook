@@ -61,18 +61,18 @@ UserDatabaseHashedPasswords = true</pre><div class="para">
 					Sử dụng công cụ htdigest để quản lý danh sách người sử dụng của máy phục vụ TURN
 				</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>htdigest /etc/reTurn/users.txt myrealm joe</code></strong></pre><div class="para">
 					Sử dụng tín hiệu HUP để buộc máy phục vụ tự cập nhật tập tin <code class="filename">/etc/reTurn/users.txt</code> sau khi chỉnh sửa nó hoặc kích hoạt tính năng tự động cập nhật trong <code class="filename">/etc/reTurn/reTurnServer.config</code>.
-				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.sip-server"></a>11.8.3. SIP Proxy Server</h3></div></div></div><div class="para">
-				A SIP proxy server manages the incoming and outgoing SIP connections between other organizations, SIP trunking providers, SIP PBXes such as Asterisk, SIP phones, SIP-based softphones and WebRTC applications.
+				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.sip-server"></a>11.8.3. Máy phục vụ Trạm Chuyển hướng SIP</h3></div></div></div><div class="para">
+				Máy phục vụ trạm chuyển hướng SIP quản lý các kết nối SIP đến và đi giữa các tổ chức, các nhà cung cấp dịch vụ thoại và truyền tải đa phương tiện trên SIP, các chi nhánh giao dịch tư nhân SIP (SIP PBX) như là Asterisk, các điện thoại chạy trên SIP, các chương trình gọi điện thoại dựa trên SIP và các chương trình WebRTC.
 			</div><a id="id-1.14.11.13.3" class="indexterm"></a><a id="id-1.14.11.13.4" class="indexterm"></a><a id="id-1.14.11.13.5" class="indexterm"></a><a id="id-1.14.11.13.6" class="indexterm"></a><div class="para">
-				It is strongly recommended to install and configure the SIP proxy before attempting a SIP PBX setup. The SIP proxy normalizes a lot of the traffic reaching the PBX and provides greater connectivity and resilience.
-			</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.sip-server-install"></a>11.8.3.1. Install the SIP proxy</h4></div></div></div><div class="para">
-					Install the <span class="pkg pkg">repro</span> package. Using the package from <span class="distribution distribution">jessie-backports</span> is highly recommended, as it has the latest improvements for maximizing connectivity and resilience.
+				Việc cài đặt và cấu hình trạm chuyển phát SIP trước khi tiến hành thử cài đặt một SIP PBX rất được khuyến cáo. Trạm chuyển phát SIP rải đều lượng tải thông tin đến PBX và cung cấp đường truyền tốt hơn và khả năng phục hồi tốt hơn.
+			</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.sip-server-install"></a>11.8.3.1. Cài đặt một trạm chuyển phát SIP</h4></div></div></div><div class="para">
+					Cài đặt gói phần mềm <span class="pkg pkg">repro</span>. Sử dụng gói phần mềm <span class="distribution distribution">jessie-backports</span> rất được khuyến cáo, bởi nó có những tiến bộ mới nhất để tối đa hóa khả năng kết nối và khả năng phục hồi khi gặp sự cố.
 				</div><a id="id-1.14.11.13.8.3" class="indexterm"></a><div class="para">
-					Edit the <code class="filename">/etc/repro/repro.config</code> configuration file. The most important thing to do is insert the IP addresses of the server. The example below demonstrates how to setup both regular SIP and WebSockets/WebRTC, using TLS, IPv4 and IPv6:
+					Chỉnh sửa tập tin cấu hình <code class="filename">/etc/repro/repro.config</code>. Điều quan trọng nhất để làm là chèn vào đó những địa chỉ IP của máy phục vụ. Ví dụ dưới đây trình bày cách để cài đặt một SIP bình thường và các Websocket/WebRTC, sử dụng TLS, IPv4 và IPv6.
 				</div><pre class="programlisting">
-# Transport1 will be for SIP over TLS connections
-# We use port 5061 here but if you have clients connecting from
-# locations with firewalls you could change this to listen on port 443
+# Transport1 sẽ được dành cho SIP trên các kết nối TLS
+# Chúng ta sử dụng cổng 5061 ở đây nhưng nếu bạn có các chương trình khách kết nối từ
+# các địa điểm có kèm tường lửa bạn có thể thay đổi điều này để lắng nghe trên cổng 443
 Transport1Interface = 198.51.100.19:5061
 Transport1Type = TLS
 Transport1TlsDomain = falcot.com
@@ -81,7 +81,7 @@ Transport1RecordRouteUri = sip:falcot.com;transport=TLS
 Transport1TlsPrivateKey = /etc/ssl/private/falcot.com-key.pem
 Transport1TlsCertificate = /etc/ssl/public/falcot.com.pem
 
-# Transport2 is the IPv6 version of Transport1
+# Transport2 là phiên bản IPv6 của Transport1
 Transport2Interface = 2001:DB8:1000:2000::19:5061
 Transport2Type = TLS
 Transport2TlsDomain = falcot.com
@@ -90,19 +90,19 @@ Transport2RecordRouteUri = sip:falcot.com;transport=TLS
 Transport2TlsPrivateKey = /etc/ssl/private/falcot.com-key.pem
 Transport2TlsCertificate = /etc/ssl/public/falcot.com.pem
 
-# Transport3 will be for SIP over WebSocket (WebRTC) connections
-# We use port 8443 here but you could use 443 instead
+# Transport3 sẽ được dành cho SIP trên các kết nối WebSocket (WebRTC)
+# Chúng ta sử dụng cổng 8443 ở đây nhưng bạn có thể sử dụng cổng 443
 Transport3Interface = 198.51.100.19:8443
 Transport3Type = WSS
 Transport3TlsDomain = falcot.com
-# This would require the browser to send a certificate, but browsers
-# don't currently appear to be able to, so leave it as None:
+# Điều này sẽ buộc phải có một trình duyệt để gửi một chứng chỉ, nhưng các trình duyệt
+# hiện tại có vẻ không thể làm được điều đó, nên hãy đặt giá trị là None:
 Transport3TlsClientVerification = None
 Transport3RecordRouteUri = sip:falcot.com;transport=WSS
 Transport3TlsPrivateKey = /etc/ssl/private/falcot.com-key.pem
 Transport3TlsCertificate = /etc/ssl/public/falcot.com.pem
 
-# Transport4 is the IPv6 version of Transport3
+# Transport 4 là phiên bản IPv6 của Transport3
 Transport4Interface = 2001:DB8:1000:2000::19:8443
 Transport4Type = WSS
 Transport4TlsDomain = falcot.com
@@ -111,9 +111,9 @@ Transport4RecordRouteUri = sip:falcot.com;transport=WSS
 Transport4TlsPrivateKey = /etc/ssl/private/falcot.com-key.pem
 Transport4TlsCertificate = /etc/ssl/public/falcot.com.pem
 
-# Transport5: this could be for TCP connections to an Asterisk server
-# in your internal network.  Don't allow port 5060 through the external
-# firewall.
+# Transport5: cái này có thể dành cho các kết nối TCP đến một máy phục vụ Asterisk
+# trong mạng nội bộ của bạn.  Không cho phép cổng 5060 qua tường lửa
+# bên ngoài.
 Transport5Interface = 198.51.100.19:5060
 Transport5Type = TCP
 Transport5RecordRouteUri = sip:198.51.100.19:5060;transport=TCP
@@ -126,17 +126,16 @@ ForceRecordRouting = true
 EnumSuffixes = e164.arpa, sip5060.net, e164.org
 DisableOutbound = false
 EnableFlowTokens = true
-EnableCertificateAuthenticator = True
-</pre><div class="para">
-					Use the <code class="command">htdigest</code> utility to manage the admin password for the web interface. The username must be <span class="emphasis"><em>admin</em></span> and the realm name must match the value specified in <code class="filename">repro.config</code>.
+EnableCertificateAuthenticator = True</pre><div class="para">
+					Sử dụng tiện ích <code class="command">htdigest</code> để quản lý mật mã quản trị cho giao diện web. Tên người dùng phải là <span class="emphasis"><em>admin</em></span> và tên realm phải khớp với giá trị được chỉ ra trong <code class="filename">repro.config</code>.
 				</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>htdigest /etc/repro/users.txt repro admin</code></strong></pre><div class="para">
-					Restart the service to use the new configuration.
-				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.sip-server-management"></a>11.8.3.2. Managing the SIP proxy</h4></div></div></div><div class="para">
-					Go to the web interface at <code class="literal">http://sip-proxy.falcot.com:5080</code> to complete the configuration by adding domains, local users and static routes.
+					Khởi động lại dịch vụ để sử dụng cấu hình mới.
+				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.sip-server-management"></a>11.8.3.2. Quản lý trạm chuyển phát SIP</h4></div></div></div><div class="para">
+					Chuyển đến giao diện web tại <code class="literal">http://sip-proxy.falcot.com:5080</code> để hoàn tất cấu hình bằng việc thêm các miền máy tính, các người dùng nội bộ và các định tuyến tĩnh(static routes).
 				</div><div class="para">
-					The first step is to add the local domain. The process must be restarted after adding or removing domains from the list.
+					Bước đầu tiên là thêm một miền máy tính nội bộ. Tiến trình phải được khởi động lại sau khi thêm hoặc bỏ đi những miền máy tính khỏi danh sách này.
 				</div><div class="para">
-					The proxy knows how to route calls between local users and full SIP address, the routing configuration is only necessary for overriding default behavior, for example, to recognize phone numbers, add a prefix and route them to a SIP provider.
+					Trạm chuyển phát biết cách để định tuyến các cuộc gọi giữa các người sử dụng nội bộ và địa chỉ SIP đầy đủ, cấu hình định tuyến này chỉ thực sự cần thiết để từ chối (override) hành vi ngầm định, ví dụ, để nhận dạng các số điện thoại và thêm một tiền tố và định tuyến nó đến một nhà cung cấp SIP.
 				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a xmlns="" id="sect.xmpp-server"></a>11.8.4. XMPP Server</h3></div></div></div><div class="para">
 				An XMPP server manages connectivity between local XMPP users and XMPP users in other domains on the public Internet.
 			</div><a id="id-1.14.11.14.3" class="indexterm"></a><div class="sidebar"><div class="titlepage"><div><div><p class="title"><strong><span class="emphasis"><em>VOCABULARY</em></span> XMPP or Jabber?</strong></p></div></div></div><a id="id-1.14.11.14.4.2" class="indexterm"></a><div class="para">
@@ -161,7 +160,7 @@ VirtualHost "falcot.com"
 </pre><div class="para">
 					To enable the domain, there must be a symlink from <code class="filename">/etc/prosody/conf.d/</code>. Create it that way:
 				</div><pre class="screen"><code class="computeroutput"># </code><strong class="userinput"><code>ln -s /etc/prosody/conf.avail/falcot.com.cfg.lua /etc/prosody/conf.d/</code></strong></pre><div class="para">
-					Restart the service to use the new configuration.
+					Khởi động lại dịch vụ để sử dụng cấu hình mới.
 				</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a xmlns="" id="sect.xmpp-server-management"></a>11.8.4.2. Managing the XMPP server</h4></div></div></div><div class="para">
 					Some management operations can be performed using the <code class="literal">prosodyctl</code> command line utility. For example, to add the administrator account specified in <code class="filename">/etc/prosody/prosody.cfg.lua</code>:
 				</div><pre class="programlisting">
@@ -181,7 +180,7 @@ VirtualHost "falcot.com"
 			</div><div class="para">
 				JSCommunicator is a generic, unbranded WebRTC phone that does not require any server-side scripting such as PHP. It is built exclusively with HTML, CSS and JavaScript. It is the basis for many other WebRTC services and modules for more advanced web publishing frameworks. <div xmlns="" class="url">→ <a xmlns="http://www.w3.org/1999/xhtml" href="http://jscommunicator.org">http://jscommunicator.org</a></div>
 			</div><a id="id-1.14.11.16.8" class="indexterm"></a><div class="para">
-				The package <span class="pkg pkg">jscommunicator-web-phone</span> is the quickest way to install a WebRTC phone into a web site. It requires a SIP proxy with a WebSocket transport. The instructions in <a class="xref" href="sect.rtc-services.html#sect.sip-server-install">Phần 11.8.3.1, “Install the SIP proxy”</a> include the necessary details to enable the WebSocket transport in the <span class="pkg pkg">repro</span> SIP proxy.
+				The package <span class="pkg pkg">jscommunicator-web-phone</span> is the quickest way to install a WebRTC phone into a web site. It requires a SIP proxy with a WebSocket transport. The instructions in <a class="xref" href="sect.rtc-services.html#sect.sip-server-install">Phần 11.8.3.1, “Cài đặt một trạm chuyển phát SIP”</a> include the necessary details to enable the WebSocket transport in the <span class="pkg pkg">repro</span> SIP proxy.
 			</div><div class="para">
 				After installing <span class="pkg pkg">jscommunicator-web-phone</span>, there are various ways to use it. A simple strategy is to include or copy the configuration from <code class="filename">/etc/jscommunicator-web-phone/apache.conf</code> into an Apache virtual host configuration.
 			</div><div class="para">
