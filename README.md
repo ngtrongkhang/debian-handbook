@@ -1,6 +1,12 @@
-Vietnamese translation for chapter 11 of Debian Administrator's Handbook.
+Vietnamese translation for chapter 7 and 11 of Debian Administrator's Handbook.
 
-Latest version of chapter 11 in Vietnamese can be read [here](https://rawgit.com/ngtrongkhang/debian-handbook/github-fork/publish/vi-VN/Debian/8/html/debian-handbook/index.html).
+#### Chapter 7
+Latest version of chapter 7 in Vietnamese can be read [here](https://rawgit.com/ngtrongkhang/debian-handbook/ch7/publish/vi-VN/Debian/8/html/debian-handbook/solving-problems.html). 
+PO version can be retrieved from ch7 branch.
+
+#### Chapter 11
+Latest version of chapter 11 in Vietnamese can be read [here](https://rawgit.com/ngtrongkhang/debian-handbook/github-fork/publish/vi-VN/Debian/8/html/debian-handbook/network-services.html). 
+PO version can be retrieved from github-fork branch.
 
 Below is the original description.
 
